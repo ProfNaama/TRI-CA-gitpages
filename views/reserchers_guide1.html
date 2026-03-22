@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRI-CA</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script defer src="../static/script.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">TRI-CA</h1>
+            <h2>Trials with Conversational Agents</h2>
+            <p>Naama Ilany-Tzur, Guy Ilany, David Gefen & René Riedl</p>
+        </header>
+        <nav class="nav">
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="./reserchers_guide.html">Resercher's Guide</a></li>
+                <li><a href="./dev_guide.html">Developer's Guide</a></li>
+                <li><a href="./download.html">Download</a></li>
+                <li><a href="./contact.html">Contact Us</a></li>
+            </ul>
+        </nav>
+        <aside class="aside">
+            <h2>Table of Content</h2>
+            <ol>
+                <li><a href="#" onclick="scrollIframe('tri-ca')">Introduction</a>
+                    <ol>
+                        <li><a href="#" onclick="scrollIframe('purpose--functinality')">Purpose & Functionality</a></li>
+                        <li><a href="#" onclick="scrollIframe('key-research-capabilities')">Key Research Capabilities</a></li>
+                        <li><a href="#" onclick="scrollIframe('key-features--contributions')">Key Features & Contributions</a></li>
+                    </ol>
+                </li>
+                <li><a href="#" onclick="scrollIframe('getting-started')">Getting Started</a>
+                    <ol>
+                        <li><a href="#" onclick="scrollIframe('quick-start-5-minutes-local-smoke-test')">Quick Start</a></li>
+                        <li><a href="#" onclick="scrollIframe('full-setup-production-like-deployment')">Full Set Up</a></li>
+                        <li><a href="#" onclick="scrollIframe('tri-ca')">Setting Up the Website</a></li>
+                        <li><a href="#" onclick="scrollIframe('tri-ca')">Setting Up the LLM</a></li>
+                        <li><a href="#" onclick="scrollIframe('tri-ca')">Setting Up the Web-Server</a></li>
+                        <li><a href="#" onclick="scrollIframe('tri-ca')">Setting Up the DB</a></li>
+
+                    </ol>
+                </li>
+                <li><a href="#downloadGuide">Download Researcher's Guide pdf</a></li>
+            </ol>
+        </aside>
+        <main class="main">
+            <iframe id="myFrame" src="../my_output.html" frameborder="2px" width="1000" height="800"></iframe>
+
+            <h2 id="2">Download Researcher's Guide pdf</h2>
+            <!-- <p class="toggle-btn">Read more...</p> -->
+            <div>
+                <p id="downloadGuide"><a href="../static/TRI-CA_Tutorial.pdf">Download PDF guide</a></p>
+            </div>
+        </main>
+        <section class="section">
+            <!-- <div class="iframe_container">Video tutorial coming soon...</div> -->
+        </section>
+        <footer class="footer">
+            <span id="copy_footer" class="TRI-CA"></span>
+        </footer>
+    </div>
+</body>
+
+</html>

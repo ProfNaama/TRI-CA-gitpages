@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRI-CA</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script defer src="../static/script.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">TRI-CA</h1>
+            <h2>Trials with Conversational Agents</h2>
+            <!-- <p>A flexible web-based research platform for designing and running digital experiments with AI.</p> -->
+            <p>Naama Ilany-Tzur, Guy Ilany, David Gefen & René Riedl</p>
+        </header>
+        <nav class="nav">
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="./reserchers_guide.html">Resercher's Guide</a></li>
+                <li><a href="./dev_guide.html">Developer's Guide</a></li>
+                <li><a href="./download.html">Download</a></li>
+                <li><a href="./contact.html">Contact Us</a></li>
+            </ul>
+        </nav>
+        <aside class="aside">
+            <h2>Table of Content</h2>
+            <ol>
+                <li><a href="#0">Introduction</a>
+                    <ol>
+                        <li><a href="#1">Purpose & Functionality</a></li>
+                        <li><a href="#2">Key Research Capabilities</a></li>
+                        <li><a href="#3">Key Features & Contributions</a></li>
+                    </ol>
+                </li>
+                <li><a href="#4">Getting Started</a>
+                    <ol>
+                        <li><a href="#GS1">Quick Start</a></li>
+                        <li><a href="#GS2">Full Setup</a></li>
+                    </ol>
+                </li>
+                <li><a href="#5">Technical Architecture</a></li>
+                <li><a href="#6">Security Considerations / Limitations</a></li>
+                <li><a href="#7">Developer Guide</a></li>
+                <li><a href="#8">License</a></li>
+                <li><a href="#9">Preferred citation</a></li>
+                <li><a href="#10">Download Developers's Guide pdf</a></li>
+            </ol>
+        </aside>
+        <main class="main">
+            <h2 id="0">introduction</h2>
+
+            <div>
+                <h3 id="1">Purpose &amp; Functionality</h3>
+                <p class="toggle-btn">Read more...</p>
+                <div class="toggle-content">
+                    <p>
+                        This platform is a comprehensive web-based experimental research system designed for
+                        conducting controlled studies on human-AI interactions.
+                        It enables researchers to conduct rigorous experimental studies examining how humans
+                        interact with AI systems under controlled conditions.
+                        It supports multi-stage experimental designs with randomized treatment groups,
+                        ensuring robust data collection for academic research.
+                        Built with Node.js and Express, it provides a complete experimental workflow from
+                        participant onboarding, going through a random treatment group's specific
+                        configuration, and ending with data collection.
+                    </p>
+                </div>
+            </div>
+
+            <div>
+                <h3 id="2">Key Research Capabilities</h3>
+                <p class="toggle-btn">Read more...</p>
+                <div class="toggle-content">
+                    <ul>
+                        <li>
+                            <strong>Hidden Prompt Control:</strong> Researchers can dynamically control AI
+                            system instructions that remain invisible to participants, enabling manipulation
+                            of AI personality, behavior, or capabilities across experimental conditions.
+                        </li>
+                        <li>
+                            <strong>Comprehensive Questionnaire Management:</strong> Full control over pre-
+                            and post-interaction questionnaires with configurable question types,
+                            randomization, and conditional logic for measuring baseline characteristics and
+                            outcome variables.
+                        </li>
+                        <li>
+                            <strong>Complex Factorial Experimental Designs:</strong> Support for
+                            sophisticated experimental frameworks (2×2, 2×2×2 and beyond) through treatment
+                            group configurations, enabling researchers to study multiple independent
+                            variables and their interactions simultaneously.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div>
+                <h3 id="3">Key Features &amp; Contributions</h3>
+                <p class="toggle-btn">Read more...</p>
+                <div class="toggle-content">
+                    <h3>1. Complete Experimental Workflow</h3>
+                    <ul>
+                        <li><strong>Participant Onboarding and Verification:</strong> Code-based authentication with
+                            database
+                            validation</li>
+                        <li><strong>Informed Consent:</strong> Digital consent collection with opt-out handling (IRB)
+                        </li>
+                        <li><strong>Pre-Study Questionnaires:</strong> Configurable baseline measurements/questionnaires
+                        </li>
+                        <li><strong>AI Chat Interface:</strong> Real-time interaction with LLMs (default to OpenAI GPT
+                            models)
+                        </li>
+                        <li><strong>Post-Study Assessment:</strong> Comprehensive outcome measurements/questionnaires
+                        </li>
+                        <li><strong>Session Completion:</strong> Automated collection and storage of all questionnaire
+                            responses
+                            and complete conversation logs with precise interaction timing</li>
+                    </ul>
+
+                    <h3>2. Experiment Configuration Via Treatment Groups</h3>
+                    <ul>
+                        <li><strong>Configurable Conditions:</strong> CSV-driven experimental design</li>
+                        <li><strong>Balanced Assignment:</strong> Uniform randomization and assignment to treatment
+                            groups
+                        </li>
+                        <li><strong>Session Independence:</strong> Each participant session is independent with its own
+                            state
+                            management and assigned treatment group</li>
+                        <li><strong>Independent Experiment Configuration Per Group:</strong> Control over questions,
+                            task
+                            description, hidden prompts, user preferences, etc. per treatment group</li>
+                        <li><strong>Question Bank:</strong> Question bank to configure pre/post questionnaires with
+                            various
+                            question types and randomization rules</li>
+                        <li><strong>Hidden Prompt Bank:</strong> Centralized management of hidden prompt files for
+                            different
+                            treatment groups</li>
+                        <li><strong>User Task Bank:</strong> Centralized management of task description files for
+                            participants
+                        </li>
+                    </ul>
+
+                    <h3>3. Flexible Question Framework</h3>
+                    <ul>
+                        <li><strong>Dynamic Questionnaires:</strong> CSV-configured question banks</li>
+                        <li><strong>Multiple Question Types:</strong> Text, Likert scales, multiple choice, labels</li>
+                        <li><strong>Block Randomization:</strong> Randomizable question groups</li>
+                        <li><strong>Grouped Likert:</strong> Efficient matrix-style rating scales</li>
+                        <li><strong>HTML Support:</strong> Rich text formatting for experiment instructions and
+                            questions
+                            via
+                            HTML in CSV configuration</li>
+                    </ul>
+
+                    <h3>4. Platform Integrations</h3>
+                    <ul>
+                        <li><strong>Prolific Compatibility:</strong> Seamless integration with Prolific Academic (saving
+                            prolific_pid)</li>
+                        <li><strong>OpenAI API:</strong> Real-time GPT-4o chat completions model (the model is
+                            configurable
+                            via
+                            environment variable)</li>
+                        <li><strong>Database Backed Storage:</strong> Full experiment control and data collection via 2
+                            PostgreSQL tables</li>
+                        <li><strong>Codes Table:</strong> For participant code validation</li>
+                        <li><strong>Data Collection Table:</strong> JSON-format storage of each participant's complete
+                            session
+                            data, including questionnaire responses, conversation logs, timestamps, and metadata</li>
+                        <li><strong>Temporal Tracking:</strong> Interaction timing and session duration measurement</li>
+                        <li><strong>Base64 Encoding:</strong> Base64-encoded data transmission and storage (default on)
+                        </li>
+                    </ul>
+
+                    <h3>5. Data Collection Capabilities</h3>
+                    <ul>
+                        <li><strong>Interaction Logs:</strong> Complete conversation histories with timing</li>
+                        <li><strong>Behavioral Measurements:</strong> Response patterns and engagement metrics</li>
+                        <li><strong>Attitudinal Assessments:</strong> Likert scales and open-ended responses</li>
+                        <li><strong>Participant Demographics:</strong> Background characteristics and preferences</li>
+                        <li><strong>Technical Metadata:</strong> Session details and platform interactions</li>
+                    </ul>
+
+                    <h3>6. Supported Study Types</h3>
+                    <ul>
+                        <li><strong>Conversational AI Evaluation:</strong> User experience with different AI
+                            personalities
+                        </li>
+                        <li><strong>Prompt Engineering Research:</strong> Effects of different system instructions</li>
+                        <li><strong>Human-AI Collaboration:</strong> Task performance with AI assistance</li>
+                        <li><strong>Trust and Anthropomorphism:</strong> Perception studies with varied AI presentations
+                        </li>
+                        <li><strong>Intervention Studies:</strong> Before/after measurements with AI interactions</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2 id="4">Getting Started</h2>
+
+            <h3 id="GS1">Quick Start (5 minutes, local smoke test)</h3>
+            <p class="toggle-btn">Read more...</p>
+            <div class="toggle-content">
+                <h3 id="quick-start-5-minutes-local-smoke-test">Quick Start (5 minutes, local smoke test)</h3>
+                <p>Note: this Quick Start runs fully locally without PostgreSQL support — the server will not perform
+                    code-based
+                    authentication against a database when using <code>REUSABLE_CODE</code>, and collected results are
+                    appended to the
+                    local file specified by <code>RESULTS_FILE</code> on your filesystem.</p>
+                <h4 id="1-clone-the-repository">1. <strong>Clone the repository</strong></h4>
+                <pre><code class="hljs bash language-bash">git <span class="hljs-built_in">clone</span> &lt;repo-url&gt;
+            <span class="hljs-built_in">cd</span> &lt;repo-directory&gt;</code></pre>
+                <h4 id="2-install-dependencies">2. <strong>Install dependencies</strong></h4>
+                <pre><code class="hljs bash language-bash">npm install</code></pre>
+                <h4 id="3-run-a-minimal-server-for-testing-no-database-required">3. <strong>Run a minimal server for
+                        testing (no
+                        database required)</strong></h4>
+                <p>Use the provided test reusable code <code>REUSABLE_CODE=123123123</code> to skip DB validation and
+                    write results
+                    to a local file.</p>
+                <pre><code class="hljs bash language-bash">REUSABLE_CODE=123123123 \
+            OPENAI_API_KEY=sk-your_key \
+            RESULTS_FILE=/tmp/results.txt \
+            node app.js</code></pre>
+                <h4 id="4-connect-to-the-experiment-website">4. <strong>Connect to the experiment website</strong></h4>
+                <ul>
+                    <li>Open the browser and visit http://localhost:3030 (or the port printed by the server).</li>
+                </ul>
+                <h4 id="5-test-flow">5. <strong>Test flow</strong></h4>
+                <ul>
+                    <li>Enter the reusable code above when prompted to proceed as a test participant.</li>
+                    <li>Walk through consent, baseline questionnaire, the AI chat task, and post-study questionnaire.
+                    </li>
+                    <li>Results will be appended to the file set by <code>RESULTS_FILE</code> (default: none) or stored
+                        in PostgreSQL
+                        if configured.</li>
+                </ul>
+            </div>
+            <!-- <div class="toggle-content">
+                <p>
+                    <strong>Note:</strong> this Quick Start runs fully locally without PostgreSQL support
+                    — the server will not perform code-based authentication against a database when
+                    using <code>REUSABLE_CODE</code>, and collected results are appended to the local
+                    file specified by <code>RESULTS_FILE</code> on your filesystem.
+                </p>
+
+                <h4>1. Clone the repository</h4>
+                <pre><code>git clone &lt;repo-url&gt;
+                cd &lt;repo-directory&gt;</code></pre>
+
+                <h4>2. Install dependencies</h4>
+                <pre><code>npm install</code></pre>
+
+                <h4>3. Run a minimal server for testing (no database required)</h4>
+                <p>
+                    Use the provided test reusable code <code>REUSABLE_CODE=123123123</code> to skip DB
+                    validation and write results to a local file.
+                </p>
+                <pre><code>REUSABLE_CODE=123123123 \
+                OPENAI_API_KEY=sk-your_key \
+                RESULTS_FILE=/tmp/results.txt \
+                node app.js</code></pre>
+
+                <h4>4. Connect to the experiment website</h4>
+                <ul>
+                    <li>Open the browser and visit <code>http://localhost:3030</code> (or the port printed by the
+                        server).
+                    </li>
+                </ul>
+
+                <h4>5. Test flow</h4>
+                <ul>
+                    <li>Enter the reusable code above when prompted to proceed as a test participant.</li>
+                    <li>Walk through consent, baseline questionnaire, the AI chat task, and post-study questionnaire.
+                    </li>
+                    <li>Results will be appended to the file set by <code>RESULTS_FILE</code> (default: none) or stored
+                        in
+                        PostgreSQL if configured.</li>
+                </ul>
+            </div> -->
+
+
+            <h3 id="GS2">Full Setup (production-like deployment)</h3>
+            <p class="toggle-btn">Read more...</p>
+            <div class="toggle-content">
+                <h3 id="full-setup-production-like-deployment">Full Setup (production-like deployment)</h3>
+                <h4 id="1-clone-the-repository-1">1. <strong>Clone the repository</strong></h4>
+                <pre><code class="hljs bash language-bash">git <span class="hljs-built_in">clone</span> &lt;repo-url&gt;
+            <span class="hljs-built_in">cd</span> &lt;repo-directory&gt;</code></pre>
+                <h4 id="2-database-configuration-and-postgresql-schema">2. <strong>Database Configuration (and
+                        PostgreSQL
+                        schema)</strong></h4>
+                <p>Set up PostgreSQL database tables for participant codes and results storage. See detailed schema and
+                    setup
+                    instructions in <a
+                        href="pre_requisites/postgres_table.txt"><code>pre_requisites/postgres_table.txt</code></a>.
+                </p>
+                <h4 id="3-nodejs-environment-setup">3. <strong>Node.js Environment Setup</strong></h4>
+                <p>Install Node.js and required dependencies for local or cloud deployment:</p>
+                <pre><code class="hljs bash language-bash">npm install  <span class="hljs-comment"># Installs all dependencies listed in package.json</span></code></pre>
+                <p>See <a href="package.json"><code>package.json</code></a> for complete dependency list including
+                    Express, OpenAI,
+                    and PostgreSQL drivers.</p>
+                <h4 id="4-experimental-configuration-files">4. <strong>Experimental Configuration Files</strong></h4>
+                <p>Configure three core CSV files that control your experimental design:</p>
+                <ul>
+                    <li><strong><a
+                                href="experiment_configuration/experiment_desc.csv"><code>experiment_configuration/experiment_desc.csv</code></a></strong>
+                        - Page content, titles, headers, and body text for each stage of the experiment</li>
+                    <li><strong><a
+                                href="experiment_configuration/treatment_groups_config.csv"><code>experiment_configuration/treatment_groups_config.csv</code></a></strong>
+                        - Treatment group assignments, hidden prompts, user preferences, and randomization settings for
+                        factorial
+                        designs</li>
+                    <li><strong><a
+                                href="experiment_configuration/questions_bank.csv"><code>experiment_configuration/questions_bank.csv</code></a></strong>
+                        - Pre/post questionnaire items, question types, randomization rules, and Likert scale
+                        configurations</li>
+                </ul>
+                <h4 id="5-api-credentials--database-connection">5. <strong>API Credentials & Database
+                        Connection</strong></h4>
+                <p>Configure required connection strings and API keys:</p>
+                <ul>
+                    <li><strong>OpenAI API Key</strong>: Register at OpenAI and obtain API credentials for GPT model
+                        access</li>
+                    <li><strong>PostgreSQL Connection String</strong>: Database connection details for backend data
+                        storage (both
+                        codes as well as each participant's completed session data)</li>
+                </ul>
+                <h4 id="6-participant-access-codes">6. <strong>Participant Access Codes</strong></h4>
+                <p>Generate unique participant codes and insert into database. Use the provided Python script for code
+                    generation:
+                </p>
+                <pre><code class="hljs bash language-bash">python pre_requisites/generate_codes.py</code></pre>
+                <p>See <a href="pre_requisites/generate_codes.py"><code>pre_requisites/generate_codes.py</code></a> for
+                    example
+                    implementation.</p>
+                <h4 id="7-environment-variables">7. <strong>Environment Variables</strong></h4>
+                <p>Configure required environment variables:</p>
+                <pre><code class="hljs bash language-bash">OPENAI_API_KEY=your_openai_api_key_here
+            DATABASE_URL=postgresql://user:password@host:port/database
+            PORT=3030  <span class="hljs-comment"># Optional: defaults to 3030</span></code></pre>
+                <p><strong>Required Variables:</strong></p>
+                <ul>
+                    <li><code>OPENAI_API_KEY</code>: Your OpenAI API key for chat completions</li>
+                    <li><code>DATABASE_URL</code>: PostgreSQL connection string for data storage</li>
+                </ul>
+                <p><strong>Optional Variables (yet useful). Default values are set in ./config.js:</strong></p>
+                <ul>
+                    <li><code>PORT</code>: Server port (defaults to 3030).</li>
+                    <li><code>RESULTS_FILE</code>: Path to append results as lines of JSON (useful for quick capture).
+                    </li>
+                    <li><code>BASE64_ENCODE</code>: If set (non-zero), data stored/transmitted will be base64-encoded by
+                        default.</li>
+                    <li><code>REUSABLE_CODE</code>: Developer testing code that bypasses DB code-check (useful for local
+                        testing).
+                    </li>
+                    <li><code>EXPERIMENT_ID</code>: Identifier for the experiment.</li>
+                    <li><code>COMPLETE_CODE</code>: Completion code given to participants when they finish the study.
+                    </li>
+                    <li><code>REDIRECT_URL</code>: URL to redirect participants after completion (used to redirect users
+                        back to the
+                        referrer site ,e.g. Prolific).</li>
+                    <li><code>OPENAI_TOKEN_LIMIT</code>: Maximum tokens for OpenAI responses (default is 1000).</li>
+                    <li><code>OPENAI_MODEL</code>: OpenAI model to use (default <code>gpt-4o</code>).</li>
+                    <li><code>RESULTS_PGTABLE</code>: PostgreSQL table name for results storage (default
+                        <code>human_ai_interactions_lab_results</code>).
+                    </li>
+                    <li><code>CODES_PGTABLE</code>: PostgreSQL table name for participant codes (default
+                        <code>human_ai_interactions_lab_codes</code>).
+                    </li>
+                    <li><code>SESSION_SECRET</code>: Secret used to sign session cookies. If omitted, the server
+                        generates a secure
+                        random secret at startup.</li>
+                </ul>
+                <h4 id="8-launch-application">8. <strong>Launch Application</strong></h4>
+                <p>Start the server locally (requires Node.js installation):</p>
+                <pre><code class="hljs bash language-bash"><span class="hljs-comment"># Example with all environment variables</span>
+            OPENAI_API_KEY=your_openai_api_key_here \
+            PORT=8080 \
+            DATABASE_URL=postgres://user:password@host:5432/database \
+            BASE64_ENCODE=1 \
+            RESULTS_FILE=/tmp/results.txt \
+            OPENAI_TOKEN_LIMIT=2000 \
+            REUSABLE_CODE=123123123 \
+            EXPERIMENT_ID=<span class="hljs-built_in">test</span> \
+            COMPLETE_CODE=testcompletecode1 \
+            node app.js
+            
+            <span class="hljs-comment"># Minimal launch .Uses defaults, data collection is added to /tmp/results.txt as clear text(no base64 encoding). Also, for testing, the code &quot;123123123&quot; skips database validation.</span>
+            REUSABLE_CODE=123123123 OPENAI_API_KEY=sk-your_key RESULTS_FILE=/tmp/results.txt node app.js
+            
+            <span class="hljs-comment"># Access at: http://localhost:8080 (or your specified PORT)</span></code></pre>
+
+            </div>
+            <!-- <div class="toggle-content">
+                <h4>1. Clone the repository</h4>
+                <pre><code>git clone &lt;repo-url&gt;
+                cd &lt;repo-directory&gt;</code></pre>
+
+                <h4>2. Database Configuration (and PostgreSQL schema)</h4>
+                <p>
+                    Set up PostgreSQL database tables for participant codes and results storage. See
+                    detailed schema and setup instructions in
+                    <code>pre_requisites/postgres_table.txt</code>.
+                </p>
+
+                <h4>3. Node.js Environment Setup</h4>
+                <p>Install Node.js and required dependencies for local or cloud deployment:</p>
+                <pre><code>npm install  # Installs all dependencies listed in package.json</code></pre>
+                <p>
+                    See <code>package.json</code> for the complete dependency list, including Express,
+                    OpenAI, and PostgreSQL drivers.
+                </p>
+
+                <h4>4. Experimental Configuration Files</h4>
+                <p>Configure three core CSV files that control your experimental design:</p>
+                <ul>
+                    <li><code>experiment_configuration/experiment_desc.csv</code> — Page content, titles, headers, and
+                        body
+                        text for each stage of the experiment</li>
+                    <li><code>experiment_configuration/treatment_groups_config.csv</code> — Treatment group assignments,
+                        hidden prompts, user preferences, and randomization settings for factorial designs</li>
+                    <li><code>experiment_configuration/questions_bank.csv</code> — Pre/post questionnaire items,
+                        question
+                        types, randomization rules, and Likert scale configurations</li>
+                </ul>
+
+                <h4>5. API Credentials &amp; Database Connection</h4>
+                <p>Configure required connection strings and API keys:</p>
+                <ul>
+                    <li><strong>OpenAI API Key:</strong> Register at OpenAI and obtain API credentials for GPT model
+                        access
+                    </li>
+                    <li><strong>PostgreSQL Connection String:</strong> Database connection details for backend data
+                        storage
+                        (both codes as well as each participant's completed session data)</li>
+                </ul>
+
+                <h4>6. Participant Access Codes</h4>
+                <p>Generate unique participant codes and insert them into the database. Use the provided Python script
+                    for
+                    code generation:</p>
+                <pre><code>python pre_requisites/generate_codes.py</code></pre>
+                <p>See <code>pre_requisites/generate_codes.py</code> for example implementation.</p>
+
+                <h4>7. Environment Variables</h4>
+                <p>Configure required environment variables:</p>
+                <pre><code>OPENAI_API_KEY=your_openai_api_key_here
+                DATABASE_URL=postgresql://user:password@host:port/database
+                PORT=3030  # Optional: defaults to 3030</code></pre>
+
+                <p><strong>Required Variables:</strong></p>
+                <ul>
+                    <li><code>OPENAI_API_KEY</code>: Your OpenAI API key for chat completions</li>
+                    <li><code>DATABASE_URL</code>: PostgreSQL connection string for data storage</li>
+                </ul>
+
+                <p><strong>Optional Variables (yet useful). Default values are set in <code>./config.js</code>:</strong>
+                </p>
+                <ul>
+                    <li><code>PORT</code>: Server port (defaults to 3030)</li>
+                    <li><code>RESULTS_FILE</code>: Path to append results as lines of JSON (useful for quick capture)
+                    </li>
+                    <li><code>BASE64_ENCODE</code>: If set (non-zero), data stored/transmitted will be base64-encoded by
+                        default</li>
+                    <li><code>REUSABLE_CODE</code>: Developer testing code that bypasses DB code-check (useful for local
+                        testing)</li>
+                    <li><code>EXPERIMENT_ID</code>: Identifier for the experiment</li>
+                    <li><code>COMPLETE_CODE</code>: Completion code given to participants when they finish the study
+                    </li>
+                    <li><code>REDIRECT_URL</code>: URL to redirect participants after completion (used to redirect users
+                        back to the referrer site, e.g. Prolific)</li>
+                    <li><code>OPENAI_TOKEN_LIMIT</code>: Maximum tokens for OpenAI responses (default is 1000)</li>
+                    <li><code>OPENAI_MODEL</code>: OpenAI model to use (default <code>gpt-4o</code>)</li>
+                    <li><code>RESULTS_PGTABLE</code>: PostgreSQL table name for results storage (default
+                        <code>human_ai_interactions_lab_results</code>)
+                    </li>
+                    <li><code>CODES_PGTABLE</code>: PostgreSQL table name for participant codes (default
+                        <code>human_ai_interactions_lab_codes</code>)
+                    </li>
+                    <li><code>SESSION_SECRET</code>: Secret used to sign session cookies. If omitted, the server
+                        generates a
+                        secure random secret at startup</li>
+                </ul>
+
+                <h4>8. Launch Application</h4>
+                <p>Start the server locally (requires Node.js installation):</p>
+                <pre><code># Example with all environment variables
+                OPENAI_API_KEY=your_openai_api_key_here \
+                PORT=8080 \
+                DATABASE_URL=postgres://user:password@host:5432/database \
+                BASE64_ENCODE=1 \
+                RESULTS_FILE=/tmp/results.txt \
+                OPENAI_TOKEN_LIMIT=2000 \
+                REUSABLE_CODE=123123123 \
+                EXPERIMENT_ID=test \
+                COMPLETE_CODE=testcompletecode1 \
+                node app.js
+                
+                # Minimal launch. Uses defaults, data collection is added to /tmp/results.txt as clear text (no base64 encoding).
+                # Also, for testing, the code "123123123" skips database validation.
+                REUSABLE_CODE=123123123 OPENAI_API_KEY=sk-your_key RESULTS_FILE=/tmp/results.txt node app.js
+                
+                # Access at: http://localhost:8080 (or your specified PORT)</code></pre>
+
+            </div> -->
+
+            <h2 id="5">Technical Architecture</h2>
+            <p class="toggle-btn">Read more...</p>
+            <div class="toggle-content">
+                <h3 id="data-flow"><strong>Data Flow</strong></h3>
+                <ol>
+                  <li><strong>Participant Authentication</strong> → Code validation against database</li>
+                  <li><strong>Session Initialization</strong> → Treatment group assignment and preferences</li>
+                  <li><strong>Consent Collection</strong> → Digital consent with decline handling</li>
+                  <li><strong>Baseline Measurement</strong> → Pre-study questionnaire administration</li>
+                  <li><strong>Experimental Task</strong> → AI chat interaction with hidden prompts</li>
+                  <li><strong>Outcome Assessment</strong> → Post-study questionnaire collection</li>
+                  <li><strong>Data Collection</strong> → Results serialization and database persistence</li>
+                </ol>
+                <h3 id="backend-components"><strong>Backend Components</strong></h3>
+                <ul>
+                  <li><strong>Express.js Server</strong>: HTTP request handling and middleware</li>
+                  <li><strong>Session Management</strong>: Custom class-based session state management</li>
+                  <li><strong>CSV Processing</strong>: Dynamic configuration loading</li>
+                  <li><strong>Database Layer</strong>: PostgreSQL integration with connection pooling</li>
+                  <li><strong>API Integration</strong>: OpenAI chat completions</li>
+                </ul>
+                <h3 id="participant-flow-what-a-participant-experiences"><strong>Participant flow (what a participant
+                    experiences)</strong></h3>
+                <ol>
+                  <li>Visit site and enter an access code (a short numeric/string code generated by the researcher).</li>
+                  <li>The platform validates the code (unless <code>REUSABLE_CODE</code> is being used for quick local testing).
+                  </li>
+                  <li>The session initializes and assigns a deterministic treatment group based on the participant ID.</li>
+                  <li>Participant reads and signs consent (or declines and exits).</li>
+                  <li>Participant completes baseline questionnaire.</li>
+                  <li>Participant performs the experimental task (chat with the LLM). The LLM receives a hidden system prompt based
+                    on the assigned treatment group.</li>
+                  <li>Participant completes post-study questionnaires.</li>
+                  <li>Session data (responses + full chat log + timestamps) are serialized and saved.</li>
+                </ol>
+                <ul>
+                  <li><strong>Design note:</strong> treatment assignment is deterministic and balanced (uses the participant UID
+                    modulo the number of treatment groups), which supports reproducible assignments for analysis.</li>
+                </ul>
+                <h3 id="where-to-put-your-configuration-files"><strong>Where to put your configuration files</strong></h3>
+                <ul>
+                  <li><code>experiment_configuration/treatment_groups_config.csv</code> — The main controlling csv file for
+                    treatment definitions and hidden prompts.</li>
+                  <li><code>experiment_configuration/experiment_desc.csv</code> — page content and text for each experiment stage.
+                  </li>
+                  <li><code>experiment_configuration/questions_bank.csv</code> — questionnaire items and groupings.</li>
+                  <li><code>experiment_configuration/hidden_prompts_bank/</code> — prompt files referenced by
+                    <code>treatment_groups_config.csv</code>.</li>
+                  <li><code>experiment_configuration/user_tasks_bank/</code> — task descriptions for participants.</li>
+                </ul>
+                <p><strong>Configuration File Column Reference</strong></p>
+                <ul>
+                  <li>
+                    <p><strong><code>experiment_configuration/treatment_groups_config.csv</code></strong></p>
+                    <ul>
+                      <li><strong>treatment_group</strong>: Numeric ID for the treatment; used to assign participants to a
+                        deterministic group.</li>
+                      <li><strong>user_name</strong>: Display name for the human participant identity (optional; shown in the UI if
+                        present).</li>
+                      <li><strong>user_avatar</strong>: Avatar image filename for the participant (from
+                        <code>static/images/avatars</code>); used in chat UI.</li>
+                      <li><strong>agent_name</strong>: Display name for the agent/AI shown to participants.</li>
+                      <li><strong>agent_avatar</strong>: Avatar image filename for the agent; displayed in chat UI.</li>
+                      <li><strong>hidden_prompt</strong>: Filename (under
+                        <code>experiment_configuration/hidden_prompts_bank/</code>) containing the system/hidden prompt injected to
+                        the LLM for this treatment group (applied at the begining of the conversation as the system role).</li>
+                      <li><strong>user_task_description</strong>: Filename (under
+                        <code>experiment_configuration/user_tasks_bank/</code>) or HTML snippet describing the participant task;
+                        rendered on the chat page, before the chat begins.</li>
+                      <li><strong>user_pre_questions</strong>: Semicolon-separated question block names (from
+                        <code>questions_bank.csv</code>) to present before the task.</li>
+                      <li><strong>user_post_questions</strong>: Semicolon-separated question block names (from
+                        <code>questions_bank.csv</code>) to present after the task.</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p><strong><code>experiment_configuration/experiment_desc.csv</code></strong></p>
+                    <ul>
+                      <li><strong>page</strong>: Page key / route name (e.g., <code>chat</code>, <code>consent</code>,
+                        <code>pre_questionnaire</code>) used to map CSV rows to site pages.</li>
+                      <li><strong>title</strong>: Page title (used in the HTML <code>&lt;title&gt;</code> and page header).</li>
+                      <li><strong>header</strong>: Short header text displayed on the page.</li>
+                      <li><strong>body1</strong>: Main body HTML/text for the page (may include markup).</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p><strong><code>experiment_configuration/questions_bank.csv</code></strong></p>
+                    <ul>
+                      <li><strong>block_name</strong>: Logical group name for a set of questions (referenced from
+                        <code>treatment_groups_config.csv</code>).</li>
+                      <li><strong>allow_block_permutation</strong>: <code>1</code>/<code>0</code> flag — whether blocks may be
+                        permuted (randomized) when shown.</li>
+                      <li><strong>allow_question_permutation</strong>: <code>1</code>/<code>0</code> flag — whether questions inside
+                        the block may be permuted.</li>
+                      <li><strong>question_name</strong>: Unique identifier/key for the question (used as the response field name in
+                        saved results).</li>
+                      <li><strong>question_text</strong>: The question prompt or instructions (may include HTML); shown to
+                        participants.</li>
+                      <li><strong>is_text</strong>: <code>1</code>/<code>0</code> — render a free-text input when <code>1</code>.
+                      </li>
+                      <li><strong>is_likert</strong>: <code>1</code>/<code>0</code> — render a Likert-style scale (single item) when
+                        <code>1</code>.</li>
+                      <li><strong>is_grouped_likert</strong>: <code>1</code>/<code>0</code> — render a grouped/matrix Likert
+                        (multiple labeled items sharing the same scale) when <code>1</code>.</li>
+                      <li><strong>is_multi_choice</strong>: <code>1</code>/<code>0</code> — render a multiple-choice input when
+                        <code>1</code>.</li>
+                      <li><strong>is_label</strong>: <code>1</code>/<code>0</code> — indicates the row is a non-input label/header
+                        (not a response item).</li>
+                      <li><strong>options</strong>: Pipe-separated (<code>|</code>) option labels or scale endpoints; used for
+                        <code>is_likert</code>, <code>is_multi_choice</code>, and grouped-likert options.</li>
+                    </ul>
+                  </li>
+                </ul>
+                <p>Notes:</p>
+                <ul>
+                  <li>Flags are treated as truthy (<code>1</code>) / falsy (<code>0</code>) in code; conform to that convention in
+                    CSVs.</li>
+                  <li><code>user_pre_questions</code> and <code>user_post_questions</code> in the treatment CSV should match
+                    <code>block_name</code> values in <code>questions_bank.csv</code> (semicolon-separated).</li>
+                  <li><code>hidden_prompt</code> should reference a plain text file in
+                    <code>experiment_configuration/hidden_prompts_bank/</code> and will be used as the LLM system message.</li>
+                  <li><code>user_task_description</code> should point to an HTML file under
+                    <code>experiment_configuration/user_tasks_bank/</code> to render task instructions.</li>
+                  <li><strong>CSV quoting</strong>: these are standard comma-separated files parsed by the <a
+                      href="https://www.npmjs.com/package/csv-parser"><code>csv-parser</code></a> npm package (RFC 4180). If a field
+                    value contains a comma or newline, wrap it in double quotes (e.g., <code>"Hello, world"</code>). To include a
+                    literal double quote inside a quoted field, double it (e.g., <code>"She said ""hello"""</code>).</li>
+                </ul>
+                <h3 id="question-types"><strong>Question Types</strong></h3>
+                <p>The questionnaire framework supports five question types, each optimized for different types of data collection:
+                </p>
+                <h4 id="1-text-is_text"><strong>1. Text (<code>is_text</code>)</strong></h4>
+                <ul>
+                  <li><strong>Appearance</strong>: Single or multi-line text input box.</li>
+                  <li><strong>Use case</strong>: Open-ended responses, opinions, explanations, free-form feedback.</li>
+                  <li><strong>Options</strong>: No structured options; participants enter arbitrary text.</li>
+                  <li><strong>Example CSV</strong>: <code>is_text: 1</code>, all other type flags <code>0</code>.</li>
+                </ul>
+                <h4 id="2-likert-scale-is_likert"><strong>2. Likert Scale (<code>is_likert</code>)</strong></h4>
+                <ul>
+                  <li><strong>Appearance</strong>: Single horizontal or vertical scale with labeled endpoints and intermediate
+                    points.</li>
+                  <li><strong>Use case</strong>: Measuring agreement, satisfaction, or attitude on a single dimension (e.g.,
+                    "Strongly Disagree" to "Strongly Agree").</li>
+                  <li><strong>Options</strong>: Defined in the <code>options</code> column as pipe-separated endpoints and midpoints
+                    (e.g., <code>Strongly Disagree|Disagree|Neutral|Agree|Strongly Agree</code>).</li>
+                  <li><strong>Example CSV</strong>: <code>is_likert: 1</code>, <code>options: "1|2|3|4|5"</code> or
+                    <code>options: "Strongly Disagree|Agree"</code>.</li>
+                </ul>
+                <h4 id="3-grouped-likert--matrix-is_grouped_likert"><strong>3. Grouped Likert / Matrix
+                    (<code>is_grouped_likert</code>)</strong></h4>
+                <ul>
+                  <li><strong>Appearance</strong>: Multiple labeled rows (items) sharing the same Likert scale; renders as an
+                    efficient matrix table when consecutive questions use the same scale.</li>
+                  <li><strong>Use case</strong>: Measuring multiple related items on a common scale (e.g., rating multiple AI traits
+                    or task aspects).</li>
+                  <li><strong>Options</strong>: Defined in the <code>options</code> column (shared scale, same as single Likert).
+                  </li>
+                  <li><strong>Grouping behavior</strong>: Consecutive <code>is_grouped_likert</code> questions with identical
+                    <code>options</code> are automatically combined into a single matrix table. Non-consecutive grouped Likerts or
+                    those with different scales render individually.</li>
+                  <li><strong>Example CSV</strong>: Multiple rows with <code>is_grouped_likert: 1</code> and the same
+                    <code>options: "1|2|3|4|5"</code>.</li>
+                </ul>
+                <h4 id="4-multiple-choice-is_multi_choice"><strong>4. Multiple Choice (<code>is_multi_choice</code>)</strong></h4>
+                <ul>
+                  <li><strong>Appearance</strong>: Radio buttons or dropdown with mutually exclusive options.</li>
+                  <li><strong>Use case</strong>: Selecting one answer from a fixed set (e.g., "What is your primary use case?").
+                  </li>
+                  <li><strong>Options</strong>: Defined in the <code>options</code> column as pipe-separated choices (e.g.,
+                    <code>Option A|Option B|Option C</code>).</li>
+                  <li><strong>Example CSV</strong>: <code>is_multi_choice: 1</code>, <code>options: "Yes|No|Unsure"</code>.</li>
+                </ul>
+                <h4 id="5-label-is_label"><strong>5. Label (<code>is_label</code>)</strong></h4>
+                <ul>
+                  <li><strong>Appearance</strong>: Static text, header, or instructional content (no input field).</li>
+                  <li><strong>Use case</strong>: Breaking up questionnaires with section headers, instructions, or visual
+                    separators.</li>
+                  <li><strong>Options</strong>: No options; the <code>question_text</code> field contains the HTML/text to display.
+                  </li>
+                  <li><strong>Example CSV</strong>: <code>is_label: 1</code>,
+                    <code>question_text: "&lt;h3&gt;Section 2: AI Trustworthiness&lt;/h3&gt;"</code>.</li>
+                </ul>
+                <h4 id="questions-and-blocks"><strong>Questions and Blocks</strong></h4>
+                <p>Questions are organized into <strong>blocks</strong> — named groups that can be assigned to treatment groups via
+                  the <code>user_pre_questions</code> and <code>user_post_questions</code> columns in
+                  <code>treatment_groups_config.csv</code>. Blocks provide flexibility:</p>
+                <ul>
+                  <li>Each block can be <strong>independently randomized</strong> (block permutation, question permutation, or both)
+                    via the <code>allow_block_permutation</code> and <code>allow_question_permutation</code> flags.</li>
+                  <li>Different treatment groups can present different blocks (e.g., group A gets a "Trust" block, group B gets an
+                    "Anthropomorphism" block).</li>
+                  <li>Each question is <strong>uniquely identified by its <code>question_name</code></strong>. see limitations
+                    below.</li>
+                </ul>
+
+            </div>
+            <!-- <div class="toggle-content">
+                <h3>Data Flow</h3>
+                <ol>
+                    <li><strong>Participant Authentication</strong> → Code validation against database</li>
+                    <li><strong>Session Initialization</strong> → Treatment group assignment and preferences</li>
+                    <li><strong>Consent Collection</strong> → Digital consent with decline handling</li>
+                    <li><strong>Baseline Measurement</strong> → Pre-study questionnaire administration</li>
+                    <li><strong>Experimental Task</strong> → AI chat interaction with hidden prompts</li>
+                    <li><strong>Outcome Assessment</strong> → Post-study questionnaire collection</li>
+                    <li><strong>Data Collection</strong> → Results serialization and database persistence</li>
+                </ol>
+
+                <h3>Backend Components</h3>
+                <ul>
+                    <li><strong>Express.js Server:</strong> HTTP request handling and middleware</li>
+                    <li><strong>Session Management:</strong> Custom class-based session state management</li>
+                    <li><strong>CSV Processing:</strong> Dynamic configuration loading</li>
+                    <li><strong>Database Layer:</strong> PostgreSQL integration with connection pooling</li>
+                    <li><strong>API Integration:</strong> OpenAI chat completions</li>
+                </ul>
+
+                <h3>Participant Flow (what a participant experiences)</h3>
+                <ol>
+                    <li>Visit site and enter an access code (a short numeric/string code generated by the researcher).
+                    </li>
+                    <li>The platform validates the code (unless <code>REUSABLE_CODE</code> is being used for quick local
+                        testing).</li>
+                    <li>The session initializes and assigns a deterministic treatment group based on the participant ID.
+                    </li>
+                    <li>Participant reads and signs consent (or declines and exits).</li>
+                    <li>Participant completes baseline questionnaire.</li>
+                    <li>Participant performs the experimental task (chat with the LLM). The LLM receives a hidden system
+                        prompt based on the assigned treatment group.</li>
+                    <li>Participant completes post-study questionnaires.</li>
+                    <li>Session data (responses + full chat log + timestamps) are serialized and saved.</li>
+                </ol>
+
+                <p>
+                    <strong>Design note:</strong> treatment assignment is deterministic and balanced
+                    (uses the participant UID modulo the number of treatment groups), which supports
+                    reproducible assignments for analysis.
+                </p>
+
+                <h3>Where to Put Your Configuration Files</h3>
+                <ul>
+                    <li><code>experiment_configuration/treatment_groups_config.csv</code> — The main controlling CSV
+                        file
+                        for treatment definitions and hidden prompts</li>
+                    <li><code>experiment_configuration/experiment_desc.csv</code> — Page content and text for each
+                        experiment stage</li>
+                    <li><code>experiment_configuration/questions_bank.csv</code> — Questionnaire items and groupings
+                    </li>
+                    <li><code>experiment_configuration/hidden_prompts_bank/</code> — Prompt files referenced by
+                        <code>treatment_groups_config.csv</code>
+                    </li>
+                    <li><code>experiment_configuration/user_tasks_bank/</code> — Task descriptions for participants</li>
+                </ul>
+
+                <h3>Configuration File Column Reference</h3>
+
+                <h4><code>experiment_configuration/treatment_groups_config.csv</code></h4>
+                <ul>
+                    <li><strong>treatment_group</strong>: Numeric ID for the treatment; used to assign participants to a
+                        deterministic group</li>
+                    <li><strong>user_name</strong>: Display name for the human participant identity (optional; shown in
+                        the
+                        UI if present)</li>
+                    <li><strong>user_avatar</strong>: Avatar image filename for the participant (from
+                        <code>static/images/avatars</code>); used in chat UI
+                    </li>
+                    <li><strong>agent_name</strong>: Display name for the agent/AI shown to participants</li>
+                    <li><strong>agent_avatar</strong>: Avatar image filename for the agent; displayed in chat UI</li>
+                    <li><strong>hidden_prompt</strong>: Filename (under
+                        <code>experiment_configuration/hidden_prompts_bank/</code>) containing the system/hidden prompt
+                        injected to the LLM for this treatment group
+                    </li>
+                    <li><strong>user_task_description</strong>: Filename (under
+                        <code>experiment_configuration/user_tasks_bank/</code>) or HTML snippet describing the
+                        participant
+                        task
+                    </li>
+                    <li><strong>user_pre_questions</strong>: Semicolon-separated question block names (from
+                        <code>questions_bank.csv</code>) to present before the task
+                    </li>
+                    <li><strong>user_post_questions</strong>: Semicolon-separated question block names (from
+                        <code>questions_bank.csv</code>) to present after the task
+                    </li>
+                </ul>
+
+                <h4><code>experiment_configuration/experiment_desc.csv</code></h4>
+                <ul>
+                    <li><strong>page</strong>: Page key / route name (e.g., <code>chat</code>, <code>consent</code>,
+                        <code>pre_questionnaire</code>) used to map CSV rows to site pages
+                    </li>
+                    <li><strong>title</strong>: Page title (used in the HTML <code>&lt;title&gt;</code> and page header)
+                    </li>
+                    <li><strong>header</strong>: Short header text displayed on the page</li>
+                    <li><strong>body1</strong>: Main body HTML/text for the page (may include markup)</li>
+                </ul>
+
+                <h4><code>experiment_configuration/questions_bank.csv</code></h4>
+                <ul>
+                    <li><strong>block_name</strong>: Logical group name for a set of questions (referenced from
+                        <code>treatment_groups_config.csv</code>)
+                    </li>
+                    <li><strong>allow_block_permutation</strong>: <code>1</code>/<code>0</code> flag — whether blocks
+                        may be
+                        permuted (randomized) when shown</li>
+                    <li><strong>allow_question_permutation</strong>: <code>1</code>/<code>0</code> flag — whether
+                        questions
+                        inside the block may be permuted</li>
+                    <li><strong>question_name</strong>: Unique identifier/key for the question (used as the response
+                        field
+                        name in saved results)</li>
+                    <li><strong>question_text</strong>: The question prompt or instructions (may include HTML); shown to
+                        participants</li>
+                    <li><strong>is_text</strong>: <code>1</code>/<code>0</code> — render a free-text input when
+                        <code>1</code>
+                    </li>
+                    <li><strong>is_likert</strong>: <code>1</code>/<code>0</code> — render a Likert-style scale (single
+                        item) when <code>1</code></li>
+                    <li><strong>is_grouped_likert</strong>: <code>1</code>/<code>0</code> — render a grouped/matrix
+                        Likert
+                        when <code>1</code></li>
+                    <li><strong>is_multi_choice</strong>: <code>1</code>/<code>0</code> — render a multiple-choice input
+                        when <code>1</code></li>
+                    <li><strong>is_label</strong>: <code>1</code>/<code>0</code> — indicates the row is a non-input
+                        label/header</li>
+                    <li><strong>options</strong>: Pipe-separated (<code>|</code>) option labels or scale endpoints</li>
+                </ul>
+
+                <p><strong>Notes:</strong></p>
+                <ul>
+                    <li>Flags are treated as truthy (<code>1</code>) / falsy (<code>0</code>) in code; conform to that
+                        convention in CSVs</li>
+                    <li><code>user_pre_questions</code> and <code>user_post_questions</code> in the treatment CSV should
+                        match <code>block_name</code> values in <code>questions_bank.csv</code> (semicolon-separated)
+                    </li>
+                    <li><code>hidden_prompt</code> should reference a plain text file in
+                        <code>experiment_configuration/hidden_prompts_bank/</code> and will be used as the LLM system
+                        message
+                    </li>
+                    <li><code>user_task_description</code> should point to an HTML file under
+                        <code>experiment_configuration/user_tasks_bank/</code> to render task instructions
+                    </li>
+                    <li><strong>CSV quoting:</strong> these are standard comma-separated files parsed by the
+                        <code>csv-parser</code> npm package (RFC 4180). If a field value contains a comma or newline,
+                        wrap
+                        it in double quotes. To include a literal double quote inside a quoted field, double it.
+                    </li>
+                </ul>
+
+                <h3>Question Types</h3>
+                <p>The questionnaire framework supports five question types, each optimized for different types of data
+                    collection:</p>
+
+                <h4>1. Text (<code>is_text</code>)</h4>
+                <ul>
+                    <li><strong>Appearance:</strong> Single or multi-line text input box</li>
+                    <li><strong>Use case:</strong> Open-ended responses, opinions, explanations, free-form feedback</li>
+                    <li><strong>Options:</strong> No structured options; participants enter arbitrary text</li>
+                    <li><strong>Example CSV:</strong> <code>is_text: 1</code>, all other type flags <code>0</code></li>
+                </ul>
+
+                <h4>2. Likert Scale (<code>is_likert</code>)</h4>
+                <ul>
+                    <li><strong>Appearance:</strong> Single horizontal or vertical scale with labeled endpoints and
+                        intermediate points</li>
+                    <li><strong>Use case:</strong> Measuring agreement, satisfaction, or attitude on a single dimension
+                    </li>
+                    <li><strong>Options:</strong> Defined in the <code>options</code> column as pipe-separated endpoints
+                        and
+                        midpoints</li>
+                    <li><strong>Example CSV:</strong> <code>is_likert: 1</code>, <code>options: "1|2|3|4|5"</code> or
+                        <code>options: "Strongly Disagree|Agree"</code>
+                    </li>
+                </ul>
+
+                <h4>3. Grouped Likert / Matrix (<code>is_grouped_likert</code>)</h4>
+                <ul>
+                    <li><strong>Appearance:</strong> Multiple labeled rows sharing the same Likert scale; renders as an
+                        efficient matrix table</li>
+                    <li><strong>Use case:</strong> Measuring multiple related items on a common scale</li>
+                    <li><strong>Options:</strong> Defined in the <code>options</code> column (shared scale, same as
+                        single
+                        Likert)</li>
+                    <li><strong>Grouping behavior:</strong> Consecutive grouped Likert questions with identical
+                        <code>options</code> are automatically combined into a single matrix table
+                    </li>
+                    <li><strong>Example CSV:</strong> Multiple rows with <code>is_grouped_likert: 1</code> and the same
+                        <code>options: "1|2|3|4|5"</code>
+                    </li>
+                </ul>
+
+                <h4>4. Multiple Choice (<code>is_multi_choice</code>)</h4>
+                <ul>
+                    <li><strong>Appearance:</strong> Radio buttons or dropdown with mutually exclusive options</li>
+                    <li><strong>Use case:</strong> Selecting one answer from a fixed set</li>
+                    <li><strong>Options:</strong> Defined in the <code>options</code> column as pipe-separated choices
+                    </li>
+                    <li><strong>Example CSV:</strong> <code>is_multi_choice: 1</code>,
+                        <code>options: "Yes|No|Unsure"</code>
+                    </li>
+                </ul>
+
+                <h4>5. Label (<code>is_label</code>)</h4>
+                <ul>
+                    <li><strong>Appearance:</strong> Static text, header, or instructional content (no input field)</li>
+                    <li><strong>Use case:</strong> Breaking up questionnaires with section headers, instructions, or
+                        visual
+                        separators</li>
+                    <li><strong>Options:</strong> No options; the <code>question_text</code> field contains the
+                        HTML/text to
+                        display</li>
+                    <li><strong>Example CSV:</strong> <code>is_label: 1</code>,
+                        <code>question_text: "&lt;h3&gt;Section 2: AI Trustworthiness&lt;/h3&gt;"</code>
+                    </li>
+                </ul>
+
+                <h4>Questions and Blocks</h4>
+                <p>
+                    Questions are organized into <strong>blocks</strong> — named groups that can be
+                    assigned to treatment groups via the <code>user_pre_questions</code> and
+                    <code>user_post_questions</code> columns in
+                    <code>treatment_groups_config.csv</code>. Blocks provide flexibility:
+                </p>
+                <ul>
+                    <li>Each block can be <strong>independently randomized</strong> via the
+                        <code>allow_block_permutation</code> and <code>allow_question_permutation</code> flags
+                    </li>
+                    <li>Different treatment groups can present different blocks</li>
+                    <li>Each question is <strong>uniquely identified by its <code>question_name</code></strong></li>
+                </ul>
+
+            </div> -->
+
+            <h2 id="6">Security Considerations / Limitations</h2>
+            <p class="toggle-btn">Read more...</p>
+            <div class="toggle-content">
+                <h3 id="session_secret-deployment-note"><strong>SESSION_SECRET deployment note:</strong></h3>
+                <ul>
+                  <li>If <code>SESSION_SECRET</code> is auto-generated at startup, active sessions become invalid after server
+                    restart.</li>
+                  <li>If multiple servers need to serve the same sessions, they must all use the same <code>SESSION_SECRET</code>.
+                  </li>
+                </ul>
+                <p>For typical research deployments (up to hundreds of concurrent participants on a single server, with no restarts
+                  expected mid-study), the auto-generated secret is sufficient. A fixed <code>SESSION_SECRET</code> is only
+                  necessary if you require high resiliency or failover across multiple servers — which is generally not needed for
+                  academic research studies.</p>
+                <h3 id="participant-code-security-note"><strong>Participant code security note:</strong></h3>
+                <p>Participant codes are simple short strings — not cryptographic tokens. They are distributed to participants
+                  out-of-band, typically via a recruitment platform such as <a href="https://www.prolific.com/">Prolific</a>, where
+                  the researcher assigns one unique code per participant. This is considered safe enough for research purposes: the
+                  platform marks each code as completed after a session finishes, preventing it from being reused for a second
+                  completed session.</p>
+                <h3 id="incomplete-sessions-are-not-saved"><strong>Incomplete sessions are not saved</strong>:</h3>
+                <p>Session data (responses, chat log, timestamps) is only persisted when a participant completes the full flow and
+                  reaches the final submission step. Participants who drop out mid-session leave no data behind.</p>
+                <h3 id="re-entry-with-the-same-code"><strong>Re-entry with the same code</strong>:</h3>
+                <p>If a participant starts a session but does not complete it (e.g., closes the browser, or opens a new incognito
+                  window after their cookie is cleared), and then re-enters the same code, the platform will accept it and serve a
+                  new session. Both sessions' results will be saved independently upon completion. This is a deliberate design
+                  tradeoff — it avoids false negatives (blocking legitimate re-entries) at the cost of allowing rare duplicate
+                  completions, which researchers should be aware of when cleaning collected data.</p>
+                <h3 id="malformed-csv-configuration-files-can-crash-the-server"><strong>Malformed CSV configuration files can crash
+                    the server</strong>:</h3>
+                <p>All three configuration CSVs are loaded at startup and parsed into memory with minimal validation. A malformed or
+                  structurally inconsistent CSV (e.g., missing required columns, broken quoting, unexpected delimiters, or
+                  mismatched block names) can cause the server to crash on startup or produce runtime errors mid-session.
+                  Researchers should always test any CSV changes locally before deploying to a live study — at minimum by starting
+                  the server and walking through the full participant flow with a test code.</p>
+                <h3 id="question-names-must-be-globally-unique"><strong>Question names must be globally unique</strong>:</h3>
+                <p>Each question is uniquely identified by its <code>question_name</code> in <code>questions_bank.csv</code>. A
+                  <code>question_name</code> cannot appear in multiple blocks — doing so will cause responses from different blocks
+                  to overwrite each other. If you need the same question content in multiple blocks (e.g., the same trust rating
+                  before and after the task), duplicate the row with a different <code>question_name</code> (e.g.,
+                  <code>trust_ai_pre</code> and <code>trust_ai_post</code>).</p>
+                <hr />
+            </div>
+            <!-- <div class="toggle-content">
+                <h3>SESSION_SECRET deployment note</h3>
+                <ul>
+                    <li>If <code>SESSION_SECRET</code> is auto-generated at startup, active sessions become invalid
+                        after
+                        server restart</li>
+                    <li>If multiple servers need to serve the same sessions, they must all use the same
+                        <code>SESSION_SECRET</code>
+                    </li>
+                </ul>
+
+                <p>
+                    For typical research deployments, the auto-generated secret is sufficient. A fixed
+                    <code>SESSION_SECRET</code> is only necessary if you require high resiliency or
+                    failover across multiple servers.
+                </p>
+
+                <h3>Participant code security note</h3>
+                <p>
+                    Participant codes are simple short strings — not cryptographic tokens. They are
+                    distributed to participants out-of-band, typically via a recruitment platform such
+                    as Prolific, where the researcher assigns one unique code per participant.
+                </p>
+
+                <h3>Incomplete sessions are not saved</h3>
+                <p>
+                    Session data (responses, chat log, timestamps) is only persisted when a participant
+                    completes the full flow and reaches the final submission step.
+                </p>
+
+                <h3>Re-entry with the same code</h3>
+                <p>
+                    If a participant starts a session but does not complete it, and then re-enters the
+                    same code, the platform will accept it and serve a new session. Both sessions'
+                    results will be saved independently upon completion.
+                </p>
+
+                <h3>Malformed CSV configuration files can crash the server</h3>
+                <p>
+                    All three configuration CSVs are loaded at startup and parsed into memory with
+                    minimal validation. A malformed or structurally inconsistent CSV can cause the
+                    server to crash on startup or produce runtime errors mid-session.
+                </p>
+
+                <h3>Question names must be globally unique</h3>
+                <p>
+                    Each question is uniquely identified by its <code>question_name</code> in
+                    <code>questions_bank.csv</code>. A <code>question_name</code> cannot appear in
+                    multiple blocks.
+                </p>
+
+                <hr>
+
+            </div> -->
+
+            <h2 id="7">Developer Guide</h2>
+            <p class="toggle-btn">Read more...</p>
+            <div class="toggle-content">
+                <h3 id="folder-structure"><strong>Folder Structure</strong></h3>
+                <pre><code class="hljs">app.js                            <span class="hljs-comment"># Express server — routes, middleware chain, POST handlers</span>
+            config.js                         <span class="hljs-comment"># Environment variable bindings (all env vars read here)</span>
+            helpers.js                        <span class="hljs-comment"># Core logic: CSV loading, session rendering, question building, DB ops</span>
+            sessionManagement.js              <span class="hljs-comment"># SessionManager class — wraps express-session with typed getters/setters</span>
+            
+            experiment_configuration<span class="hljs-symbol">/</span>
+                experiment_desc.csv           <span class="hljs-comment"># Page-level content (title, header, body) keyed by page name</span>
+                treatment_groups_config.csv   <span class="hljs-comment"># One row per treatment group; controls prompts, avatars, questions</span>
+                questions_bank.csv            <span class="hljs-comment"># All questionnaire items; grouped into named blocks</span>
+                hidden_prompts_bank<span class="hljs-symbol">/</span>          <span class="hljs-comment"># Plain-text LLM system prompt files (referenced by treatment CSV)</span>
+                user_tasks_bank<span class="hljs-symbol">/</span>              <span class="hljs-comment"># HTML task-description files (referenced by treatment CSV)</span>
+            
+            views<span class="hljs-symbol">/</span>
+                layout.pug                    <span class="hljs-comment"># Base HTML layout (all pages extend this)</span>
+                welcome_code.pug              <span class="hljs-comment"># Participant code entry page</span>
+                consent.pug                   <span class="hljs-comment"># Informed consent page</span>
+                user_questionnaire.pug        <span class="hljs-comment"># Shared template for pre- and post-study questionnaires</span>
+                chat.pug                      <span class="hljs-comment"># Chat interface (task description + message thread)</span>
+                session_ended.pug             <span class="hljs-comment"># Study completion / opt-out page</span>
+                error.pug                     <span class="hljs-comment"># Generic error page</span>
+            
+            static<span class="hljs-symbol">/</span>
+                images<span class="hljs-operator">/</span>avatars<span class="hljs-symbol">/</span>               <span class="hljs-comment"># Avatar image files referenced by treatment CSV columns</span>
+                stylesheets<span class="hljs-symbol">/style.css</span>         <span class="hljs-comment"># Global stylesheet</span>
+                fonts<span class="hljs-symbol">/</span>                        <span class="hljs-comment"># Web fonts</span>
+            
+            pre_requisites<span class="hljs-symbol">/</span>
+                generate_codes.py             <span class="hljs-comment"># Script to bulk-generate participant codes for DB insertion</span>
+                postgres_table.txt            <span class="hljs-comment"># PostgreSQL schema for codes and results tables</span></code></pre>
+                <hr />
+                <h3 id="server-initialization"><strong>Server Initialization</strong></h3>
+                <p>On the <strong>first request</strong> (any route), the <code>verifySystemInitialized</code> middleware calls
+                  <code>helpers.waitForSystemInitializiation()</code>. This is a one-time async bootstrap that:</p>
+                <ol>
+                  <li>
+                    <p><strong>Reads all CSVs</strong> (<code>helpers.readAllCsvFiles()</code>):</p>
+                    <ul>
+                      <li>Scans <code>experiment_configuration/</code> for <code>*.csv</code> files.</li>
+                      <li>Streams each file through the <code>csv-parser</code> library and collects rows into
+                        <code>csvDB[filename]</code>.</li>
+                      <li>Populates three in-memory arrays used throughout the app:<ul>
+                          <li><code>treatmentFroupConfigRecords</code> ← <code>treatment_groups_config.csv</code></li>
+                          <li><code>userQuestionnaireRecords</code> ← <code>questions_bank.csv</code></li>
+                          <li><code>experimentDescRecords</code> ← <code>experiment_desc.csv</code></li>
+                        </ul>
+                      </li>
+                      <li>Derives <code>treatmentGroups</code> — a deduplicated sorted array of <code>treatment_group</code>
+                        integers; used for assignment math.</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p><strong>Loads file banks</strong> (<code>helpers.loadFileBank()</code>):</p>
+                    <ul>
+                      <li>Reads every file in <code>hidden_prompts_bank/</code> into the <code>hiddenPromptsBank</code> object
+                        (<code>filename → string content</code>).</li>
+                      <li>Reads every file in <code>user_tasks_bank/</code> into <code>userTasksBank</code>
+                        (<code>filename → HTML string</code>).</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p>Sets <code>isSystemInitialized = true</code>; subsequent requests skip all of the above instantly.</p>
+                  </li>
+                </ol>
+                <hr />
+                <h3 id="session-lifecycle"><strong>Session Lifecycle</strong></h3>
+                <p>Every request passes through a shared middleware stack defined in <code>app.use([...])</code>:</p>
+                <pre><code class="hljs"><span class="hljs-attribute">verifySystemInitialized</span> → verifySession → verifySessionEnded</code></pre>
+                <h4 id="verifysession"><code>verifySession</code></h4>
+                <p>Runs on every request. If the session has no UID yet (new visitor):</p>
+                <ul>
+                  <li>Generates a random integer UID (<code>0</code>–<code>maxUID</code>).</li>
+                  <li>Assigns a <strong>treatment group</strong>: <code>treatmentGroups[uid % treatmentGroups.length]</code> —
+                    deterministic and balanced across groups.</li>
+                  <li>Extracts Prolific URL parameters (<code>prolific_pid</code>, <code>study_id</code>, <code>session_id</code>)
+                    from the query string.</li>
+                  <li>Calls <code>sessionManager.initialize()</code> and <code>sessionManager.setPreferences()</code> (loads avatar
+                    filenames and display names from the treatment group row).</li>
+                </ul>
+                <h4 id="verifysessionended"><code>verifySessionEnded</code></h4>
+                <p>If <code>sessionManager.getFinished()</code> is <code>true</code> (set either on consent decline or
+                  post-questionnaire submission):</p>
+                <ul>
+                  <li>Fetches rendering params for the <code>session_ended</code> page.</li>
+                  <li>Applies any header/body overrides stored in the session (e.g., "You opted out" for declines).</li>
+                  <li>Injects <code>completion_code</code> and <code>redirect_url</code> if configured.</li>
+                  <li>Renders <code>./session_ended</code>.</li>
+                  <li>If consent was given: calls <code>handleUserCompleted()</code> — serializes session to JSON (optionally
+                    Base64-encoded), writes to <code>RESULTS_FILE</code> and/or inserts into the PostgreSQL results table, marks the
+                    participant code as completed in the DB, then destroys the session.</li>
+                  <li>If consent was declined: destroys the session without saving.</li>
+                </ul>
+                <hr />
+                <h3 id="get--—-the-participant-flow-middleware-chain"><strong>GET <code>/</code> — The Participant Flow (Middleware
+                    Chain)</strong></h3>
+                <p>All participant-facing pages are served from a single <code>GET /</code> route, guarded by an ordered middleware
+                  chain. Each middleware either <strong>renders a page and stops</strong>, or <strong>calls
+                    <code>next()</code></strong> to pass control to the next stage. This enforces a strict linear flow:</p>
+                <pre><code class="hljs"><span class="hljs-attribute">renderSessionCode</span> → renderUserConsent → renderPreQuestionnaire → renderChat → renderChatQuestionnaire</code></pre>
+                <h4 id="1-rendersessioncode-—-code-entry">1. <code>renderSessionCode</code> — Code Entry</h4>
+                <ul>
+                  <li><strong>Condition</strong>: <code>sessionManager.getCode()</code> is falsy.</li>
+                  <li>Calls <code>helpers.getRenderingParamsForPage("welcome_code")</code> → looks up the <code>welcome_code</code>
+                    row in <code>experimentDescRecords</code> → returns <code>{ title, header_message, body_message }</code>.</li>
+                  <li>Adds <code>form_type: "welcome_code"</code> to render params.</li>
+                  <li>Renders <code>./welcome_code</code>.</li>
+                </ul>
+                <h4 id="2-renderuserconsent-—-informed-consent">2. <code>renderUserConsent</code> — Informed Consent</h4>
+                <ul>
+                  <li><strong>Condition</strong>: <code>sessionManager.getConsent()</code> is falsy.</li>
+                  <li>Fetches rendering params for <code>"consent"</code> (including the full consent HTML from the
+                    <code>body1</code> CSV column).</li>
+                  <li>Adds <code>form_type: "consent"</code>.</li>
+                  <li>Renders <code>./consent</code>.</li>
+                </ul>
+                <h4 id="3-renderprequestionnaire-—-pre-study-questionnaire">3. <code>renderPreQuestionnaire</code> — Pre-Study
+                  Questionnaire</h4>
+                <ul>
+                  <li><strong>Condition</strong>: <code>sessionManager.getPreQuestionsAnswers()</code> is falsy.</li>
+                  <li>Calls <code>helpers.getUserTestQuestions(req, "user_pre_questions")</code>:<ul>
+                      <li>Reads the <code>user_pre_questions</code> column of the participant's treatment group row
+                        (semicolon-separated block names).</li>
+                      <li>For each block name, filters <code>userQuestionnaireRecords</code> and assembles question objects
+                        (<code>name</code>, <code>label</code>, <code>is_text</code>, <code>is_likert</code>,
+                        <code>is_grouped_likert</code>, <code>is_multi_choice</code>, <code>is_label</code>, <code>choices</code>).
+                      </li>
+                      <li>Applies block-level and question-level permutation (Fisher-Yates shuffle) if
+                        <code>allow_block_permutation</code> / <code>allow_question_permutation</code> flags are set.</li>
+                      <li>Groups consecutive <code>is_grouped_likert</code> questions sharing the same scale endpoints into a single
+                        matrix widget.</li>
+                    </ul>
+                  </li>
+                  <li>If no questions → auto-sets answers to <code>{}</code> and redirects to <code>/</code> (skips stage).</li>
+                  <li>Otherwise renders <code>./user_questionnaire</code> with <code>form_type: "pre_questionnaire"</code>.</li>
+                </ul>
+                <h4 id="4-renderchat-—-ai-chat-task">4. <code>renderChat</code> — AI Chat Task</h4>
+                <ul>
+                  <li><strong>Condition</strong>: <code>sessionManager.getChatEnded()</code> is falsy.</li>
+                  <li>Calls <code>helpers.setSelectedHiddenPromptToSession(req)</code>:<ul>
+                      <li>Looks up <code>hidden_prompt</code> filename from the treatment group row.</li>
+                      <li>Reads the file content from <code>hiddenPromptsBank</code> and stores it in the session as the system role
+                        content.</li>
+                    </ul>
+                  </li>
+                  <li>If the hidden prompt is empty (blank <code>hidden_prompt</code> cell) → <strong>skips the chat stage</strong>
+                    by marking <code>chatEnded = true</code> and calling next.</li>
+                  <li>Otherwise fetches rendering params for <code>"chat"</code>, attaches:<ul>
+                      <li><code>preferences</code> (user/agent names and avatar paths from <code>getUserPreferences()</code>).</li>
+                      <li><code>task_description</code> (HTML from <code>userTasksBank</code>, keyed by the
+                        <code>user_task_description</code> column).</li>
+                      <li><code>form_type: "chat_ended"</code>.</li>
+                    </ul>
+                  </li>
+                  <li>Renders <code>./chat</code>.</li>
+                </ul>
+                <h4 id="5-renderchatquestionnaire-—-post-study-questionnaire">5. <code>renderChatQuestionnaire</code> — Post-Study
+                  Questionnaire</h4>
+                <ul>
+                  <li><strong>Condition</strong>: <code>sessionManager.getQuestionsAnswers()</code> is falsy.</li>
+                  <li>Calls <code>helpers.getUserTestQuestions(req, "user_post_questions")</code> (same logic as pre-questionnaire,
+                    using the <code>user_post_questions</code> column).</li>
+                  <li>Renders <code>./user_questionnaire</code> with <code>form_type: "post_questionnaire"</code>.</li>
+                </ul>
+                <hr />
+                <h3 id="post-submit_user_response-—-unified-form-handler"><strong>POST <code>/submit_user_response</code> — Unified
+                    Form Handler</strong></h3>
+                <p>All form submissions POST to a single endpoint. The <code>form_type</code> hidden field (injected into every
+                  rendered form) determines which handler runs:</p>
+                <table>
+                  <thead>
+                    <tr>
+                      <th id="¨c369c"><code>form_type</code></th>
+                      <th id="handler">Handler</th>
+                      <th id="what_it_does">What it does</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>welcome_code</code></td>
+                      <td><code>handleWelcomeCodeSubmission</code></td>
+                      <td>Validates the submitted code against DB (<code>SELECT completed WHERE code=? AND expid=?</code>) or
+                        <code>REUSABLE_CODE</code>. On success, stores code in session. Reconciles <code>prolific_pid</code> if it
+                        differs between URL param and form field.</td>
+                    </tr>
+                    <tr>
+                      <td><code>consent</code></td>
+                      <td><code>handleConsentSubmission</code></td>
+                      <td>Checks all <code>consent.*</code> fields for <code>"YES"</code>. Any non-YES → sets
+                        <code>finished=true</code> with opt-out messaging. Otherwise sets <code>consent=true</code>.</td>
+                    </tr>
+                    <tr>
+                      <td><code>pre_questionnaire</code></td>
+                      <td><code>handlePreQuestionnaireSubmission</code></td>
+                      <td>Stores the entire <code>req.body</code> (all question responses) into
+                        <code>sessionManager.setPreQuestionsAnswers()</code>.</td>
+                    </tr>
+                    <tr>
+                      <td><code>chat_ended</code></td>
+                      <td><code>handleChatEndedSubmission</code></td>
+                      <td>Sets <code>sessionManager.setChatEnded(true)</code>. Triggered when the participant clicks "End Chat" in
+                        the UI.</td>
+                    </tr>
+                    <tr>
+                      <td><code>post_questionnaire</code></td>
+                      <td><code>handlePostQuestionnaireSubmission</code></td>
+                      <td>Stores answers, sets <code>finished=true</code>, attaches <code>redirect_url</code> and
+                        <code>completion_code</code> from config, records the questionnaire end timestamp.</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p>After every handler, the request is redirected to <code>GET /</code>, where the middleware chain re-evaluates and
+                  advances to the next stage.</p>
+                <hr />
+                <h3 id="post-chat-api-—-llm-proxy"><strong>POST <code>/chat-api</code> — LLM Proxy</strong></h3>
+                <p>Called by the chat UI for each message turn:</p>
+                <ol>
+                  <li>Appends <code>{ role: "user", content, interactionTime }</code> to the session's conversation context.</li>
+                  <li>Builds the full prompt:
+                    <code>[{ role: "system", content: &lt;hiddenPrompt&gt; }, ...conversationHistory]</code>.</li>
+                  <li>Calls OpenAI's <code>chat.completions.create</code> with the configured model, token limit, and temperature.
+                  </li>
+                  <li>Appends <code>{ role: "assistant", content: reply }</code> to the session context.</li>
+                  <li>Returns the reply text to the client.</li>
+                </ol>
+                <p>The current implementation uses the OpenAI chat completions format, where the full conversation passed to the API
+                  is a flat array of messages with alternating roles:</p>
+                <pre><code class="hljs javascript language-javascript">[
+              { <span class="hljs-attr">role</span>: <span class="hljs-string">&quot;system&quot;</span>,    <span class="hljs-attr">content</span>: <span class="hljs-string">&quot;&lt;hidden prompt text&gt;&quot;</span> },
+              { <span class="hljs-attr">role</span>: <span class="hljs-string">&quot;user&quot;</span>,      <span class="hljs-attr">content</span>: <span class="hljs-string">&quot;Hello, can you help me?&quot;</span> },
+              { <span class="hljs-attr">role</span>: <span class="hljs-string">&quot;assistant&quot;</span>, <span class="hljs-attr">content</span>: <span class="hljs-string">&quot;Of course! What do you need?&quot;</span> },
+              { <span class="hljs-attr">role</span>: <span class="hljs-string">&quot;user&quot;</span>,      <span class="hljs-attr">content</span>: <span class="hljs-string">&quot;...&quot;</span> },
+              <span class="hljs-comment">// ... full history for every turn</span>
+            ]</code></pre>
+                <p>The entire history is re-sent on every turn, which gives the model full conversation context.</p>
+                <h4 id="swapping-the-llm-provider"><strong>Swapping the LLM provider</strong></h4>
+                <p>The entire LLM integration is isolated in a single function in <code>app.js</code>:</p>
+                <pre><code class="hljs javascript language-javascript"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getLLMResponse</span>(<span class="hljs-params">conversation</span>) { ... }</code></pre>
+                <p>To use a different provider, replace only this function. The contract is:</p>
+                <ul>
+                  <li><strong>Input</strong>: <code>conversation</code> — an array of <code>{ role, content }</code> message objects
+                    in OpenAI chat format (system message first, followed by alternating user/assistant turns).</li>
+                  <li><strong>Output</strong>: a <code>Promise&lt;string&gt;</code> — the assistant's reply text.</li>
+                </ul>
+                <p>Example swap for any OpenAI-compatible endpoint (e.g., a local Ollama server):</p>
+                <pre><code class="hljs javascript language-javascript"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getLLMResponse</span>(<span class="hljs-params">conversation</span>) {
+                <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&#x27;http://localhost:11434/v1/chat/completions&#x27;</span>, {
+                    <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;POST&#x27;</span>,
+                    <span class="hljs-attr">headers</span>: { <span class="hljs-string">&#x27;Content-Type&#x27;</span>: <span class="hljs-string">&#x27;application/json&#x27;</span> },
+                    <span class="hljs-attr">body</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>({ <span class="hljs-attr">model</span>: <span class="hljs-string">&#x27;llama3&#x27;</span>, <span class="hljs-attr">messages</span>: conversation })
+                });
+                <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">json</span>();
+                <span class="hljs-keyword">return</span> data.<span class="hljs-property">choices</span>[<span class="hljs-number">0</span>].<span class="hljs-property">message</span>.<span class="hljs-property">content</span>;
+            }</code></pre>
+                <p>Nothing else in the codebase needs to change — the route handler, session context management, and hidden prompt
+                  injection are all provider-agnostic.</p>
+                <hr />
+                <h2 id="license">License</h2>
+                <p>This project is licensed under the <strong>MIT License</strong>. See the <a href="LICENSE">LICENSE</a> file for
+                  details.</p>
+
+            </div>
+            <!-- <div class="toggle-content">
+                <h3>Folder Structure</h3>
+                <pre><code>app.js                            # Express server — routes, middleware chain, POST handlers
+            config.js                         # Environment variable bindings (all env vars read here)
+            helpers.js                        # Core logic: CSV loading, session rendering, question building, DB ops
+            sessionManagement.js              # SessionManager class — wraps express-session with typed getters/setters
+            
+            experiment_configuration/
+                experiment_desc.csv           # Page-level content (title, header, body) keyed by page name
+                treatment_groups_config.csv   # One row per treatment group; controls prompts, avatars, questions
+                questions_bank.csv            # All questionnaire items; grouped into named blocks
+                hidden_prompts_bank/          # Plain-text LLM system prompt files (referenced by treatment CSV)
+                user_tasks_bank/              # HTML task-description files (referenced by treatment CSV)
+            
+            views/
+                layout.pug                    # Base HTML layout (all pages extend this)
+                welcome_code.pug              # Participant code entry page
+                consent.pug                   # Informed consent page
+                user_questionnaire.pug        # Shared template for pre- and post-study questionnaires
+                chat.pug                      # Chat interface (task description + message thread)
+                session_ended.pug             # Study completion / opt-out page
+                error.pug                     # Generic error page
+            
+            static/
+                images/avatars/               # Avatar image files referenced by treatment CSV columns
+                stylesheets/style.css         # Global stylesheet
+                fonts/                        # Web fonts
+            
+            pre_requisites/
+                generate_codes.py             # Script to bulk-generate participant codes for DB insertion
+                postgres_table.txt            # PostgreSQL schema for codes and results tables</code></pre>
+
+                <h3>Server Initialization</h3>
+                <p>
+                    On the <strong>first request</strong> (any route), the
+                    <code>verifySystemInitialized</code> middleware calls
+                    <code>helpers.waitForSystemInitializiation()</code>. This is a one-time async
+                    bootstrap that:
+                </p>
+                <ol>
+                    <li>
+                        <strong>Reads all CSVs</strong> (<code>helpers.readAllCsvFiles()</code>)
+                        <ul>
+                            <li>Scans <code>experiment_configuration/</code> for <code>*.csv</code> files</li>
+                            <li>Streams each file through the <code>csv-parser</code> library and collects rows into
+                                <code>csvDB[filename]</code>
+                            </li>
+                            <li>Populates in-memory arrays used throughout the app</li>
+                            <li>Derives <code>treatmentGroups</code> — a deduplicated sorted array of
+                                <code>treatment_group</code> integers
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Loads file banks</strong> (<code>helpers.loadFileBank()</code>)
+                        <ul>
+                            <li>Reads every file in <code>hidden_prompts_bank/</code> into
+                                <code>hiddenPromptsBank</code>
+                            </li>
+                            <li>Reads every file in <code>user_tasks_bank/</code> into <code>userTasksBank</code></li>
+                        </ul>
+                    </li>
+                    <li>Sets <code>isSystemInitialized = true</code>; subsequent requests skip all of the above
+                        instantly
+                    </li>
+                </ol>
+
+                <h3>Session Lifecycle</h3>
+                <p>
+                    Every request passes through a shared middleware stack defined in
+                    <code>app.use([...])</code>:
+                </p>
+                <pre><code>verifySystemInitialized → verifySession → verifySessionEnded</code></pre>
+
+                <h4><code>verifySession</code></h4>
+                <p>Runs on every request. If the session has no UID yet (new visitor):</p>
+                <ul>
+                    <li>Generates a random integer UID (<code>0</code>-<code>maxUID</code>)</li>
+                    <li>Assigns a <strong>treatment group</strong>:
+                        <code>treatmentGroups[uid % treatmentGroups.length]</code>
+                    </li>
+                    <li>Extracts Prolific URL parameters (<code>prolific_pid</code>, <code>study_id</code>,
+                        <code>session_id</code>) from the query string
+                    </li>
+                    <li>Calls <code>sessionManager.initialize()</code> and <code>sessionManager.setPreferences()</code>
+                    </li>
+                </ul>
+
+                <h4><code>verifySessionEnded</code></h4>
+                <p>
+                    If <code>sessionManager.getFinished()</code> is <code>true</code>:
+                </p>
+                <ul>
+                    <li>Fetches rendering params for the <code>session_ended</code> page</li>
+                    <li>Applies any header/body overrides stored in the session</li>
+                    <li>Injects <code>completion_code</code> and <code>redirect_url</code> if configured</li>
+                    <li>Renders <code>./session_ended</code></li>
+                    <li>If consent was given: calls <code>handleUserCompleted()</code> and destroys the session</li>
+                    <li>If consent was declined: destroys the session without saving</li>
+                </ul>
+
+                <h3>GET <code>/</code> — The Participant Flow (Middleware Chain)</h3>
+                <p>
+                    All participant-facing pages are served from a single <code>GET /</code> route,
+                    guarded by an ordered middleware chain. Each middleware either <strong>renders a
+                        page and stops</strong>, or <strong>calls <code>next()</code></strong> to pass
+                    control to the next stage.
+                </p>
+
+                <pre><code>renderSessionCode → renderUserConsent → renderPreQuestionnaire → renderChat → renderChatQuestionnaire</code></pre>
+
+                <h4>1. <code>renderSessionCode</code> — Code Entry</h4>
+                <ul>
+                    <li><strong>Condition:</strong> <code>sessionManager.getCode()</code> is falsy</li>
+                    <li>Calls <code>helpers.getRenderingParamsForPage("welcome_code")</code></li>
+                    <li>Adds <code>form_type: "welcome_code"</code> to render params</li>
+                    <li>Renders <code>./welcome_code</code></li>
+                </ul>
+
+                <h4>2. <code>renderUserConsent</code> — Informed Consent</h4>
+                <ul>
+                    <li><strong>Condition:</strong> <code>sessionManager.getConsent()</code> is falsy</li>
+                    <li>Fetches rendering params for <code>"consent"</code></li>
+                    <li>Adds <code>form_type: "consent"</code></li>
+                    <li>Renders <code>./consent</code></li>
+                </ul>
+
+                <h4>3. <code>renderPreQuestionnaire</code> — Pre-Study Questionnaire</h4>
+                <ul>
+                    <li><strong>Condition:</strong> <code>sessionManager.getPreQuestionsAnswers()</code> is falsy</li>
+                    <li>Calls <code>helpers.getUserTestQuestions(req, "user_pre_questions")</code></li>
+                    <li>Applies block-level and question-level permutation when flags are set</li>
+                    <li>Groups consecutive <code>is_grouped_likert</code> questions sharing the same scale endpoints
+                        into a
+                        single matrix widget</li>
+                    <li>If no questions exist, auto-sets answers to <code>{}</code> and redirects to <code>/</code></li>
+                    <li>Otherwise renders <code>./user_questionnaire</code> with
+                        <code>form_type: "pre_questionnaire"</code>
+                    </li>
+                </ul>
+
+                <h4>4. <code>renderChat</code> — AI Chat Task</h4>
+                <ul>
+                    <li><strong>Condition:</strong> <code>sessionManager.getChatEnded()</code> is falsy</li>
+                    <li>Calls <code>helpers.setSelectedHiddenPromptToSession(req)</code></li>
+                    <li>If the hidden prompt is empty, skips the chat stage by marking <code>chatEnded = true</code>
+                    </li>
+                    <li>Otherwise fetches rendering params for <code>"chat"</code></li>
+                    <li>Attaches preferences, task description, and <code>form_type: "chat_ended"</code></li>
+                    <li>Renders <code>./chat</code></li>
+                </ul>
+
+                <h4>5. <code>renderChatQuestionnaire</code> — Post-Study Questionnaire</h4>
+                <ul>
+                    <li><strong>Condition:</strong> <code>sessionManager.getQuestionsAnswers()</code> is falsy</li>
+                    <li>Calls <code>helpers.getUserTestQuestions(req, "user_post_questions")</code></li>
+                    <li>Renders <code>./user_questionnaire</code> with <code>form_type: "post_questionnaire"</code></li>
+                </ul>
+
+                <h3>POST <code>/submit_user_response</code> — Unified Form Handler</h3>
+                <p>
+                    All form submissions POST to a single endpoint. The <code>form_type</code> hidden
+                    field determines which handler runs:
+                </p>
+
+                <ul>
+                    <li><code>welcome_code</code> — <code>handleWelcomeCodeSubmission</code>: validates the submitted
+                        code
+                        against DB or <code>REUSABLE_CODE</code></li>
+                    <li><code>consent</code> — <code>handleConsentSubmission</code>: checks all consent fields for
+                        <code>"YES"</code>
+                    </li>
+                    <li><code>pre_questionnaire</code> — <code>handlePreQuestionnaireSubmission</code>: stores all
+                        question
+                        responses</li>
+                    <li><code>chat_ended</code> — <code>handleChatEndedSubmission</code>: sets
+                        <code>chatEnded = true</code>
+                    </li>
+                    <li><code>post_questionnaire</code> — <code>handlePostQuestionnaireSubmission</code>: stores
+                        answers,
+                        sets <code>finished = true</code>, and records timestamps</li>
+                </ul>
+
+                <p>
+                    After every handler, the request is redirected to <code>GET /</code>, where the
+                    middleware chain re-evaluates and advances to the next stage.
+                </p>
+
+                <h3>POST <code>/chat-api</code> — LLM Proxy</h3>
+                <p>Called by the chat UI for each message turn:</p>
+                <ol>
+                    <li>Appends the user message and timing to the session conversation context</li>
+                    <li>Builds the full prompt, starting with the hidden system prompt</li>
+                    <li>Calls OpenAI's <code>chat.completions.create</code> with the configured model, token limit, and
+                        temperature</li>
+                    <li>Appends the assistant reply to the session context</li>
+                    <li>Returns the reply text to the client</li>
+                </ol>
+
+                <p>The current implementation uses the OpenAI chat completions format:</p>
+                <pre><code>[
+              { role: "system",    content: "&lt;hidden prompt text&gt;" },
+              { role: "user",      content: "Hello, can you help me?" },
+              { role: "assistant", content: "Of course! What do you need?" },
+              { role: "user",      content: "..." }
+            ]</code></pre>
+
+                <p>
+                    The entire history is re-sent on every turn, which gives the model full conversation context.
+                </p>
+
+                <h4>Swapping the LLM provider</h4>
+                <p>
+                    The entire LLM integration is isolated in a single function in <code>app.js</code>:
+                </p>
+                <pre><code>async function getLLMResponse(conversation) { ... }</code></pre>
+
+                <p>To use a different provider, replace only this function. The contract is:</p>
+                <ul>
+                    <li><strong>Input:</strong> <code>conversation</code> — an array of <code>{ role, content }</code>
+                        message objects in OpenAI chat format</li>
+                    <li><strong>Output:</strong> a <code>Promise&lt;string&gt;</code> — the assistant's reply text</li>
+                </ul>
+
+                <p>Example swap for any OpenAI-compatible endpoint:</p>
+                <pre><code>async function getLLMResponse(conversation) {
+                const response = await fetch('http://localhost:11434/v1/chat/completions', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ model: 'llama3', messages: conversation })
+                });
+                const data = await response.json();
+                return data.choices[0].message.content;
+            }</code></pre>
+
+                <p>
+                    Nothing else in the codebase needs to change — the route handler, session context
+                    management, and hidden prompt injection are all provider-agnostic.
+                </p>
+
+            </div> -->
+
+            <h2 id="8">License</h2>
+            <p class="toggle-btn">Read more...</p>
+            <div class="toggle-content">
+                <p>If you use this platform in academic work, please cite the associated publication.</p>
+                <h3 id="preferred-citation">Preferred citation</h3>
+                <pre><code class="hljs bibtex language-bibtex"><span class="language-xml">@misc</span><span class="hljs-template-variable">{human_ai_interaction_platform,
+              title        = {Experimental Research Platform for Human-AI Interaction Studies}</span><span class="language-xml">,
+              author       = </span><span class="hljs-template-variable">{Contributors}</span><span class="language-xml">,
+              year         = </span><span class="hljs-template-variable">{2026}</span><span class="language-xml">,
+              howpublished = </span><span class="hljs-template-variable">{GitHub repository}</span><span class="language-xml">,
+              note         = </span><span class="hljs-template-variable">{Please replace this entry with the official paper citation when available}</span><span class="language-xml">
+            }</span></code></pre>
+                <p>If/when a formal paper (or preprint/DOI) is available, replace the BibTeX entry above with the official citation.
+                </p>
+            </div>
+            <!-- <div class="toggle-content">
+                <p>
+                    This project is licensed under the <strong>MIT License</strong>. See the
+                    <code>LICENSE</code> file for details.
+                </p>
+            </div> -->
+
+            <h2 id="9">Citation</h2>
+            <p class="toggle-btn">Read more...</p>
+            <div class="toggle-content">
+                <p>If you use this platform in academic work, please cite the associated publication.</p>
+
+
+
+                <b>Preferred citation</b>
+                        <pre><code>@misc{human_ai_interaction_platform,
+              title        = {Experimental Research Platform for Human-AI Interaction Studies},
+              author       = {Contributors},
+              year         = {2026},
+              howpublished = {GitHub repository},
+              note         = {Please replace this entry with the official paper citation when available}
+            }</code></pre>
+
+                        <p>
+                            If and when a formal paper or preprint is available, replace the BibTeX entry above
+                            with the official citation.
+                        </p>
+            </div>
+
+            <h2 id="10">Download Researcher's Guide pdf</h2>
+            <div>
+                <p id="downloadGuide"><a href="">Download PDF guide</a></p>
+            </div>
+        </main>
+        <section class="section">
+        </section>
+        <footer class="footer">
+            <span id="copy_footer" class="TRI-CA"></span>
+        </footer>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,9 @@
+block_name,allow_block_permutation,allow_question_permutation,question_name,question_text,is_text,is_likert,is_grouped_likert,is_multi_choice,is_label,options
+block1,0,0,q1,text…,0,0,0,0,1,
+block1,0,0,q2,text…,1,0,0,0,0,
+block2,1,1,q3,text…,0,0,0,0,1,
+block2,1,1,q4,text…,0,1,0,0,0,Disagree | Agree
+block3,1,1,q5,text…,0,0,0,0,1,
+block3,1,1,q6,text…,0,0,1,0,0,Disagree | Agree
+block4,1,1,q7,text…,0,0,0,0,1,
+block4,1,1,q8,text…,0,0,0,1,0,Yes|No|Prefer not to say

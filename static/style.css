@@ -1,0 +1,306 @@
+:root{
+    --TriBlue:#3F23DC;
+    --TriYellow:#C0DC23;
+
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 10px;
+    font-family: Roboto, sans-serif;
+    /* border: 1px solid black; */
+}
+
+body {
+    min-height: 100vh;
+    font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    /* font-size: 16px;
+    line-height: 1.5; */
+    /* color: #24292e; */
+    /* background-color: #fdfdfd; */
+    /* padding: 20px; */
+}
+
+@font-face {
+    font-family: Orbitron;
+    src: url(./Orbitron/Orbitron-VariableFont_wght.ttf);
+}
+
+@font-face {
+    font-family: Roboto;
+    src: url(./Roboto/Roboto-VariableFont_wdth\,wght.ttf);
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    min-height: 100vh;
+}
+
+h1, h2 {
+    font-family: 'Orbitron', sans-serif;
+}
+
+p {
+    line-height: 200%;
+}
+
+
+.logo {
+    font-size: 54px;
+    color: blue;
+}
+
+.TRI-CA {
+    font-family: Orbitron;
+    font-weight: 800;
+    margin: -8px;
+}
+
+.tagline {
+    font-size: x-large;
+}
+
+/* grid layout */
+
+.container {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 20vw minmax(300px, 1000px) auto;
+    grid-template-rows: 160px 60px 1fr auto;
+    grid-template-areas:
+        "header header header"
+        "nav nav nav"
+        "aside main section"
+        "footer footer footer";
+}
+
+.header {
+    grid-area: header;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+    /* background-image: url("./yellow-and-gray-smoke.jpg");
+    background-position: center;
+    background-size: cover; */
+    
+}
+
+.nav {
+    grid-area: nav;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+
+.aside {
+    grid-area: aside;
+    
+}
+
+.main {
+    grid-area: main;
+    border-left: #6a737d solid 0.5px;
+}
+
+.section {
+    grid-area: section;
+    /* display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    align-items: flex-start; */
+}
+
+.footer {
+    grid-area: footer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    margin-top: auto;
+    border-top: 1px solid #ddd;
+}
+
+/* Navigation bar */
+.nav ul {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav a {
+    display: inline-block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: black;
+}
+
+.nav a.active {
+    color: blue;
+    font-weight: bold;
+}
+
+
+
+/* Responsive Web Design - mobile layout */
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr;
+        grid-template-rows: 200px 70px auto auto auto;
+        grid-template-areas:
+            "header"
+            "nav"
+            "main"
+            "section"
+            "footer";
+    }
+
+    .nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .section {
+        width: 100%;
+
+    }
+}
+
+.toggle-btn {
+    cursor: pointer;
+    color: blue;
+    margin: 0 0 10px 0;
+}
+
+.toggle-btn:hover {
+    text-decoration: underline;
+}
+
+.toggle-content {
+    display: none;
+    margin-bottom: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 500px;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f5f5f5;
+}
+
+#downloadGuide {
+    color: white;
+    background-color: blue;
+    width: 100%;
+    text-align: center;   /* 👈 centers inline elements like <a> */
+}
+
+#downloadGuide a {
+    color: white;
+    text-decoration: none;
+}
+
+.CSV_screenshot {
+    width: 90%;
+}
+
+.contact_card *  {
+    display: inline;
+}
+
+.iframe_container {
+    background-color: blue;
+    color: white;
+    width: 100%;
+    max-width: 500px;
+    height: 300px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 20px;
+    margin: 0 auto;
+}
+
+#TRI-CA_link {
+    width: 100px;
+    border-radius: 100%;
+    border: 1px solid blue;
+}
+
+
+/* =========================
+   TABLE (merged)
+========================= */
+table {
+    width: 100%;
+    max-width: 500px;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+th, td {
+    border: 1px solid #dfe2e5;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+}
+
+tr:nth-child(even) {
+    background-color: #f6f8fa;
+}
+
+/* =========================
+   CODE + PRE (kept)
+========================= */
+pre {
+    background-color: #f6f8fa;
+    border-radius: 3px;
+    padding: 16px;
+    overflow: auto;
+}
+
+code {
+    background-color: rgba(27, 31, 35, 0.05);
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-family: monospace;
+}
+
+/* =========================
+   BLOCKQUOTE
+========================= */
+blockquote {
+    margin: 0 0 16px 30px;
+    padding-left: 15px;
+    border-left: 4px solid #e8e8e8;
+    color: #6a737d;
+    font-style: italic;
+}

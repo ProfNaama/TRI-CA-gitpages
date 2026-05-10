@@ -9,6 +9,6 @@ By continuing to the next page you confirm that you understand the above informa
 pre_questionnaire,TRI-CA,Please read the following instructions ,
 post_questionnaire,TRI-CA,Thank you for participating,
 session_ended,TRI-CA,Thank You for participating in the study.<br/>,<br/>Click the 'Next' button to end the session.
-error,TRI-CA,We are sorry - an error has occured. Please close your browser and try again,
+error,TRI-CA,We are sorry - an error has occurred. Please close your browser and try again,
 welcome_code,TRI-CA,Welcome,Please enter your access code
-user_preferences,TRI-CA,Welcome to the ChatLab experiment website,In the next page you will be asked to engageg with an AI agent. Please personalize your preferences:
+user_preferences,TRI-CA,Welcome to the ChatLab experiment website,On the next page you will be asked to engage with an AI agent. Please personalize your preferences:

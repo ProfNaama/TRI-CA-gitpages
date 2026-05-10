@@ -20,55 +20,58 @@
         <nav class="nav">
             <ul>
                 <li><a href="../index.html">Home</a></li>
-                <li><a href="./reserchers_guide.html">Resercher's Guide</a></li>
+                <li><a href="./reserchers_guide.html">Researcher's Guide</a></li>
                 <li><a href="./dev_guide.html">Developer's Guide</a></li>
                 <li><a href="./download.html">Download</a></li>
             </ul>
         </nav>
         <aside class="aside">
-            <h2>Table of Content</h2>
+            <h2>Table of Contents</h2>
             <ol>
-                <li><a href="#0">Introduction</a>
+                <li><a href="#intro">Introduction</a>
                     <ol>
-                        <li><a href="#1">Purpose & Functionality</a></li>
-                        <li><a href="#2">Key Research Capabilities</a></li>
-                        <li><a href="#3">Key Features & Contributions</a></li>
+                        <li><a href="#purpose">Purpose & Functionality</a></li>
+                        <li><a href="#capabilities">Key Research Capabilities</a></li>
+                        <li><a href="#features">Key Features & Contributions</a></li>
                     </ol>
                 </li>
-                <li><a href="#4">Getting Started</a>
+                <li><a href="#quick-start">Getting Started</a>
                     <ol>
-                        <li><a href="#GS1">Installation</a></li>
-                        <li><a href="#GS2">Setting Up the Website</a></li>
-                        <li><a href="#GS3">Setting Up the LLM</a></li>
-                        <li><a href="#GS4">Setting Up the Web-Server</a></li>
-                        <li><a href="#GS5">Setting Up the DB</a></li>
-
+                        <li><a href="#install">Installation & Local Smoke Test</a></li>
+                        <li><a href="#config">Experiment Configuration</a></li>
+                        <li><a href="#llm">LLM Setup</a></li>
+                        <li><a href="#deploy">Deployment Options</a></li>
+                        <li><a href="#storage">Database & Result Storage</a></li>
+                        <li><a href="#flow">Participant Flow</a></li>
                     </ol>
                 </li>
-                <li><a href="#downloadGuide">Download Researcher's Guide pdf</a></li>
+                <li><a href="#output-data">Output Data</a></li>
+                <li><a href="#customization">Customization Notes</a></li>
+                <li><a href="#resources">Resources</a></li>
             </ol>
         </aside>
         <main class="main">
-            <h2 id="0">introduction</h2>
+            <h2 id="intro">Introduction</h2>
             <div>
-                <h3 id="1">Purpose &amp; Functionality</h3>
+                <h3 id="purpose">Purpose &amp; Functionality</h3>
                 <p class="toggle-btn">Read more...</p>
                 <div class="toggle-content">
                     <p>
-                        This platform is a comprehensive web-based experimental research system designed for
-                        conducting controlled studies on human-AI interactions.
-                        It enables researchers to conduct rigorous experimental studies examining how humans
-                        interact with AI systems under controlled conditions.
-                        It supports multi-stage experimental designs with randomized treatment groups,
-                        ensuring robust data collection for academic research.
-                        Built with Node.js and Express, it provides a complete experimental workflow from
-                        participant onboarding, going through a random treatment group's specific
-                        configuration, and ending with data collection.
+                        TRI-CA is a web-based research platform for running controlled studies of
+                        human-AI interaction. It combines participant onboarding, informed consent,
+                        pre-task questionnaires, a configurable chat task, post-task questionnaires,
+                        and structured result storage in one workflow.
+                    </p>
+                    <p>
+                        The platform is built with Node.js and Express and is configured primarily
+                        through CSV files plus prompt and task-description files. Researchers can
+                        deploy a standard study without changing the JavaScript code, while still
+                        having the option to customize the interface and backend when needed.
                     </p>
                 </div>
             </div>
             <div>
-                <h3 id="2">Key Research Capabilities</h3>
+                <h3 id="capabilities">Key Research Capabilities</h3>
                 <p class="toggle-btn">Read more...</p>
                 <div class="toggle-content">
                     <ul>
@@ -78,22 +81,26 @@
                             of AI personality, behavior, or capabilities across experimental conditions.
                         </li>
                         <li>
-                            <strong>Comprehensive Questionnaire Management:</strong> Full control over pre-
-                            and post-interaction questionnaires with configurable question types,
-                            randomization, and conditional logic for measuring baseline characteristics and
-                            outcome variables.
+                            <strong>Treatment-Group-Specific Flow:</strong> Each treatment group can point to
+                            its own hidden prompt, task description, pre-questionnaire blocks, and
+                            post-questionnaire blocks, allowing researchers to define condition-specific
+                            study flows without rewriting the application.
                         </li>
                         <li>
-                            <strong>Complex Factorial Experimental Designs:</strong> Support for
-                            sophisticated experimental frameworks (2×2, 2×2×2 and beyond) through treatment
-                            group configurations, enabling researchers to study multiple independent
-                            variables and their interactions simultaneously.
+                            <strong>Questionnaire Configuration:</strong> Researchers can define pre- and
+                            post-interaction questionnaires using configurable blocks, question types, and
+                            permutation settings to measure baseline characteristics and outcome variables.
+                        </li>
+                        <li>
+                            <strong>Complex Experimental Designs:</strong> Treatment-group configuration
+                            supports factorial and multi-condition designs such as 2x2 or 2x2x2 studies,
+                            as long as the required groups are represented in the treatment CSV.
                         </li>
                     </ul>
                 </div>
             </div>
             <div>
-                <h3 id="3">Key Features &amp; Contributions</h3>
+                <h3 id="features">Key Features &amp; Contributions</h3>
                 <p class="toggle-btn">Read more...</p>
                 <div class="toggle-content">
                     <h3>1. Complete Experimental Workflow</h3>
@@ -165,17 +172,19 @@
                             session
                             data, including questionnaire responses, conversation logs, timestamps, and metadata</li>
                         <li><strong>Temporal Tracking:</strong> Interaction timing and session duration measurement</li>
-                        <li><strong>Base64 Encoding:</strong> Base64-encoded data transmission and storage (default on)
-                        </li>
+                        <li><strong>Optional Base64 Encoding:</strong> Saved session payloads can be Base64-encoded
+                            when explicitly enabled via environment variable.</li>
                     </ul>
 
                     <h3>5. Data Collection Capabilities</h3>
                     <ul>
                         <li><strong>Interaction Logs:</strong> Complete conversation histories with timing</li>
-                        <li><strong>Behavioral Measurements:</strong> Response patterns and engagement metrics</li>
+                        <li><strong>Questionnaire Responses:</strong> Structured pre-study and post-study answers keyed
+                            by question name</li>
                         <li><strong>Attitudinal Assessments:</strong> Likert scales and open-ended responses</li>
                         <li><strong>Participant Demographics:</strong> Background characteristics and preferences</li>
-                        <li><strong>Technical Metadata:</strong> Session details and platform interactions</li>
+                        <li><strong>Technical Metadata:</strong> Session identifiers, timestamps, treatment group, and
+                            other context that researchers can use in downstream quantitative or qualitative analysis</li>
                     </ul>
 
                     <h3>6. Supported Study Types</h3>
@@ -191,150 +200,274 @@
                     </ul>
                 </div>
             </div>
-            <h2 id="4">Getting Started</h2>
-            <div>                
-                <h3 id="GS1">1. Installation</h3>
+            <h2 id="quick-start">Getting Started</h2>
+            <div>
+                <h3 id="install">1. Installation &amp; Local Smoke Test</h3>
                 <p class="toggle-btn">Read more...</p>
                 <div class="toggle-content">
-                    <h4>Download the Repository from GitHub</h4>
                     <p>
-                        The first step is to locate the TRI-CA public repository on GitHub
-                        (<a href="HERE-LINK">HERE-LINK</a>) and create a local version on your own
-                        device. This local version will serve as the foundation for configuring and
-                        running your experiment.
+                        Start by cloning the public repository and installing the Node.js dependencies:
+                    </p>
+                    <pre><code>git clone https://github.com/ProfNaama/TRI-CA.git
+cd TRI-CA
+npm install</code></pre>
+                    <p>
+                        For a first local smoke test, you do not need PostgreSQL or a real OpenAI key.
+                        The application can run with the reusable access code <code>tri-ca</code> and a
+                        fake assistant reply:
+                    </p>
+                    <pre><code>REUSABLE_CODE=tri-ca \
+FAKE_LLM_RESPONSE="This is a fake TRI-CA response for local testing." \
+RESULTS_FILE=/tmp/results.txt \
+node app.js</code></pre>
+                    <p>
+                        Then open <code>http://localhost:3030</code>, enter the reusable code
+                        <code>tri-ca</code>,
+                        and walk through the complete participant flow. This is the fastest way to verify
+                        that your local configuration works before connecting external services.
                     </p>
                 </div>
 
-                <h3 id="GS2">2. Setting Up the Website: Configuring the Experiment</h3>
+                <h3 id="config">2. Configuring the Experiment</h3>
                 <p class="toggle-btn">Read more...</p>
                 <div class="toggle-content">
                     <p>
-                        It is recomended you download the system that you set it up locally and create a local version
-                        on
-                        your own.
-                        Only then connect to the external services that are required to run the system,
-                        i.e., LLM accsses web-server and database server.
-                        The experiment is configured using files in the configuration folder.
+                        TRI-CA studies are configured primarily through files in the
+                        <code>experiment_configuration/</code> directory. The three core CSV files are:
                     </p>
-
-                    <p>The folder includes:</p>
                     <ol>
-                        <li>Question bank - <a href="../static/experiment_configuration/questions_bank.csv">Download</a>
+                        <li><strong>Question bank:</strong>
+                            <a href="../static/experiment_configuration/questions_bank.csv">questions_bank.csv</a>
                         </li>
-                        <li>Experiment description - <a
-                                href="../static/experiment_configuration/experiment_desc.csv">Download</a></li>
-                        <li>Treatment groups - <a
-                                href="../static/experiment_configuration/treatment_groups_config.csv">Download</a></li>
+                        <li><strong>Experiment text:</strong>
+                            <a href="../static/experiment_configuration/experiment_desc.csv">experiment_desc.csv</a>
+                        </li>
+                        <li><strong>Treatment groups:</strong>
+                            <a href="../static/experiment_configuration/treatment_groups_config.csv">treatment_groups_config.csv</a>
+                        </li>
                     </ol>
 
-                    <p>Below is a detailed explanation of each file.</p>
+                    <p>Additional file banks support prompts and task descriptions:</p>
+                    <ul>
+                        <li><code>hidden_prompts_bank/</code> stores hidden prompt text files referenced by the treatment configuration.</li>
+                        <li><code>user_tasks_bank/</code> stores task-description HTML files shown on the chat page.</li>
+                    </ul>
+
+                    <p>Below is a practical description of each configuration area.</p>
 
                     <h4>2.1 Question Bank CSV</h4>
-                    <p>This file contains all survey items.</p>
+                    <p>
+                        This file contains all questionnaire items. Each row defines a question or label,
+                        its question type, and the block to which it belongs. Treatment groups reference
+                        questionnaire blocks through the <code>user_pre_questions</code> and
+                        <code>user_post_questions</code> columns.
+                    </p>
                     <img class="CSV_screenshot" src="../static/screenshots/questions_bank.png" alt="">
+                    <p>
+                        Supported question types in the default UI are text input, single-item Likert,
+                        grouped Likert, single-select multiple choice, and label/instruction rows.
+                    </p>
 
                     <h4>2.2 Experiment Description CSV</h4>
-                    <p>This file controls website text content.</p>
+                    <p>
+                        This file controls selected page-level text such as the page title, header, and
+                        body copy for pages like the welcome screen, consent screen, questionnaires, chat,
+                        and completion page. It does not control every visible UI element; for example,
+                        some button labels, radio options, and the initial chat greeting remain hardcoded
+                        in the Pug templates or client-side scripts.
+                    </p>
                     <img class="CSV_screenshot" src="../static/screenshots/experiment_desc.png" alt="">
 
                     <h4>2.3 Treatment Group Configuration CSV</h4>
-                    <p>This file defines experimental conditions and agent behavior.</p>
-                    <img class="CSV_screenshot" src="../static/screenshots/treatment_group_config.png" alt="">
-
-                    <h4>2.4 Hidden Prompt Bank</h4>
-                    <p>Contains hidden prompts (.txt files).</p>
-
-                    <h4>2.5 User Task Bank</h4>
-                    <p>Contains task descriptions (HTML files).</p>
-
-                    <h4>2.6 Prerequisite Folder</h4>
-                    <p>Contains access codes for participants.</p>
-                </div>
-
-                <h3 id="GS3">3. Configuring LLM Access</h3>
-                <p class="toggle-btn">Read more...</p>
-                <div class="toggle-content">
-                    <h4>Getting Access to OpenAI API Keys</h4>
-
                     <p>
-                        To enable AI interactions, you must obtain access keys to utilize any of
-                        the LLM engines available that provide conversational agent access.
+                        This file defines the treatment groups, the displayed user and agent names,
+                        avatar files, hidden prompt files, task-description files, and the questionnaire
+                        blocks that should be shown before and after the chat task.
+                    </p>
+                    <img class="CSV_screenshot" src="../static/screenshots/treatment_group_config.png" alt="">
+                    <p>
+                        In the app, each new session receives a random UID, and the treatment group is
+                        assigned by taking that UID modulo the number of available treatment groups. The
+                        practical outcome is a balanced distribution of sessions across configured groups
+                        over time.
                     </p>
 
-                    <p><strong>Instructions:</strong></p>
+                    <h4>2.4 Hidden Prompt Bank</h4>
+                    <p>
+                        Each hidden prompt is a plain-text file. The prompt selected for the assigned
+                        treatment group is injected as the system message for the LLM conversation and is
+                        never shown to the participant.
+                    </p>
+
+                    <h4>2.5 User Task Bank</h4>
+                    <p>
+                        Task descriptions are HTML fragments displayed above the chat interface. This is
+                        the main place to provide participant instructions, examples, task constraints, or
+                        links relevant to the study.
+                    </p>
+
+                    <h4>2.6 Prerequisites and Access Codes</h4>
+                    <p>
+                        The <code>pre_requisites/</code> folder does not store participant codes directly.
+                        Instead, it includes the PostgreSQL schema file and a helper script for generating
+                        codes that you can insert into the codes table for a specific experiment.
+                    </p>
+                </div>
+
+                <h3 id="llm">3. Configuring LLM Access</h3>
+                <p class="toggle-btn">Read more...</p>
+                <div class="toggle-content">
+                    <p>
+                        TRI-CA currently includes built-in support for OpenAI chat completions. For a live
+                        study, set <code>OPENAI_API_KEY</code> to a valid API key. You can also adjust the
+                        model and output length with <code>OPENAI_MODEL</code> and
+                        <code>OPENAI_TOKEN_LIMIT</code>.
+                    </p>
+                    <p>Recommended workflow:</p>
                     <ol>
                         <li>Create or log in to an OpenAI account.</li>
                         <li>Generate an API key through the OpenAI dashboard.</li>
-                        <li>Store the API key securely and configure it in the TRI-CA system.</li>
+                        <li>Set <code>OPENAI_API_KEY</code> in the environment where the server runs.</li>
+                        <li>Optionally set <code>OPENAI_MODEL</code> and <code>OPENAI_TOKEN_LIMIT</code>.</li>
                     </ol>
-
-                    <p>These keys allow TRI-CA to access OpenAI models during the experiment.</p>
-                    <p><strong>How to add the keys to your system</strong></p>
+                    <p>
+                        For local testing, you can skip real API calls entirely by leaving
+                        <code>OPENAI_API_KEY</code> unset and providing <code>FAKE_LLM_RESPONSE</code>.
+                        This is useful for verifying the experiment flow before you spend tokens or connect
+                        production services.
+                    </p>
                 </div>
 
-                <h3 id="GS4">4. Setting Up the Web Server</h3>
+                <h3 id="deploy">4. Deployment Options</h3>
                 <p class="toggle-btn">Read more...</p>
                 <div class="toggle-content">
                     <p>
-                        The TRI-CA system must be deployed to a web server in order to run the experiment.
+                        TRI-CA can be deployed anywhere that can run a Node.js web server and expose a
+                        public URL. Heroku is one option, but it is not the only one.
                     </p>
+                    <ul>
+                        <li><strong>Local machine or lab server:</strong> Useful for pilot testing and small internal studies.</li>
+                        <li><strong>Heroku or other PaaS:</strong> Good for straightforward deployment with managed environment variables.</li>
+                        <li><strong>AWS, Azure, or GCP:</strong> Suitable when your institution already uses cloud infrastructure or requires custom networking.</li>
+                        <li><strong>Container-based hosting:</strong> Works if you package the app for Docker or a similar platform.</li>
+                    </ul>
+                    <p>
+                        Regardless of host, you will need Node.js, the required environment variables, and
+                        either PostgreSQL or a local results file path. For live studies, run the app as a
+                        single server unless you intentionally redesign session handling.
+                    </p>
+                </div>
 
-                    <p><strong>Instructions:</strong></p>
+                <h3 id="storage">5. Setting Up the Database and Result Storage</h3>
+                <p class="toggle-btn">Read more...</p>
+                <div class="toggle-content">
+                    <p>
+                        TRI-CA supports two main result-storage patterns:
+                    </p>
+                    <ul>
+                        <li><strong>Local file output:</strong> Set <code>RESULTS_FILE</code> and the app will append one JSON line per completed session. This is convenient for local testing and small pilot runs.</li>
+                        <li><strong>PostgreSQL:</strong> Set <code>DATABASE_URL</code> and create the required tables using <code>pre_requisites/postgres_table.txt</code>. The platform will validate participant codes against <code>tri_ca_codes</code> and save completed sessions into <code>tri_ca_results</code>.</li>
+                    </ul>
+                    <p>
+                        The code-generation helper in <code>pre_requisites/generate_codes.py</code> can be
+                        used to generate study codes for a specific experiment ID. In production, most
+                        researchers will use PostgreSQL for code validation and persistent result storage.
+                    </p>
+                </div>
+
+                <h3 id="flow">6. Participant Flow</h3>
+                <p class="toggle-btn">Read more...</p>
+                <div class="toggle-content">
                     <ol>
-                        <li>Create an account on Heroku.</li>
-                        <li>Deploy the TRI-CA application to Heroku.</li>
-                        <li>Ensure the app is accessible via a public URL.</li>
+                        <li>The participant enters an access code.</li>
+                        <li>The platform validates the code against the database, unless a reusable local test code is being used.</li>
+                        <li>The session is initialized and a treatment group is assigned.</li>
+                        <li>The participant reads and accepts or declines consent.</li>
+                        <li>Any configured pre-questionnaire blocks are shown.</li>
+                        <li>The participant completes the chat task using the hidden prompt and task description assigned to that treatment group.</li>
+                        <li>Any configured post-questionnaire blocks are shown.</li>
+                        <li>The app saves the completed session and optionally shows a completion code or redirect button.</li>
                     </ol>
-
-                    <p><strong>Configure your system to match Heroku configuration</strong></p>
-                </div>
-
-                <h3 id="GS5">5. Setting Up the Database Server</h3>
-                <p class="toggle-btn">Read more...</p>
-                <div class="toggle-content">
                     <p>
-                        TRI-CA stores experimental data in a database. This example uses PostgreSQL.
-                    </p>
-
-                    <p><strong>Instructions:</strong></p>
-                    <ol>
-                        <li>Set up PostgreSQL on Heroku.</li>
-                        <li>Connect it to TRI-CA.</li>
-                        <li>Verify data storage and retrieval.</li>
-                    </ol>
-
-                    <p><strong>Configure your system to match PostgreSQL</strong></p>
-                </div>
-
-                <h3>6. Testing</h3>
-                <p class="toggle-btn">Read more...</p>
-                <div class="toggle-content">
-                    <p>
-                        Thoroughly test the system before launching, including configuration,
-                        deployment, database, and AI behavior.
+                        The app automatically skips stages that are not configured. For example, a blank
+                        hidden prompt skips the chat stage, and empty pre- or post-question blocks skip the
+                        corresponding questionnaire page.
                     </p>
                 </div>
 
-                <h3>7. Conducting the Experiment</h3>
+                <h3 id="output-data">7. Output Data</h3>
                 <p class="toggle-btn">Read more...</p>
                 <div class="toggle-content">
                     <p>
-                        Distribute access codes. Participants complete tasks and interact with the AI.
+                        When <code>RESULTS_FILE</code> is enabled, TRI-CA appends one JSON object per
+                        completed session. The raw saved line is a wrapper object containing
+                        <code>time</code>, <code>uid</code>, <code>userid</code>, and a <code>data</code>
+                        field that holds the session payload.
+                    </p>
+                    <pre><code>{"time":"2026-03-26T01:07:01.293Z","uid":"60729","userid":"60729","data":"{...session payload...}"}</code></pre>
+                    <p>
+                        If <code>BASE64_ENCODE=1</code>, the <code>data</code> field is Base64-encoded.
+                        Otherwise it is saved as plain JSON text. The image below is based on a decoded
+                        output sample and highlights the kind of fields that are typically available for
+                        analysis.
+                    </p>
+                    <img class="CSV_screenshot" src="../static/screenshots/output_json_example.svg" alt="Example TRI-CA output JSON structure">
+                    <p>Common session-payload fields include:</p>
+                    <ul>
+                        <li><code>uid</code>: internal session identifier.</li>
+                        <li><code>sessionStartTime</code> and <code>userQuestionnaireEndedTime</code>: start and end timestamps.</li>
+                        <li><code>prolificUid</code>: any stored Prolific identifiers from the URL.</li>
+                        <li><code>code</code>: participant access code used for entry.</li>
+                        <li><code>treatmentGroupId</code>: assigned treatment group.</li>
+                        <li><code>preferences</code>: displayed user and agent names and avatar paths.</li>
+                        <li><code>systemRoleHiddenContent</code>: the hidden prompt actually used for the chat.</li>
+                        <li><code>conversationContext</code>: ordered chat turns with <code>role</code>, <code>content</code>, and <code>interactionTime</code>.</li>
+                        <li><code>preQuestionsAnswers</code> and <code>postQuestionsAnswers</code>: questionnaire responses keyed by question name.</li>
+                        <li><code>completionCode</code> and <code>completionRedirectUrl</code>: optional completion outputs shown at the end of the study.</li>
+                        <li><code>consent</code>, <code>chatEnded</code>, <code>finished</code>, <code>lastInteractionTime</code>, and <code>userid</code>: additional session state and identifiers available in the saved payload.</li>
+                    </ul>
+                    <p>
+                        These fields provide raw material for downstream analysis. Researchers can compute
+                        additional variables such as engagement, timing, scale scores, or treatment
+                        comparisons after export.
                     </p>
                 </div>
 
-                <h3>8. Extracting the Data</h3>
+                <h3 id="customization">8. Customization Notes</h3>
                 <p class="toggle-btn">Read more...</p>
                 <div class="toggle-content">
-                    <p>
-                        All interactions and responses are recorded and can be exported via the
-                        analysis scripts.
-                    </p>
+                    <h4>8.1 What You Can Change Without Code</h4>
+                    <ul>
+                        <li>Questionnaire content, grouping, and permutation rules in <code>questions_bank.csv</code>.</li>
+                        <li>Page titles, headers, and selected body text in <code>experiment_desc.csv</code>.</li>
+                        <li>Treatment-group assignments, prompts, task descriptions, names, avatars, and questionnaire blocks in <code>treatment_groups_config.csv</code>.</li>
+                        <li>Prompt text in <code>hidden_prompts_bank/</code> and task instructions in <code>user_tasks_bank/</code>.</li>
+                    </ul>
+
+                    <h4>8.2 What Typically Requires Code Edits</h4>
+                    <ul>
+                        <li><strong>CSS:</strong> visual styling changes in <code>static/stylesheets/style.css</code>.</li>
+                        <li><strong>HTML / Pug views:</strong> consent controls, layout structure, and chat UI behavior in <code>views/*.pug</code>.</li>
+                        <li><strong>Backend JavaScript:</strong> routing, saving logic, session behavior, or LLM-provider changes in <code>app.js</code>, <code>helpers.js</code>, and <code>sessionManagement.js</code>.</li>
+                    </ul>
+
+                    <h4>8.3 Questionnaire UI Constraints in the Default Interface</h4>
+                    <ul>
+                        <li>Text questions render as single-line text inputs.</li>
+                        <li>Multiple-choice questions render as single-select radio buttons.</li>
+                        <li>Likert and grouped-Likert items render as fixed 7-point scales with left and right endpoint labels.</li>
+                        <li>Grouped Likert items are combined only when consecutive rows share the same scale options.</li>
+                        <li>If question randomization is enabled for a block, keep at most one label row in that block.</li>
+                        <li><code>question_name</code> values should be globally unique across the whole question bank.</li>
+                    </ul>
                 </div>
             </div>
-            <h2 id="2">Download Researcher's Guide pdf</h2>
+            <h2 id="resources">Resources</h2>
             <div>
-                <p id="downloadGuide"><a href="../static/TRI-CA_Tutorial.pdf">Download PDF guide</a></p>
+                <ul>
+                    <li><a href="../static/TRI-CA_Tutorial.pdf">Download PDF guide</a></li>
+                    <li><a href="https://github.com/ProfNaama/TRI-CA">Open the TRI-CA repository</a></li>
+                </ul>
             </div>
         </main>
         <section class="section">

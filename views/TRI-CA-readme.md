@@ -1,6 +1,6 @@
 # TRI-CA: Trials With Conversational Agents
 
-## Purpose & Functinality
+## Purpose & Functionality
 
 TRI-CA is a comprehensive web-based experimental research system designed for conducting controlled studies on human-AI interactions. 
 It enables researchers to conduct rigorous experimental studies examining how humans interact with AI systems under controlled conditions.
@@ -11,7 +11,8 @@ Built with Node.js and Express, it provides a complete experimental workflow fro
 ### **Key Research Capabilities:**
 
 - **Hidden Prompt Control**: Researchers can dynamically control AI system instructions that remain invisible to participants, enabling manipulation of AI personality, behavior, or capabilities across experimental conditions
-- **Comprehensive Questionnaire Management**: Full control over pre- and post-interaction questionnaires with configurable question types, randomization, and conditional logic for measuring baseline characteristics and outcome variables
+- **Treatment-Group-Specific Flow**: Each treatment group can point to its own hidden prompt, task description, pre-questionnaire blocks, and post-questionnaire blocks, allowing condition-specific study flows without rewriting the app
+- **Comprehensive Questionnaire Management**: Full control over pre- and post-interaction questionnaires with configurable question types, block selection, and randomization for measuring baseline characteristics and outcome variables
 - **Complex Factorial Experimental Designs**: Support for sophisticated experimental frameworks (2×2, 2×2×2 and beyond) through treatment group configurations, enabling researchers to study multiple independent variables and their interactions simultaneously
 
 ## Key Features & Contributions
@@ -26,12 +27,12 @@ Built with Node.js and Express, it provides a complete experimental workflow fro
 
 ### **2. Experiment Configuration Via Treatment Groups**
 - **Configurable Conditions**: CSV-driven experimental design
-- **Balanced Assignment**: Uniform randomization and assignment to treatment groups
+- **Balanced Assignment**: Balanced treatment-group distribution across sessions using deterministic assignment from each session UID
 - **Session Independence**: Each participant session is independent with its own state management and assigned treatment group
 - **Independent Experiment Configuration Per Group**: Control over questions, task description, hidden prompts, user preferences, etc. per treatment group
-- **Question Band**: Question bank to configure pre/post questionnaires with various question types and randomization rules
-- **Hidden Prompt Bank**: Centralized management of hidden prompt filess for different treatment groups
-- **User Task Bank**: Centralized management of task description filess for participants
+- **Question Bank**: Question bank to configure pre/post questionnaires with various question types and randomization rules
+- **Hidden Prompt Bank**: Centralized management of hidden prompt files for different treatment groups
+- **User Task Bank**: Centralized management of task description files for participants
 
 ### **3. Flexible Question Framework**
 - **Dynamic Questionnaires**: CSV-configured question banks
@@ -45,16 +46,16 @@ Built with Node.js and Express, it provides a complete experimental workflow fro
 - **OpenAI API**: Real-time GPT-4o chat completions model (the model is configurable via environment variable)
 - **Database Backed Storage**: Full experiment control and data collection via 2 PostgreSQL Tables
 - **Codes table**: for participant code validation
-- **Data Collection Table**: Json format storage of each participant's complete session data, including questionnaire responses, conversation logs, timestamps, and metadata
+- **Data Collection Table**: JSON-format storage of each participant's complete session data, including questionnaire responses, conversation logs, timestamps, and metadata
 - **Temporal Tracking**: Interaction timing and session duration measurement
-- **Base64 Encoding**: 64-base encoded data transmission and storage (default on)
+- **Optional Base64 Encoding**: Saved session payloads can be Base64-encoded when explicitly enabled
 
 ### **5. Data Collection Capabilities**
 - **Interaction Logs**: Complete conversation histories with timing
-- **Behavioral Measurements**: Response patterns and engagement metrics
+- **Questionnaire Responses**: Structured pre-study and post-study answers keyed by question name
 - **Attitudinal Assessments**: Likert scales and open-ended responses
 - **Participant Demographics**: Background characteristics and preferences
-- **Technical Metadata**: Session details and platform interactions
+- **Technical Metadata**: Session details and platform interactions that researchers can use in downstream analyses
 
 ### **6. Supported Study Types**
 - **Conversational AI Evaluation**: User experience with different AI personalities
@@ -68,13 +69,13 @@ Built with Node.js and Express, it provides a complete experimental workflow fro
 ## Getting Started
 
 ### Quick Start (5 minutes, local smoke test)
-Note: this Quick Start runs fully locally without PostgreSQL support — the server will not perform code-based authentication against a database when using `REUSABLE_CODE`, and collected results are appended to the local file specified by `RESULTS_FILE` on your filesystem.
+Note: this Quick Start runs fully locally without PostgreSQL support. If you set `REUSABLE_CODE=tri-ca`, the server will accept that test code without checking the database, and collected results will be appended to the local file specified by `RESULTS_FILE` on your filesystem.
 
 #### 1. **Clone the repository**
 
 ```bash
-git clone <repo-url>
-cd <repo-directory>
+git clone https://github.com/ProfNaama/TRI-CA.git
+cd TRI-CA
 ```
 
 #### 2. **Install dependencies**
@@ -84,10 +85,10 @@ npm install
 ```
 
 #### 3. **Run a minimal server for testing (no database required)**
-Use the provided test reusable code `REUSABLE_CODE=123123123` to skip DB validation and write results to a local file. For a full flow test without calling OpenAI, omit `OPENAI_API_KEY`; the app will use its built-in fake response, or you can override it with `FAKE_LLM_RESPONSE`.
+Use the provided test reusable code `REUSABLE_CODE=tri-ca` to skip DB validation and write results to a local file. For a full flow test without calling OpenAI, omit `OPENAI_API_KEY`; the app will use its built-in fake response, or you can override it with `FAKE_LLM_RESPONSE`.
 
 ```bash
-REUSABLE_CODE=123123123 \
+REUSABLE_CODE=tri-ca \
 FAKE_LLM_RESPONSE="This is a fake TRI-CA response for local testing." \
 RESULTS_FILE=/tmp/results.txt \
 node app.js
@@ -108,8 +109,8 @@ node app.js
 #### 1. **Clone the repository**
 
 ```bash
-git clone <repo-url>
-cd <repo-directory>
+git clone https://github.com/ProfNaama/TRI-CA.git
+cd TRI-CA
 ```
 
 #### 2. **Database Configuration (and PostgreSQL schema)**
@@ -126,7 +127,7 @@ See [`package.json`](package.json) for complete dependency list including Expres
 #### 4. **Experimental Configuration Files**
 Configure three core CSV files that control your experimental design:
 
-- **[`experiment_configuration/experiment_desc.csv`](experiment_configuration/experiment_desc.csv)** - Page content, titles, headers, and body text for each stage of the experiment
+- **[`experiment_configuration/experiment_desc.csv`](experiment_configuration/experiment_desc.csv)** - Page titles, headers, and body copy for experiment stages; some controls and UI text remain hardcoded in the templates
 - **[`experiment_configuration/treatment_groups_config.csv`](experiment_configuration/treatment_groups_config.csv)** - Treatment group assignments, hidden prompts, user preferences, and randomization settings for factorial designs
 - **[`experiment_configuration/questions_bank.csv`](experiment_configuration/questions_bank.csv)** - Pre/post questionnaire items, question types, randomization rules, and Likert scale configurations
 
@@ -138,7 +139,7 @@ Configure required connection strings and API keys:
 #### 6. **Participant Access Codes**
 Generate unique participant codes and insert into database. Use the provided Python script for code generation:
 ```bash
-python pre_requisites/generate_codes.py
+python pre_requisites/generate_codes.py --expid your_experiment_id
 ```
 See [`pre_requisites/generate_codes.py`](pre_requisites/generate_codes.py) for example implementation.
 
@@ -159,8 +160,8 @@ PORT=3030  # Optional: defaults to 3030
 **Optional Variables (yet useful). Default values are set in ./config.js:**
 - `PORT`: Server port (defaults to 3030).
 - `RESULTS_FILE`: Path to append results as lines of JSON (useful for quick capture).
-- `BASE64_ENCODE`: If set (non-zero), data stored/transmitted will be base64-encoded by default.
-- `REUSABLE_CODE`: Developer testing code that bypasses DB code-check (useful for local testing).
+- `BASE64_ENCODE`: If set to `1`, saved session payloads will be Base64-encoded. Default: off (`0`).
+- `REUSABLE_CODE`: Developer testing code that bypasses DB code-check (for example, `REUSABLE_CODE=tri-ca` during local testing).
 - `EXPERIMENT_ID`: Identifier for the experiment.
 - `COMPLETE_CODE`: A researcher-defined static completion code given to all participants when they finish the study. Takes priority over `GENERATE_UNIQUE_COMPLETION_CODE`.
 - `GENERATE_UNIQUE_COMPLETION_CODE`: If set to `1` and `COMPLETE_CODE` is not set, the server generates a unique 8-character code per participant at completion. The code is shown to the participant and saved to the database.
@@ -173,7 +174,11 @@ PORT=3030  # Optional: defaults to 3030
 - `SESSION_SECRET`: Secret used to sign session cookies. If omitted, the server generates a secure random secret at startup.
 
 
-#### 8. **Launch Application**
+#### 8. **Deployment Options and Launch**
+Deploy TRI-CA anywhere that can run a Node.js web server and expose environment variables, including a local lab server, Heroku or another PaaS, or cloud platforms such as AWS, Azure, or GCP.
+
+For live studies, prefer a single running server unless you intentionally redesign session handling and session storage.
+
 Start the server locally (requires Node.js installation):
 ```bash
 # Example with all environment variables
@@ -183,13 +188,13 @@ DATABASE_URL=postgres://user:password@host:5432/database \
 BASE64_ENCODE=1 \
 RESULTS_FILE=/tmp/results.txt \
 OPENAI_TOKEN_LIMIT=2000 \
-REUSABLE_CODE=123123123 \
+REUSABLE_CODE=tri-ca \
 EXPERIMENT_ID=test \
 COMPLETE_CODE=testcompletecode1 \
 node app.js
 
-# Minimal launch .Uses defaults, data collection is added to /tmp/results.txt as clear text(no base64 encoding). Also, for testing, the code "123123123" skips database validation.
-REUSABLE_CODE=123123123 FAKE_LLM_RESPONSE="This is a fake TRI-CA response for local testing." RESULTS_FILE=/tmp/results.txt node app.js
+# Minimal launch. Uses defaults, data collection is added to /tmp/results.txt as clear text (no Base64 encoding). Also, for testing, the code "tri-ca" skips database validation.
+REUSABLE_CODE=tri-ca FAKE_LLM_RESPONSE="This is a fake TRI-CA response for local testing." RESULTS_FILE=/tmp/results.txt node app.js
 
 # Access at: http://localhost:8080 (or your specified PORT)
 ```
@@ -216,7 +221,7 @@ REUSABLE_CODE=123123123 FAKE_LLM_RESPONSE="This is a fake TRI-CA response for lo
 ### **Participant flow (what a participant experiences)**
 
 1. Visit site and enter an access code (a short numeric/string code generated by the researcher).
-2. The platform validates the code (unless `REUSABLE_CODE` is being used for quick local testing).
+2. The platform validates the code (unless a configured reusable local test code such as `tri-ca` is being used).
 3. The session initializes and assigns a deterministic treatment group based on the participant ID.
 4. Participant reads and signs consent (or declines and exits).
 5. Participant completes baseline questionnaire.
@@ -225,6 +230,8 @@ REUSABLE_CODE=123123123 FAKE_LLM_RESPONSE="This is a fake TRI-CA response for lo
 8. Session data (responses + full chat log + timestamps) are serialized and saved.
 
 - **Design note:** treatment assignment is deterministic and balanced (uses the participant UID modulo the number of treatment groups), which supports reproducible assignments for analysis.
+- **Behavioral note:** if a treatment group has no configured pre-questionnaire or post-questionnaire blocks, that questionnaire stage is skipped automatically.
+- **Behavioral note:** if a treatment group has a blank `hidden_prompt`, the chat stage is skipped automatically.
 
 
 ### **Where to put your configuration files**
@@ -243,7 +250,7 @@ REUSABLE_CODE=123123123 FAKE_LLM_RESPONSE="This is a fake TRI-CA response for lo
 	- **user_avatar**: Avatar image filename for the participant (from `static/images/avatars`); used in chat UI.
 	- **agent_name**: Display name for the agent/AI shown to participants.
 	- **agent_avatar**: Avatar image filename for the agent; displayed in chat UI.
-	- **hidden_prompt**: Filename (under `experiment_configuration/hidden_prompts_bank/`) containing the system/hidden prompt injected to the LLM for this treatment group (applied at the begining of the conversation as the system role).
+		- **hidden_prompt**: Filename (under `experiment_configuration/hidden_prompts_bank/`) containing the system/hidden prompt injected to the LLM for this treatment group (applied at the beginning of the conversation as the system role).
 	- **user_task_description**: Filename (under `experiment_configuration/user_tasks_bank/`) or HTML snippet describing the participant task; rendered on the chat page, before the chat begins.
 	- **user_pre_questions**: Semicolon-separated question block names (from `questions_bank.csv`) to present before the task.
 	- **user_post_questions**: Semicolon-separated question block names (from `questions_bank.csv`) to present after the task.
@@ -314,31 +321,93 @@ The questionnaire framework supports five question types, each optimized for dif
 Questions are organized into **blocks** — named groups that can be assigned to treatment groups via the `user_pre_questions` and `user_post_questions` columns in `treatment_groups_config.csv`. Blocks provide flexibility:
 - Each block can be **independently randomized** (block permutation, question permutation, or both) via the `allow_block_permutation` and `allow_question_permutation` flags.
 - Different treatment groups can present different blocks (e.g., group A gets a "Trust" block, group B gets an "Anthropomorphism" block).
-- Each question is **uniquely identified by its `question_name`**. see limitations below.
+- Each question is **uniquely identified by its `question_name`**. See the Limitations section at the end of this README.
 
-## Security Considerations / Limitations
+## Output Data
 
-### **SESSION_SECRET deployment note:**
-- If `SESSION_SECRET` is auto-generated at startup, active sessions become invalid after server restart.
-- If multiple servers need to serve the same sessions, they must all use the same `SESSION_SECRET`.
+### **Raw saved result objects**
 
-For typical research deployments (up to hundreds of concurrent participants on a single server, with no restarts expected mid-study), the auto-generated secret is sufficient. A fixed `SESSION_SECRET` is only necessary if you require high resiliency or failover across multiple servers — which is generally not needed for academic research studies.
+If `RESULTS_FILE` is set, the server appends one JSON object per completed session. Each line is a wrapper object like:
 
-### **Participant code security note:**
-Participant codes are simple short strings — not cryptographic tokens. They are distributed to participants out-of-band, typically via a recruitment platform such as [Prolific](https://www.prolific.com/), where the researcher assigns one unique code per participant. This is considered safe enough for research purposes: the platform marks each code as completed after a session finishes, preventing it from being reused for a second completed session.
+```json
+{"time":"2026-03-26T01:07:01.293Z","uid":"60729","userid":"60729","data":"{...session payload...}"}
+```
 
+- `time`: server-side save time
+- `uid`: TRI-CA session UID
+- `userid`: either the Prolific identifier object or the internal UID
+- `data`: the saved session payload
 
-### **Incomplete sessions are not saved**: 
-Session data (responses, chat log, timestamps) is only persisted when a participant completes the full flow and reaches the final submission step. Participants who drop out mid-session leave no data behind.
+If `BASE64_ENCODE=1`, the `data` field is Base64-encoded. Otherwise it is saved as plain JSON text.
 
-### **Re-entry with the same code**: 
-If a participant starts a session but does not complete it (e.g., closes the browser, or opens a new incognito window after their cookie is cleared), and then re-enters the same code, the platform will accept it and serve a new session. Both sessions' results will be saved independently upon completion. This is a deliberate design tradeoff — it avoids false negatives (blocking legitimate re-entries) at the cost of allowing rare duplicate completions, which researchers should be aware of when cleaning collected data.
+### **Decoded session payload**
 
-### **Malformed CSV configuration files can crash the server**:
-All three configuration CSVs are loaded at startup and parsed into memory with minimal validation. A malformed or structurally inconsistent CSV (e.g., missing required columns, broken quoting, unexpected delimiters, or mismatched block names) can cause the server to crash on startup or produce runtime errors mid-session. Researchers should always test any CSV changes locally before deploying to a live study — at minimum by starting the server and walking through the full participant flow with a test code.
+The decoded session payload contains the full experiment session that TRI-CA serializes from the active session state. Common fields include:
 
-### **Question names must be globally unique**:
-Each question is uniquely identified by its `question_name` in `questions_bank.csv`. A `question_name` cannot appear in multiple blocks — doing so will cause responses from different blocks to overwrite each other. If you need the same question content in multiple blocks (e.g., the same trust rating before and after the task), duplicate the row with a different `question_name` (e.g., `trust_ai_pre` and `trust_ai_post`).
+- `uid`: internal session identifier
+- `sessionStartTime`: ISO timestamp for session start
+- `userQuestionnaireEndedTime`: ISO timestamp for final questionnaire submission
+- `prolificUid`: stored Prolific identifiers from the query string, when present
+- `code`: participant access code used for entry
+- `treatmentGroupId`: assigned treatment group
+- `preferences`: displayed user and agent names and avatar paths
+- `systemRoleHiddenContent`: hidden prompt actually used for the chat
+- `conversationContext`: ordered chat turns, each with `role`, `content`, and `interactionTime`
+- `preQuestionsAnswers`: object keyed by pre-questionnaire `question_name`
+- `postQuestionsAnswers`: object keyed by post-questionnaire `question_name`
+- `completionCode`: optional completion code shown at the end of the study
+- `completionRedirectUrl`: optional redirect target shown at completion
+- `sessionEndedHeaderOverride` and `sessionEndedBodyOverride`: custom completion or opt-out messaging, when used
+- `lastInteractionTime`, `chatEnded`, `finished`, `consent`, and `userid`: additional session state and identifiers
+
+Example decoded payload excerpt:
+
+```json
+{
+  "uid": "60729",
+  "sessionStartTime": "2026-03-26T00:57:57.694Z",
+  "treatmentGroupId": 3,
+  "preferences": {
+    "user_name": "You",
+    "agent_name": "",
+    "agent_avatar": "static/images/avatars/user_avatar_01.png"
+  },
+  "conversationContext": [
+    { "role": "user", "content": "A bat and a ball cost $1.10 in total.", "interactionTime": 0 }
+  ],
+  "postQuestionsAnswers": {
+    "Habit1": "5",
+    "comment_1": "No"
+  },
+  "completionCode": "87843F58"
+}
+```
+
+This output is intentionally rich and low-level. Researchers can derive scale scores, timing variables, engagement measures, prompt-condition comparisons, or custom coding schemes during downstream analysis.
+
+## What You Can Configure Without Code
+
+- Questionnaire blocks, question wording, question types, and permutation settings in `experiment_configuration/questions_bank.csv`
+- Page titles, headers, and selected body text in `experiment_configuration/experiment_desc.csv`
+- Treatment-group assignments, prompts, task descriptions, questionnaire blocks, and displayed names or avatars in `experiment_configuration/treatment_groups_config.csv`
+- Hidden prompt text in `experiment_configuration/hidden_prompts_bank/`
+- Participant task instructions in `experiment_configuration/user_tasks_bank/`
+
+## What Typically Requires Code Changes
+
+- **CSS**: visual styling changes in `static/stylesheets/style.css`
+- **HTML / Pug views**: consent controls, chat layout, or page structure changes in `views/*.pug`
+- **Backend JavaScript**: routing, saving logic, session behavior, or LLM-provider integration changes in `app.js`, `helpers.js`, and `sessionManagement.js`
+
+## Default Questionnaire UI Constraints
+
+- Text questions render as single-line text inputs in the default UI
+- Multiple-choice questions render as single-select radio buttons
+- Likert and grouped-Likert items render as fixed 7-point scales with left and right endpoint labels
+- Grouped Likert items are combined only when consecutive rows share the same options
+- If question randomization is enabled for a block, keep at most one label row in that block
+- `question_name` values should be globally unique across the entire question bank
+- Answer-based conditional branching is not implemented in the default questionnaire renderer
 
 
 ---
@@ -483,7 +552,7 @@ All form submissions POST to a single endpoint. The `form_type` hidden field (in
 
 | `form_type` | Handler | What it does |
 |---|---|---|
-| `welcome_code` | `handleWelcomeCodeSubmission` | Validates the submitted code against DB (`SELECT completed WHERE code=? AND expid=?`) or `REUSABLE_CODE`. On success, stores code in session. Reconciles `prolific_pid` if it differs between URL param and form field. |
+| `welcome_code` | `handleWelcomeCodeSubmission` | Validates the submitted code against DB (`SELECT completed WHERE code=? AND expid=?`) or the configured reusable test code (for example, `tri-ca`). On success, stores code in session. Reconciles `prolific_pid` if it differs between URL param and form field. |
 | `consent` | `handleConsentSubmission` | Checks all `consent.*` fields for `"YES"`. Any non-YES → sets `finished=true` with opt-out messaging. Otherwise sets `consent=true`. |
 | `pre_questionnaire` | `handlePreQuestionnaireSubmission` | Stores the entire `req.body` (all question responses) into `sessionManager.setPreQuestionsAnswers()`. |
 | `chat_ended` | `handleChatEndedSubmission` | Sets `sessionManager.setChatEnded(true)`. Triggered when the participant clicks "End Chat" in the UI. |
@@ -567,3 +636,40 @@ If you use this platform in academic work, please cite the associated publicatio
 ```
 
 If/when a formal paper (or preprint/DOI) is available, replace the BibTeX entry above with the official citation.
+
+## Limitations
+
+### **Session storage and deployment**
+
+- The default deployment uses the built-in in-memory Express session store, so TRI-CA should be treated as a single-server application unless you intentionally redesign session storage.
+- If `SESSION_SECRET` is auto-generated at startup, active sessions become invalid after server restart.
+- If multiple servers need to share the same sessions, they must all use the same `SESSION_SECRET` and a shared session store. That is not implemented by default.
+
+### **Participant-code behavior**
+
+- Participant codes are simple short strings, not cryptographic tokens. In typical research deployments this is acceptable because codes are distributed out-of-band and marked as completed after use.
+- If a participant starts but does not finish, then later re-enters the same code after their cookie is cleared, the platform can accept the code again and produce a second completed record. Researchers should check for duplicate completions during data cleaning.
+
+### **Data persistence**
+
+- Incomplete sessions are not saved. Only sessions that reach the final submission step are persisted to `RESULTS_FILE` and or PostgreSQL.
+- If you enable `RESULTS_FILE`, the raw saved output is a wrapper JSON object whose `data` field may contain plain JSON text or Base64-encoded JSON depending on `BASE64_ENCODE`.
+
+### **Configuration robustness**
+
+- All three configuration CSVs are loaded at startup with minimal validation. Malformed CSVs, broken quoting, missing columns, or mismatched block names can crash the server or produce runtime errors.
+- `question_name` values in `questions_bank.csv` must be globally unique. Reusing the same `question_name` in multiple blocks causes later answers to overwrite earlier ones.
+- Answer-based conditional branching is not implemented in the default questionnaire renderer. Condition-specific flow is achieved through treatment-group configuration instead.
+
+### **Default UI constraints**
+
+- Text questions render as single-line inputs in the default questionnaire template.
+- Multiple-choice questions are single-select radio buttons.
+- Likert and grouped-Likert items use a fixed 7-point scale in the default UI.
+- Grouped Likert rows are merged only when consecutive items share the same `options` values.
+- If question randomization is enabled for a block, use at most one label row in that block.
+
+### **Automatic stage skipping**
+
+- If a treatment group leaves `hidden_prompt` blank, TRI-CA skips the chat stage automatically.
+- If a treatment group has no configured pre-questionnaire or post-questionnaire blocks, TRI-CA skips that questionnaire stage automatically.

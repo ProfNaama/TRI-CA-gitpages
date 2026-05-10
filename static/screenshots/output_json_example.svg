@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720">
+  <rect width="1200" height="720" fill="#f5f0e8"/>
+  <rect x="40" y="40" width="1120" height="640" rx="18" fill="#1f2933"/>
+  <rect x="40" y="40" width="1120" height="56" rx="18" fill="#111827"/>
+  <circle cx="82" cy="68" r="10" fill="#ef4444"/>
+  <circle cx="114" cy="68" r="10" fill="#f59e0b"/>
+  <circle cx="146" cy="68" r="10" fill="#10b981"/>
+  <text x="190" y="76" font-family="monospace" font-size="24" fill="#d1d5db">decoded_session_payload.json</text>
+
+  <g font-family="monospace" font-size="26">
+    <text x="72" y="140" fill="#d1d5db">{</text>
+    <text x="110" y="182" fill="#93c5fd">"uid"</text>
+    <text x="230" y="182" fill="#d1d5db">:</text>
+    <text x="260" y="182" fill="#fde68a">"60729"</text>
+    <text x="72" y="224" fill="#93c5fd">"sessionStartTime"</text>
+    <text x="360" y="224" fill="#d1d5db">:</text>
+    <text x="390" y="224" fill="#fde68a">"2026-03-26T00:57:57.694Z"</text>
+    <text x="72" y="266" fill="#93c5fd">"treatmentGroupId"</text>
+    <text x="360" y="266" fill="#d1d5db">:</text>
+    <text x="390" y="266" fill="#fca5a5">3</text>
+    <text x="72" y="308" fill="#93c5fd">"preferences"</text>
+    <text x="270" y="308" fill="#d1d5db">:</text>
+    <text x="300" y="308" fill="#d1d5db">{ ... }</text>
+    <text x="72" y="350" fill="#93c5fd">"systemRoleHiddenContent"</text>
+    <text x="450" y="350" fill="#d1d5db">:</text>
+    <text x="480" y="350" fill="#a7f3d0">"Assume you are an assistant ..."</text>
+    <text x="72" y="392" fill="#93c5fd">"conversationContext"</text>
+    <text x="388" y="392" fill="#d1d5db">:</text>
+    <text x="418" y="392" fill="#d1d5db">[</text>
+    <text x="452" y="392" fill="#d1d5db">{</text>
+    <text x="486" y="392" fill="#93c5fd">"role"</text>
+    <text x="582" y="392" fill="#d1d5db">:</text>
+    <text x="612" y="392" fill="#fde68a">"user"</text>
+    <text x="700" y="392" fill="#d1d5db">,</text>
+    <text x="728" y="392" fill="#93c5fd">"content"</text>
+    <text x="868" y="392" fill="#d1d5db">:</text>
+    <text x="898" y="392" fill="#fde68a">"A bat and a ball ..."</text>
+    <text x="72" y="434" fill="#93c5fd">"preQuestionsAnswers"</text>
+    <text x="400" y="434" fill="#d1d5db">:</text>
+    <text x="430" y="434" fill="#d1d5db">{ }</text>
+    <text x="72" y="476" fill="#93c5fd">"postQuestionsAnswers"</text>
+    <text x="418" y="476" fill="#d1d5db">:</text>
+    <text x="448" y="476" fill="#d1d5db">{</text>
+    <text x="482" y="476" fill="#93c5fd">"Habit1"</text>
+    <text x="610" y="476" fill="#d1d5db">:</text>
+    <text x="640" y="476" fill="#fde68a">"5"</text>
+    <text x="700" y="476" fill="#d1d5db">,</text>
+    <text x="728" y="476" fill="#93c5fd">"comment_1"</text>
+    <text x="902" y="476" fill="#d1d5db">:</text>
+    <text x="932" y="476" fill="#fde68a">"No"</text>
+    <text x="72" y="518" fill="#93c5fd">"completionCode"</text>
+    <text x="342" y="518" fill="#d1d5db">:</text>
+    <text x="372" y="518" fill="#fde68a">"87843F58"</text>
+    <text x="72" y="560" fill="#93c5fd">"completionRedirectUrl"</text>
+    <text x="450" y="560" fill="#d1d5db">:</text>
+    <text x="480" y="560" fill="#fde68a">"https://canvas.cmu.edu/"</text>
+    <text x="72" y="602" fill="#93c5fd">"time"</text>
+    <text x="170" y="602" fill="#d1d5db">:</text>
+    <text x="200" y="602" fill="#fde68a">"2026-03-26T01:07:01.293Z"</text>
+    <text x="72" y="644" fill="#d1d5db">}</text>
+  </g>
+</svg>

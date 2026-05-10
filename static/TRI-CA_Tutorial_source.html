@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRI-CA Experimental Platform | Installation &amp; Configuration Tutorial</title>
+  <style>
+    :root {
+      --ink: #17212b;
+      --muted: #52606d;
+      --accent: #0f766e;
+      --accent-light: #dff7f4;
+      --border: #d9e2ec;
+      --paper: #ffffff;
+      --bg: #f7fafc;
+      --code: #f3f7fb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.45;
+    }
+
+    .page {
+      width: 8.5in;
+      min-height: 11in;
+      margin: 0 auto 0.3in auto;
+      padding: 0.75in;
+      background: var(--paper);
+      position: relative;
+      page-break-after: always;
+    }
+
+    .page:last-child {
+      page-break-after: auto;
+    }
+
+    .cover {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.2in;
+      background:
+        radial-gradient(circle at top left, rgba(15, 118, 110, 0.16), transparent 32%),
+        linear-gradient(160deg, #f8fbfc 0%, #ffffff 55%, #eef6f6 100%);
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 12pt;
+      font-weight: 700;
+    }
+
+    h1 {
+      font-size: 28pt;
+      line-height: 1.15;
+      margin: 0;
+    }
+
+    h2 {
+      font-size: 18pt;
+      margin: 0 0 0.18in 0;
+      color: var(--accent);
+      border-bottom: 2px solid var(--accent-light);
+      padding-bottom: 0.06in;
+    }
+
+    h3 {
+      font-size: 13.5pt;
+      margin: 0.2in 0 0.08in 0;
+    }
+
+    p, li, td, th, code, pre {
+      font-size: 10.5pt;
+    }
+
+    p {
+      margin: 0 0 0.12in 0;
+    }
+
+    ul, ol {
+      margin: 0.08in 0 0.14in 0.24in;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 0.06in;
+    }
+
+    .lead {
+      font-size: 13pt;
+      color: var(--muted);
+      max-width: 6.4in;
+    }
+
+    .callout {
+      border-left: 5px solid var(--accent);
+      background: var(--accent-light);
+      padding: 0.12in 0.16in;
+      margin: 0.12in 0 0.18in 0;
+    }
+
+    .callout p:last-child {
+      margin-bottom: 0;
+    }
+
+    .note {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      padding: 0.12in 0.16in;
+      margin: 0.14in 0;
+    }
+
+    .note strong {
+      color: #9a3412;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.12in 0 0.18in 0;
+    }
+
+    th, td {
+      border: 1px solid var(--border);
+      padding: 0.09in 0.1in;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      background: #f0f7f7;
+      font-weight: 700;
+    }
+
+    pre {
+      background: var(--code);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.14in;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+      margin: 0.12in 0 0.16in 0;
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    }
+
+    .mono {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      white-space: pre-wrap;
+      background: var(--code);
+      border: 1px solid var(--border);
+      padding: 0.14in;
+      border-radius: 6px;
+      margin: 0.12in 0 0.16in 0;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.22in;
+    }
+
+    .image-block {
+      margin: 0.16in 0;
+      text-align: center;
+    }
+
+    .image-block img {
+      max-width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .caption {
+      margin-top: 0.08in;
+      color: var(--muted);
+      font-size: 9pt;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 0.35in;
+      left: 0.75in;
+      right: 0.75in;
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 8.5pt;
+      border-top: 1px solid var(--border);
+      padding-top: 0.08in;
+    }
+
+    .small {
+      font-size: 9.5pt;
+      color: var(--muted);
+    }
+
+    .compact-page h3 {
+      margin: 0.14in 0 0.05in 0;
+    }
+
+    .compact-page p,
+    .compact-page li,
+    .compact-page td,
+    .compact-page th,
+    .compact-page code,
+    .compact-page pre {
+      font-size: 9.8pt;
+    }
+
+    .compact-page ul {
+      margin: 0.06in 0 0.1in 0.2in;
+    }
+
+    .compact-page li {
+      margin-bottom: 0.03in;
+    }
+
+    .compact-page .image-block {
+      margin: 0.08in 0 0.1in 0;
+    }
+
+    .compact-page .image-block img {
+      max-width: 68%;
+    }
+
+    .compact-page .caption {
+      font-size: 8.5pt;
+    }
+
+    .compact-page .callout {
+      padding: 0.08in 0.12in;
+      margin: 0.08in 0 0.1in 0;
+    }
+
+    .compact-page .callout p {
+      font-size: 9.6pt;
+      margin: 0;
+    }
+
+    @page {
+      size: Letter;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <section class="page cover">
+    <div class="eyebrow">TRI-CA Experimental Platform</div>
+    <h1>Installation &amp; Configuration Tutorial</h1>
+    <p class="lead">
+      A practical guide for researchers setting up human-AI interaction experiments with
+      TRI-CA: Trials with Conversational Agents.
+    </p>
+    <div class="callout">
+      <p><strong>Repository:</strong> <code>https://github.com/ProfNaama/TRI-CA</code></p>
+      <p><strong>Primary use case:</strong> controlled experiments with configurable prompts, questionnaires, treatment groups, and structured result storage.</p>
+    </div>
+    <p class="small">
+      This tutorial reflects the current TRI-CA repository structure and runtime behavior.
+      It replaces older guidance that referred to outdated folders, analysis scripts, or
+      deployment assumptions no longer present in the repo.
+    </p>
+    <div class="footer">
+      <span>TRI-CA Experimental Platform</span>
+      <span>Installation &amp; Configuration Tutorial</span>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>1. System Overview</h2>
+    <p>
+      TRI-CA is a Node.js and Express platform for controlled studies of human-AI interaction.
+      It supports participant code entry, informed consent, pre-task questionnaires, a configurable
+      chat task, post-task questionnaires, and structured data storage in one workflow.
+    </p>
+    <p>
+      Researchers configure most studies through CSV files plus prompt and task-description files,
+      which makes it possible to run many experiments without modifying the application code.
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Participant Interface</td>
+          <td>Code entry, consent, questionnaires, and chat UI served from the web app.</td>
+        </tr>
+        <tr>
+          <td>Application Server</td>
+          <td>Express server handling routing, session state, treatment assignment, and persistence.</td>
+        </tr>
+        <tr>
+          <td>LLM Integration</td>
+          <td>Built-in OpenAI chat-completions integration with a fake-response mode for local testing.</td>
+        </tr>
+        <tr>
+          <td>Configuration Layer</td>
+          <td>CSV files plus prompt and task banks that define the study flow and condition-specific behavior.</td>
+        </tr>
+        <tr>
+          <td>Storage Layer</td>
+          <td>Completed-session output to PostgreSQL, a local results file, or both.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <p><strong>Key idea:</strong> treatment-group-specific flow is configured through files. Each group can point to its own hidden prompt, task description, pre-question blocks, and post-question blocks.</p>
+    </div>
+
+    <div class="footer">
+      <span>TRI-CA Experimental Platform</span>
+      <span>1</span>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>2. Repository Structure</h2>
+    <p>
+      The current TRI-CA repository is a single Node.js app. The main folders and files are:
+    </p>
+
+    <div class="mono">TRI-CA/
+app.js
+config.js
+helpers.js
+sessionManagement.js
+package.json
+README.md
+
+experiment_configuration/
+  experiment_desc.csv
+  treatment_groups_config.csv
+  questions_bank.csv
+  hidden_prompts_bank/
+  user_tasks_bank/
+
+views/
+  welcome_code.pug
+  consent.pug
+  user_questionnaire.pug
+  chat.pug
+  session_ended.pug
+  layout.pug
+
+static/
+  stylesheets/style.css
+  images/avatars/
+  fonts/
+
+pre_requisites/
+  generate_codes.py
+  postgres_table.txt</div>
+
+    <p>
+      Older folder names such as <code>server/</code>, <code>frontend/</code>,
+      <code>analysis/</code>, <code>prompt_bank/</code>, or <code>task_bank/</code>
+      do not match the current repo and should not be used when setting up the system.
+    </p>
+
+    <div class="footer">
+      <span>TRI-CA Experimental Platform</span>
+      <span>2</span>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>3. Requirements and Dependencies</h2>
+
+    <h3>3.1 Core software</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Dependency</th>
+          <th>Recommended version</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Node.js</td>
+          <td>v18 or later</td>
+          <td>Required to run the application.</td>
+        </tr>
+        <tr>
+          <td>npm</td>
+          <td>v9 or later</td>
+          <td>Used to install server dependencies.</td>
+        </tr>
+        <tr>
+          <td>Git</td>
+          <td>Current version</td>
+          <td>Used to clone the repository and manage updates.</td>
+        </tr>
+        <tr>
+          <td>Python</td>
+          <td>v3.9 or later</td>
+          <td>Only needed if you want to use the helper script for generating participant access codes.</td>
+        </tr>
+        <tr>
+          <td>PostgreSQL*</td>
+          <td>Current supported version</td>
+          <td>Recommended for live studies and required for database-backed code validation and result storage.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="small">
+      * Not required for a local smoke test if you use <code>REUSABLE_CODE=tri-ca</code> and
+      <code>RESULTS_FILE</code>.
+    </p>
+
+    <h3>3.2 External services</h3>
+    <ul>
+      <li>OpenAI API access is required for live model responses in the default integration.</li>
+      <li>For local testing, you can skip live API calls by setting <code>FAKE_LLM_RESPONSE</code> instead of <code>OPENAI_API_KEY</code>.</li>
+    </ul>
+
+    <div class="note">
+      <p><strong>PostgreSQL note:</strong> many first-time users only want to verify the experiment flow on their own machine. For that purpose, PostgreSQL is optional. Use the local smoke test first, then connect PostgreSQL when you are ready for code validation and persistent study storage.</p>
+    </div>
+
+    <div class="footer">
+      <span>TRI-CA Experimental Platform</span>
+      <span>3</span>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>4. Installation and Local Smoke Test</h2>
+
+    <h3>Step 1: Clone the repository</h3>
+    <pre><code>git clone https://github.com/ProfNaama/TRI-CA.git
+cd TRI-CA</code></pre>
+
+    <h3>Step 2: Install dependencies</h3>
+    <pre><code>npm install</code></pre>
+
+    <h3>Step 3: Run a local smoke test</h3>
+    <p>
+      The fastest way to verify TRI-CA is to run it locally without PostgreSQL and without calling
+      OpenAI. The following command starts the server with a reusable local test code and a fixed
+      fake assistant reply:
+    </p>
+    <pre><code>REUSABLE_CODE=tri-ca \
+FAKE_LLM_RESPONSE="This is a fake TRI-CA response for local testing." \
+RESULTS_FILE=/tmp/results.txt \
+node app.js</code></pre>
+
+    <h3>Step 4: Test the participant flow</h3>
+    <ol>
+      <li>Open <code>http://localhost:3030</code>.</li>
+      <li>Enter the access code <code>tri-ca</code>.</li>
+      <li>Walk through consent, the questionnaire pages, the chat stage, and completion.</li>
+      <li>Inspect <code>/tmp/results.txt</code> to confirm that a completed session was saved.</li>
+    </ol>
+
+    <div class="callout">
+      <p><strong>Why this matters:</strong> this local smoke test catches most configuration errors before you connect external services, deploy to a public server, or invite participants.</p>
+    </div>
+
+    <div class="footer">
+      <span>TRI-CA Experimental Platform</span>
+      <span>4</span>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>5. Environment Variables and LLM Setup</h2>
+
+    <h3>Required for a live study</h3>
+    <pre><code>OPENAI_API_KEY=your_api_key_here
+DATABASE_URL=postgresql://user:password@host:port/database</code></pre>
+
+    <h3>Common optional variables</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Variable</th>
+          <th>Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>PORT</code></td>
+          <td>Server port. Default: 3030.</td>
+        </tr>
+        <tr>
+          <td><code>RESULTS_FILE</code></td>
+          <td>Append completed sessions to a local file as JSON lines.</td>
+        </tr>
+        <tr>
+          <td><code>REUSABLE_CODE</code></td>
+          <td>Developer testing code that bypasses database validation.</td>
+        </tr>
+        <tr>
+          <td><code>OPENAI_MODEL</code></td>
+          <td>OpenAI model name. Default: <code>gpt-4o</code>.</td>
+        </tr>
+        <tr>
+          <td><code>OPENAI_TOKEN_LIMIT</code></td>
+          <td>Maximum response length for OpenAI calls.</td>
+        </tr>
+        <tr>
+          <td><code>FAKE_LLM_RESPONSE</code></td>
+          <td>Fixed assistant reply used when no API key is configured.</td>
+        </tr>
+        <tr>
+          <td><code>COMPLETE_CODE</code> / <code>GENERATE_UNIQUE_COMPLETION_CODE</code></td>
+          <td>Controls the completion code shown to participants.</td>
+        </tr>
+        <tr>
+          <td><code>REDIRECT_URL</code></td>
+          <td>Optional redirect target shown on the completion page.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      TRI-CA currently ships with built-in OpenAI integration. If you want to use another provider,
+      you will need to adapt the backend LLM call in the Node.js application.
+    </p>
+
+    <div class="note">
+      <p><strong>Security note:</strong> do not commit secrets to the repository. Keep environment variables in your host configuration or a local untracked file.</p>
+    </div>
+
+    <div class="footer">
+      <span>TRI-CA Experimental Platform</span>
+      <span>5</span>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>6. Database Setup and Result Storage</h2>
+
+    <p>
+      TRI-CA supports two main storage patterns:
+    </p>
+    <ul>
+      <li><strong>Local results file:</strong> good for testing and small pilot runs. Set <code>RESULTS_FILE</code> and completed sessions will be appended as JSON lines.</li>
+      <li><strong>PostgreSQL:</strong> recommended for live studies, persistent result storage, and database-backed participant-code validation.</li>
+    </ul>
+
+    <h3>PostgreSQL schema</h3>
+    <p>
+      Use the schema in <code>pre_requisites/postgres_table.txt</code> to create the
+      <code>tri_ca_codes</code> and <code>tri_ca_results</code> tables.
+    </p>
+
+    <h3>Participant access codes</h3>
+    <p>
+      The helper script below generates codes for a specific experiment ID:
+    </p>
+    <pre><code>python pre_requisites/generate_codes.py --expid your_experiment_id</code></pre>
+
+    <p>
+      For live studies, insert the generated codes into <code>tri_ca_codes</code> before launch.
+      During a local smoke test, you can skip this step and use <code>REUSABLE_CODE=tri-ca</code>.
+    </p>
+
+    <h3>What gets saved</h3>
+    <ul>
+      <li>Session identifiers and timestamps</li>
+      <li>Treatment-group assignment</li>
+      <li>Pre-questionnaire and post-questionnaire responses</li>
+      <li>Conversation transcripts and per-turn interaction times</li>
+      <li>Completion code and redirect information, if configured</li>
+    </ul>
+
+    <div class="footer">
+      <span>TRI-CA Experimental Platform</span>
+      <span>6</span>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>7. Experiment Configuration Files</h2>
+
+    <p>
+      TRI-CA studies are primarily configured through three CSV files plus two file banks:
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>File or folder</th>
+          <th>Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>experiment_configuration/questions_bank.csv</code></td>
+          <td>Defines questionnaire items, question types, labels, and block-level randomization rules.</td>
+        </tr>
+        <tr>
+          <td><code>experiment_configuration/experiment_desc.csv</code></td>
+          <td>Controls selected page titles, headers, and body copy for experiment stages.</td>
+        </tr>
+        <tr>
+          <td><code>experiment_configuration/treatment_groups_config.csv</code></td>
+          <td>Defines treatment groups, prompt files, task files, avatars, and questionnaire blocks.</td>
+        </tr>
+        <tr>
+          <td><code>experiment_configuration/hidden_prompts_bank/</code></td>
+          <td>Stores plain-text hidden prompt files.</td>
+        </tr>
+        <tr>
+          <td><code>experiment_configuration/user_tasks_bank/</code></td>
+          <td>Stores HTML fragments shown as participant task descriptions.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="two-col">
+      <div class="image-block">
+        <img src="file:///home/guy/repos/TRI-CA-gitpages/static/screenshots/questions_bank.png" alt="Question bank screenshot">
+        <div class="caption">Question bank example</div>
+      </div>
+      <div class="image-block">
+        <img src="file:///home/guy/repos/TRI-CA-gitpages/static/screenshots/treatment_group_config.png" alt="Treatment group screenshot">
+        <div class="caption">Treatment-group configuration example</div>
+      </div>
+    </div>
+
+    <p>
+      In the default UI, supported question types are text input, single-item Likert, grouped Likert,
+      single-select multiple choice, and label rows.
+    </p>
+
+    <div class="footer">
+      <span>TRI-CA Experimental Platform</span>
+      <span>7</span>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>8. Deployment Options and Participant Flow</h2>
+
+    <h3>Deployment options</h3>
+    <p>
+      TRI-CA can run on any Node.js-compatible host that exposes environment variables and a public URL.
+      Common options include:
+    </p>
+    <ul>
+      <li>Heroku or another platform-as-a-service</li>
+      <li>AWS, Azure, or GCP</li>
+      <li>An institutional research server</li>
+      <li>A lab-managed machine for internal pilots</li>
+    </ul>
+
+    <div class="note">
+      <p><strong>Deployment limitation:</strong> the default application uses the in-memory Express session store. For live studies, prefer a single running server unless you redesign session storage.</p>
+    </div>
+
+    <h3>Participant flow</h3>
+    <ol>
+      <li>Participant enters an access code.</li>
+      <li>The platform validates the code against PostgreSQL, unless a reusable local test code is configured.</li>
+      <li>A session is initialized and assigned to a treatment group.</li>
+      <li>The participant completes consent.</li>
+      <li>Configured pre-questionnaire blocks are shown.</li>
+      <li>The participant completes the chat task with the treatment-specific hidden prompt and task instructions.</li>
+      <li>Configured post-questionnaire blocks are shown.</li>
+      <li>The completed session is saved and the participant may receive a completion code or redirect button.</li>
+    </ol>
+
+    <p>
+      If a treatment group has no configured pre- or post-question blocks, the corresponding stage is
+      skipped automatically. If a treatment group has a blank <code>hidden_prompt</code>, the chat stage
+      is skipped automatically.
+    </p>
+
+    <div class="footer">
+      <span>TRI-CA Experimental Platform</span>
+      <span>8</span>
+    </div>
+  </section>
+
+  <section class="page compact-page">
+    <h2>9. Output Data, Testing, and Limitations</h2>
+
+    <h3>Output data</h3>
+    <p>
+      Depending on your setup, completed sessions can be written to <code>RESULTS_FILE</code>,
+      PostgreSQL, or both. The saved data include treatment-group assignment, questionnaire responses,
+      conversation history, timestamps, and optional completion metadata.
+    </p>
+
+    <ul>
+      <li><code>uid</code> and <code>treatmentGroupId</code> identify the session and assigned condition.</li>
+      <li><code>preQuestionsAnswers</code> and <code>postQuestionsAnswers</code> store questionnaire responses.</li>
+      <li><code>conversationContext</code> stores the participant-assistant exchange.</li>
+      <li><code>time</code>, completion-code fields, and redirect fields capture end-of-session metadata when configured.</li>
+    </ul>
+
+    <div class="image-block">
+      <img src="file:///home/guy/repos/TRI-CA-gitpages/static/screenshots/output_json_example.svg" alt="Output JSON example">
+      <div class="caption">Example decoded session payload structure</div>
+    </div>
+
+    <h3>Testing checklist</h3>
+    <ul>
+      <li>Run the local smoke test before using a public host.</li>
+      <li>Verify questionnaire pages and treatment-group file paths.</li>
+      <li>Verify PostgreSQL writes and participant-code validation before launch.</li>
+      <li>Complete at least one full participant run end to end.</li>
+    </ul>
+
+    <h3>Known limitations</h3>
+    <ul>
+      <li>Incomplete sessions are not saved.</li>
+      <li>Malformed CSV files can break startup or runtime behavior.</li>
+      <li><code>question_name</code> values should be globally unique.</li>
+      <li>Answer-based conditional branching is not implemented in the default questionnaire renderer.</li>
+      <li>Existing code validation is simple and research-oriented, not intended as a hardened authentication system.</li>
+    </ul>
+
+    <p class="small">
+      <strong>Recommendation:</strong> use the local smoke test first, then connect PostgreSQL, then deploy to a public host only after you have validated the full participant flow.
+    </p>
+
+    <div class="footer">
+      <span>TRI-CA Experimental Platform</span>
+      <span>9</span>
+    </div>
+  </section>
+</body>
+</html>

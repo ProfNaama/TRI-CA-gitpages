@@ -211,29 +211,51 @@
       margin: 0.14in 0 0.05in 0;
     }
 
+    .compact-page h2 {
+      font-size: 17pt;
+      margin: 0 0 0.12in 0;
+      padding-bottom: 0.05in;
+    }
+
     .compact-page p,
     .compact-page li,
     .compact-page td,
     .compact-page th,
     .compact-page code,
     .compact-page pre {
-      font-size: 9.8pt;
+      font-size: 9.4pt;
     }
 
-    .compact-page ul {
-      margin: 0.06in 0 0.1in 0.2in;
+    .compact-page ul,
+    .compact-page ol {
+      margin: 0.05in 0 0.08in 0.2in;
     }
 
     .compact-page li {
-      margin-bottom: 0.03in;
+      margin-bottom: 0.02in;
+    }
+
+    .compact-page pre {
+      padding: 0.1in;
+      margin: 0.08in 0 0.12in 0;
+    }
+
+    .compact-page .note {
+      padding: 0.08in 0.12in;
+      margin: 0.08in 0;
+    }
+
+    .compact-page .note p {
+      font-size: 9.3pt;
+      margin: 0;
     }
 
     .compact-page .image-block {
-      margin: 0.08in 0 0.1in 0;
+      margin: 0.04in 0 0.06in 0;
     }
 
     .compact-page .image-block img {
-      max-width: 68%;
+      max-width: 60%;
     }
 
     .compact-page .caption {
@@ -474,7 +496,7 @@ node app.js</code></pre>
     </ol>
 
     <div class="callout">
-      <p><strong>Why this matters:</strong> this local smoke test catches most configuration errors before you connect external services, deploy to a public server, or invite participants.</p>
+      <p><strong>Why this matters:</strong> this local smoke test catches most configuration errors before you connect external services, deploy to a public server, or invite participants. For a local run with participant-specific codes, see the participant access-code section below.</p>
     </div>
 
     <div class="footer">
@@ -508,8 +530,12 @@ DATABASE_URL=postgresql://user:password@host:port/database</code></pre>
           <td>Append completed sessions to a local file as JSON lines.</td>
         </tr>
         <tr>
+          <td><code>LOCAL_CODES_FILE</code></td>
+          <td>Validate participant codes from a local JSON file without PostgreSQL.</td>
+        </tr>
+        <tr>
           <td><code>REUSABLE_CODE</code></td>
-          <td>Developer testing code that bypasses database validation.</td>
+          <td>Developer testing code that bypasses normal code validation.</td>
         </tr>
         <tr>
           <td><code>OPENAI_MODEL</code></td>
@@ -549,14 +575,14 @@ DATABASE_URL=postgresql://user:password@host:port/database</code></pre>
     </div>
   </section>
 
-  <section class="page">
+  <section class="page compact-page">
     <h2>6. Database Setup and Result Storage</h2>
 
     <p>
       TRI-CA supports two main storage patterns:
     </p>
     <ul>
-      <li><strong>Local results file:</strong> good for testing and small pilot runs. Set <code>RESULTS_FILE</code> and completed sessions will be appended as JSON lines.</li>
+      <li><strong>Local results file:</strong> good for testing and small pilot runs. Set <code>RESULTS_FILE</code> and completed sessions will be appended as JSON lines. If you also set <code>LOCAL_CODES_FILE</code>, TRI-CA can validate participant codes from a local JSON file.</li>
       <li><strong>PostgreSQL:</strong> recommended for live studies, persistent result storage, and database-backed participant-code validation.</li>
     </ul>
 
@@ -571,6 +597,20 @@ DATABASE_URL=postgresql://user:password@host:port/database</code></pre>
       The helper script below generates codes for a specific experiment ID:
     </p>
     <pre><code>python pre_requisites/generate_codes.py --expid your_experiment_id</code></pre>
+
+    <p class="small">
+      By default, the helper generates <code>100</code> codes of length <code>10</code>. Use
+      <code>--seed 42</code> for reproducible output; otherwise it uses the current Unix timestamp.
+      The default output prints three labeled sections: a CSV-like list, a PostgreSQL
+      <code>INSERT</code> block, and a local JSON block suitable for <code>LOCAL_CODES_FILE</code>.
+    </p>
+
+    <p class="small">
+      For a local run with participant-specific codes and no PostgreSQL, you can write the JSON output
+      to a file and launch TRI-CA with it:
+    </p>
+    <pre><code>python pre_requisites/generate_codes.py --expid local_demo --format local-json > /tmp/tri_ca_local_codes.json
+EXPERIMENT_ID=local_demo LOCAL_CODES_FILE=/tmp/tri_ca_local_codes.json FAKE_LLM_RESPONSE="This is a fake TRI-CA response for local testing." RESULTS_FILE=/tmp/results.txt node app.js</code></pre>
 
     <p>
       For live studies, insert the generated codes into <code>tri_ca_codes</code> before launch.
@@ -651,8 +691,13 @@ DATABASE_URL=postgresql://user:password@host:port/database</code></pre>
     </div>
   </section>
 
-  <section class="page">
-    <h2>8. Deployment Options and Participant Flow</h2>
+  <section class="page compact-page">
+    <h2>8. Deployment, Live Launch, and Participant Flow</h2>
+
+    <p class="small">
+      <strong>Local vs live:</strong> for a local smoke test or a small ad hoc study on one machine,
+      use the local options described earlier. This section assumes a live or public deployment.
+    </p>
 
     <h3>Deployment options</h3>
     <p>
@@ -666,6 +711,20 @@ DATABASE_URL=postgresql://user:password@host:port/database</code></pre>
       <li>A lab-managed machine for internal pilots</li>
     </ul>
 
+    <h3>Live launch checklist</h3>
+    <ul>
+      <li>Configure the experiment files under <code>experiment_configuration/</code>.</li>
+      <li>Create the PostgreSQL tables and load participant codes.</li>
+      <li>Set <code>OPENAI_API_KEY</code>, <code>DATABASE_URL</code>, <code>EXPERIMENT_ID</code>, and <code>SESSION_SECRET</code>.</li>
+    </ul>
+
+    <pre><code>OPENAI_API_KEY=your_openai_api_key_here \
+DATABASE_URL=postgresql://user:password@host:port/database \
+EXPERIMENT_ID=your_experiment_id \
+SESSION_SECRET=replace_with_a_long_random_secret \
+PORT=8080 \
+node app.js</code></pre>
+
     <div class="note">
       <p><strong>Deployment limitation:</strong> the default application uses the in-memory Express session store. For live studies, prefer a single running server unless you redesign session storage.</p>
     </div>
@@ -673,7 +732,7 @@ DATABASE_URL=postgresql://user:password@host:port/database</code></pre>
     <h3>Participant flow</h3>
     <ol>
       <li>Participant enters an access code.</li>
-      <li>The platform validates the code against PostgreSQL, unless a reusable local test code is configured.</li>
+      <li>The platform validates the code against PostgreSQL or <code>LOCAL_CODES_FILE</code>, unless a reusable local test code is configured.</li>
       <li>A session is initialized and assigned to a treatment group.</li>
       <li>The participant completes consent.</li>
       <li>Configured pre-questionnaire blocks are shown.</li>
@@ -727,6 +786,7 @@ DATABASE_URL=postgresql://user:password@host:port/database</code></pre>
     <h3>Known limitations</h3>
     <ul>
       <li>Incomplete sessions are not saved.</li>
+      <li>Participant codes are marked completed only at the final submission step, so a participant who leaves early and later starts a new session can reuse the same code.</li>
       <li>Malformed CSV files can break startup or runtime behavior.</li>
       <li><code>question_name</code> values should be globally unique.</li>
       <li>Answer-based conditional branching is not implemented in the default questionnaire renderer.</li>

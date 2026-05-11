@@ -37,11 +37,11 @@
                 </li>
                 <li><a href="#quick-start">Getting Started</a>
                     <ol>
-                        <li><a href="#install">Installation & Local Smoke Test</a></li>
+                        <li><a href="#install">Installation & Local Starting Options</a></li>
                         <li><a href="#config">Experiment Configuration</a></li>
                         <li><a href="#llm">LLM Setup</a></li>
-                        <li><a href="#deploy">Deployment Options</a></li>
-                        <li><a href="#storage">Database & Result Storage</a></li>
+                        <li><a href="#storage">Database, Codes & Result Storage</a></li>
+                        <li><a href="#deploy">Deployment & Live Launch</a></li>
                         <li><a href="#flow">Participant Flow</a></li>
                     </ol>
                 </li>
@@ -167,7 +167,7 @@
                             environment variable)</li>
                         <li><strong>Database Backed Storage:</strong> Full experiment control and data collection via 2
                             PostgreSQL tables</li>
-                        <li><strong>Codes Table:</strong> For participant code validation</li>
+                        <li><strong>Codes Table / Local Codes File:</strong> For participant code validation</li>
                         <li><strong>Data Collection Table:</strong> JSON-format storage of each participant's complete
                             session
                             data, including questionnaire responses, conversation logs, timestamps, and metadata</li>
@@ -202,7 +202,7 @@
             </div>
             <h2 id="quick-start">Getting Started</h2>
             <div>
-                <h3 id="install">1. Installation &amp; Local Smoke Test</h3>
+                <h3 id="install">1. Installation &amp; Local Starting Options</h3>
                 <p class="toggle-btn">Read more...</p>
                 <div class="toggle-content">
                     <p>
@@ -225,6 +225,29 @@ node app.js</code></pre>
                         <code>tri-ca</code>,
                         and walk through the complete participant flow. This is the fastest way to verify
                         that your local configuration works before connecting external services.
+                    </p>
+                    <p>
+                        If you want a slightly more realistic local run without PostgreSQL, you can also
+                        generate participant-specific codes and store them in a local JSON file:
+                    </p>
+                    <pre><code>python pre_requisites/generate_codes.py --expid local_demo --format local-json > /tmp/tri_ca_local_codes.json</code></pre>
+                    <p>
+                        Then launch TRI-CA with both <code>EXPERIMENT_ID</code> and
+                        <code>LOCAL_CODES_FILE</code>:
+                    </p>
+                    <pre><code>EXPERIMENT_ID=local_demo \
+LOCAL_CODES_FILE=/tmp/tri_ca_local_codes.json \
+FAKE_LLM_RESPONSE="This is a fake TRI-CA response for local testing." \
+RESULTS_FILE=/tmp/results.txt \
+node app.js</code></pre>
+                    <p>
+                        In that mode, open <code>/tmp/tri_ca_local_codes.json</code>, copy one of the
+                        generated codes, and use it on the welcome page instead of <code>tri-ca</code>.
+                    </p>
+                    <p>
+                        For many small ad hoc studies on a single machine, these local options may
+                        already be enough. The later deployment section is mainly for live or public
+                        studies.
                     </p>
                 </div>
 
@@ -310,7 +333,8 @@ node app.js</code></pre>
                     <p>
                         The <code>pre_requisites/</code> folder does not store participant codes directly.
                         Instead, it includes the PostgreSQL schema file and a helper script for generating
-                        codes that you can insert into the codes table for a specific experiment.
+                        codes that you can either insert into the codes table or save as a local JSON
+                        file for the local-with-codes workflow.
                     </p>
                 </div>
 
@@ -338,40 +362,75 @@ node app.js</code></pre>
                     </p>
                 </div>
 
-                <h3 id="deploy">4. Deployment Options</h3>
+                <h3 id="storage">4. Database, Codes, and Result Storage</h3>
                 <p class="toggle-btn">Read more...</p>
                 <div class="toggle-content">
                     <p>
-                        TRI-CA can be deployed anywhere that can run a Node.js web server and expose a
-                        public URL. Heroku is one option, but it is not the only one.
+                        This section is mainly relevant for live or public studies. If you only need a
+                        local smoke test or a small ad hoc study on one machine, the local options in the
+                        first section above may already be enough.
+                    </p>
+                    <p>
+                        TRI-CA supports two main storage patterns:
                     </p>
                     <ul>
-                        <li><strong>Local machine or lab server:</strong> Useful for pilot testing and small internal studies.</li>
+                        <li><strong>Local file output:</strong> Set <code>RESULTS_FILE</code> and the app will append one JSON line per completed session. If you also set <code>LOCAL_CODES_FILE</code>, TRI-CA can validate participant codes from a local JSON file. This is convenient for local testing and small pilot runs on one machine.</li>
+                        <li><strong>PostgreSQL:</strong> Set <code>DATABASE_URL</code> and create the required tables using <code>pre_requisites/postgres_table.txt</code>. This is the recommended path for live or public studies. The platform will validate participant codes against <code>tri_ca_codes</code> and save completed sessions into <code>tri_ca_results</code>.</li>
+                    </ul>
+                    <p>
+                        The code-generation helper in <code>pre_requisites/generate_codes.py</code> can be
+                        used to generate study codes for a specific experiment ID.
+                    </p>
+                    <pre><code>python pre_requisites/generate_codes.py --expid your_experiment_id</code></pre>
+                    <p>
+                        For a live deployment, you can generate SQL only and load it into PostgreSQL:
+                    </p>
+                    <pre><code>python pre_requisites/generate_codes.py --expid your_experiment_id --format postgresql > codes.sql
+psql "$DATABASE_URL" -f codes.sql</code></pre>
+                    <p>
+                        By default, the helper generates <code>100</code> codes of length <code>10</code>.
+                        Use <code>--seed 42</code> if you want reproducible output; otherwise the script uses
+                        the current Unix timestamp. The default output includes three labeled sections:
+                        a simple CSV-like list, a PostgreSQL <code>INSERT</code> block, and a local JSON block
+                        that can be saved directly as <code>LOCAL_CODES_FILE</code>. For live studies, use
+                        the PostgreSQL output. For the local-with-codes path from the first section above,
+                        use <code>--format local-json</code>.
+                    </p>
+                </div>
+
+                <h3 id="deploy">5. Deployment &amp; Live Launch</h3>
+                <p class="toggle-btn">Read more...</p>
+                <div class="toggle-content">
+                    <p>
+                        For local smoke tests and small ad hoc studies, use the local paths in the first
+                        section above. This section is for a live or public deployment.
+                    </p>
+                    <p>
+                        TRI-CA can be deployed anywhere that can run a Node.js web server and expose a
+                        public URL.
+                    </p>
+                    <ul>
+                        <li><strong>Local lab server:</strong> Useful when your team controls its own machine and network.</li>
                         <li><strong>Heroku or other PaaS:</strong> Good for straightforward deployment with managed environment variables.</li>
                         <li><strong>AWS, Azure, or GCP:</strong> Suitable when your institution already uses cloud infrastructure or requires custom networking.</li>
                         <li><strong>Container-based hosting:</strong> Works if you package the app for Docker or a similar platform.</li>
                     </ul>
-                    <p>
-                        Regardless of host, you will need Node.js, the required environment variables, and
-                        either PostgreSQL or a local results file path. For live studies, run the app as a
-                        single server unless you intentionally redesign session handling.
-                    </p>
-                </div>
-
-                <h3 id="storage">5. Setting Up the Database and Result Storage</h3>
-                <p class="toggle-btn">Read more...</p>
-                <div class="toggle-content">
-                    <p>
-                        TRI-CA supports two main result-storage patterns:
-                    </p>
+                    <p>Before launch, make sure you have:</p>
                     <ul>
-                        <li><strong>Local file output:</strong> Set <code>RESULTS_FILE</code> and the app will append one JSON line per completed session. This is convenient for local testing and small pilot runs.</li>
-                        <li><strong>PostgreSQL:</strong> Set <code>DATABASE_URL</code> and create the required tables using <code>pre_requisites/postgres_table.txt</code>. The platform will validate participant codes against <code>tri_ca_codes</code> and save completed sessions into <code>tri_ca_results</code>.</li>
+                        <li>configured the experiment files under <code>experiment_configuration/</code></li>
+                        <li>created the PostgreSQL tables and loaded participant codes</li>
+                        <li>set <code>OPENAI_API_KEY</code>, <code>DATABASE_URL</code>, <code>EXPERIMENT_ID</code>, and <code>SESSION_SECRET</code></li>
                     </ul>
+                    <p>Example live launch command:</p>
+                    <pre><code>OPENAI_API_KEY=your_openai_api_key_here \
+DATABASE_URL=postgresql://user:password@host:port/database \
+EXPERIMENT_ID=your_experiment_id \
+SESSION_SECRET=replace_with_a_long_random_secret \
+PORT=8080 \
+node app.js</code></pre>
                     <p>
-                        The code-generation helper in <code>pre_requisites/generate_codes.py</code> can be
-                        used to generate study codes for a specific experiment ID. In production, most
-                        researchers will use PostgreSQL for code validation and persistent result storage.
+                        For live studies, run the app as a single server unless you intentionally redesign
+                        session handling and session storage.
                     </p>
                 </div>
 
@@ -380,7 +439,7 @@ node app.js</code></pre>
                 <div class="toggle-content">
                     <ol>
                         <li>The participant enters an access code.</li>
-                        <li>The platform validates the code against the database, unless a reusable local test code is being used.</li>
+                        <li>The platform validates the code against PostgreSQL or <code>LOCAL_CODES_FILE</code>, unless a reusable local test code is being used.</li>
                         <li>The session is initialized and a treatment group is assigned.</li>
                         <li>The participant reads and accepts or declines consent.</li>
                         <li>Any configured pre-questionnaire blocks are shown.</li>
@@ -459,6 +518,18 @@ node app.js</code></pre>
                         <li>Grouped Likert items are combined only when consecutive rows share the same scale options.</li>
                         <li>If question randomization is enabled for a block, keep at most one label row in that block.</li>
                         <li><code>question_name</code> values should be globally unique across the whole question bank.</li>
+                    </ul>
+                </div>
+
+                <h3 id="limitations">9. Limitations</h3>
+                <p class="toggle-btn">Read more...</p>
+                <div class="toggle-content">
+                    <ul>
+                        <li>Incomplete sessions are not saved. Only sessions that reach final submission are written to <code>RESULTS_FILE</code> and or PostgreSQL.</li>
+                        <li>Participant codes are marked completed only at the final submission step. If a participant starts, closes the study before finishing, and later starts a new session, the same code can still be accepted again.</li>
+                        <li>The default deployment uses the in-memory Express session store, so TRI-CA should be treated as a single-server app unless session storage is redesigned.</li>
+                        <li>Malformed CSV files can break startup or runtime behavior.</li>
+                        <li>Answer-based conditional branching is not implemented in the default questionnaire renderer.</li>
                     </ul>
                 </div>
             </div>

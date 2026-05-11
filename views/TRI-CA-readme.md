@@ -18,7 +18,7 @@ Built with Node.js and Express, it provides a complete experimental workflow fro
 ## Key Features & Contributions
 
 ### **1. Complete Experimental Workflow**
-- **Participant Onboarding and Verification**: Code-based authentication with database validation
+- **Participant Onboarding and Verification**: Code-based authentication with PostgreSQL-backed or local-file-backed validation
 - **Informed Consent**: Digital consent collection with opt-out handling (IRB)
 - **Pre-Study Questionnaires**: Configurable baseline measurements/questionnaires
 - **AI Chat Interface**: Real-time interaction with LLMs (default to OpenAI GPT models)
@@ -68,8 +68,8 @@ Built with Node.js and Express, it provides a complete experimental workflow fro
 
 ## Getting Started
 
-### Quick Start (5 minutes, local smoke test)
-Note: this Quick Start runs fully locally without PostgreSQL support. If you set `REUSABLE_CODE=tri-ca`, the server will accept that test code without checking the database, and collected results will be appended to the local file specified by `RESULTS_FILE` on your filesystem.
+### Quick Start (5-10 minutes, local)
+This section covers the two simplest local paths. Start with the minimal smoke test below. If you want a slightly more realistic single-machine pilot, the second path uses `LOCAL_CODES_FILE` with participant-specific codes while still staying fully local.
 
 #### 1. **Clone the repository**
 
@@ -84,7 +84,7 @@ cd TRI-CA
 npm install
 ```
 
-#### 3. **Run a minimal server for testing (no database required)**
+#### 3. **Run a minimal smoke test (no database, no local code file)**
 Use the provided test reusable code `REUSABLE_CODE=tri-ca` to skip DB validation and write results to a local file. For a full flow test without calling OpenAI, omit `OPENAI_API_KEY`; the app will use its built-in fake response, or you can override it with `FAKE_LLM_RESPONSE`.
 
 ```bash
@@ -94,72 +94,138 @@ RESULTS_FILE=/tmp/results.txt \
 node app.js
 ```
 
-#### 4. **Connect to the experiment website**
+#### 4. **Optional: run locally with participant-specific codes (still no PostgreSQL)**
+Generate a local JSON code file:
+
+```bash
+python pre_requisites/generate_codes.py --expid local_demo --format local-json > /tmp/tri_ca_local_codes.json
+```
+
+Then start TRI-CA with that local code file:
+
+```bash
+EXPERIMENT_ID=local_demo \
+LOCAL_CODES_FILE=/tmp/tri_ca_local_codes.json \
+FAKE_LLM_RESPONSE="This is a fake TRI-CA response for local testing." \
+RESULTS_FILE=/tmp/results.txt \
+node app.js
+```
+
+#### 5. **Connect to the experiment website**
 - Open the browser and visit http://localhost:3030 (or the port printed by the server).
 
-#### 5. **Test flow**
-- Enter the reusable code above when prompted to proceed as a test participant.
+#### 6. **Test flow**
+- For the minimal smoke test, enter the reusable code `tri-ca`.
+- For the local-with-codes path, open `/tmp/tri_ca_local_codes.json` and enter one of the generated codes.
 - Walk through consent, baseline questionnaire, the AI chat task, and post-study questionnaire.
 - Results will be appended to the file set by `RESULTS_FILE` (default: none) or stored in PostgreSQL if configured.
+- For many small ad hoc studies on one machine, these local paths may already be enough.
 
 
 
-### Full Setup (production-like deployment)
+### Full Deployment (live or public study)
 
-#### 1. **Clone the repository**
+If you only need a local smoke test or a small ad hoc study on one machine, use the local paths in `Getting Started` above. The steps below assume a live or public deployment with PostgreSQL-backed participant codes and result storage.
+
+#### 1. **Start from a local checkout**
 
 ```bash
 git clone https://github.com/ProfNaama/TRI-CA.git
 cd TRI-CA
+npm install
 ```
 
-#### 2. **Database Configuration (and PostgreSQL schema)**
-Set up PostgreSQL database tables for participant codes and results storage. See detailed schema and setup instructions in [`pre_requisites/postgres_table.txt`](pre_requisites/postgres_table.txt).
+If you already completed the local quick start, you can keep using the same checkout and skip this step.
 
-
-#### 3. **Node.js Environment Setup**
-Install Node.js and required dependencies for local or cloud deployment:
-```bash
-npm install  # Installs all dependencies listed in package.json
-```
-See [`package.json`](package.json) for complete dependency list including Express, OpenAI, and PostgreSQL drivers.
-
-#### 4. **Experimental Configuration Files**
+#### 2. **Configure the Experiment Files**
 Configure three core CSV files that control your experimental design:
 
 - **[`experiment_configuration/experiment_desc.csv`](experiment_configuration/experiment_desc.csv)** - Page titles, headers, and body copy for experiment stages; some controls and UI text remain hardcoded in the templates
 - **[`experiment_configuration/treatment_groups_config.csv`](experiment_configuration/treatment_groups_config.csv)** - Treatment group assignments, hidden prompts, user preferences, and randomization settings for factorial designs
 - **[`experiment_configuration/questions_bank.csv`](experiment_configuration/questions_bank.csv)** - Pre/post questionnaire items, question types, randomization rules, and Likert scale configurations
 
-#### 5. **API Credentials & Database Connection**
-Configure required connection strings and API keys:
-- **OpenAI API Key**: Register at OpenAI and obtain API credentials for GPT model access
-- **PostgreSQL Connection String**: Database connection details for backend data storage (both codes as well as each participant's completed session data)
+#### 3. **Set Up PostgreSQL**
+For live or public studies, use PostgreSQL for participant-code validation and completed-session storage.
 
-#### 6. **Participant Access Codes**
-Generate unique participant codes and insert into database. Use the provided Python script for code generation:
+- Create the required tables using [`pre_requisites/postgres_table.txt`](pre_requisites/postgres_table.txt).
+- Point `DATABASE_URL` at that database.
+- Keep the local-file-backed `LOCAL_CODES_FILE` mode for local or ad hoc single-machine runs; it is already covered in `Getting Started` above.
+
+#### 4. **Generate and Load Participant Codes**
+For live deployment, generate codes for a specific experiment ID and load them into `tri_ca_codes`.
+
+Basic generator usage:
 ```bash
 python pre_requisites/generate_codes.py --expid your_experiment_id
 ```
-See [`pre_requisites/generate_codes.py`](pre_requisites/generate_codes.py) for example implementation.
+
+SQL-only output for live deployment:
+```bash
+python pre_requisites/generate_codes.py --expid your_experiment_id --format postgresql > codes.sql
+psql "$DATABASE_URL" -f codes.sql
+```
+
+The helper script is also useful for local runs:
+- use the `postgresql` output for live/public deployments
+- use the `local json` output for the local-with-codes path in `Getting Started`
+
+Useful generator arguments:
+- `--codes-count 100`: number of codes to generate. Default: `100`.
+- `--code-len 10`: length of each code. Default: `10`.
+- `--seed 42`: optional seed for reproducible code generation. If omitted, the script uses the current Unix timestamp.
+- `--format all|csv|postgresql|local-json`: output format. Default: `all`.
+
+Examples:
+```bash
+# Default combined output for one experiment
+python pre_requisites/generate_codes.py --expid your_experiment_id
+
+# Reproducible run with more codes
+python pre_requisites/generate_codes.py --expid your_experiment_id --codes-count 150 --seed 42
+
+# JSON only, ready to save as LOCAL_CODES_FILE
+python pre_requisites/generate_codes.py --expid your_experiment_id --format local-json > local_codes.json
+```
+
+By default (`--format all`), the script prints three sections:
+- `csv`: a simple code list that is easy to inspect or paste into a spreadsheet.
+- `postgresql`: an `INSERT` statement block for the `tri_ca_codes` table.
+- `local json`: JSON records ready to save into `LOCAL_CODES_FILE`.
+
+For local-file-backed studies, create a JSON file and point `LOCAL_CODES_FILE` to it. Example:
+
+```json
+[
+  { "code": "participant-001", "expid": "your_experiment_id", "completed": null },
+  { "code": "participant-002", "expid": "your_experiment_id", "completed": null },
+  { "code": "participant-003", "expid": "your_experiment_id", "completed": null }
+]
+```
+
+When a participant completes the study, TRI-CA updates that record's `completed` field in the same file so the code cannot be reused after a server restart.
+If you store codes for several experiments in one combined JSON file, set `EXPERIMENT_ID` so TRI-CA uses the matching `expid` records.
 
 
-#### 7. **Environment Variables**
-Configure required environment variables:
+#### 5. **Configure Environment Variables**
+Typical live-deployment variables:
 ```bash
 OPENAI_API_KEY=your_openai_api_key_here
 DATABASE_URL=postgresql://user:password@host:port/database
-PORT=3030  # Optional: defaults to 3030
+EXPERIMENT_ID=your_experiment_id
+SESSION_SECRET=replace_with_a_long_random_secret
 ```
 
-**Required Variables:**
-- `OPENAI_API_KEY`: Your OpenAI API key for chat completions
-- `DATABASE_URL`: PostgreSQL connection string for data storage
+**Required for most live deployments:**
+- `OPENAI_API_KEY`: Your OpenAI API key for chat completions in live-model studies
+- `DATABASE_URL`: PostgreSQL connection string for database-backed code validation and result storage
+- `EXPERIMENT_ID`: Identifier for the experiment
+- `SESSION_SECRET`: Secret used to sign session cookies; set this explicitly for any live or public deployment
 
 
 **Optional Variables (yet useful). Default values are set in ./config.js:**
 - `PORT`: Server port (defaults to 3030).
 - `RESULTS_FILE`: Path to append results as lines of JSON (useful for quick capture).
+- `LOCAL_CODES_FILE`: Path to a JSON file that stores participant codes and their completion status for local, non-PostgreSQL studies.
 - `BASE64_ENCODE`: If set to `1`, saved session payloads will be Base64-encoded. Default: off (`0`).
 - `REUSABLE_CODE`: Developer testing code that bypasses DB code-check (for example, `REUSABLE_CODE=tri-ca` during local testing).
 - `EXPERIMENT_ID`: Identifier for the experiment.
@@ -169,40 +235,40 @@ PORT=3030  # Optional: defaults to 3030
 - `OPENAI_TOKEN_LIMIT`: Maximum tokens for OpenAI responses (default is 1000).
 - `OPENAI_MODEL`: OpenAI model to use (default `gpt-4o`).
 - `FAKE_LLM_RESPONSE`: Fixed assistant reply used when `OPENAI_API_KEY` is not set. If no API key is provided, this variable is required.
+- `DATABASE_URL`: PostgreSQL connection string for database-backed code validation and result storage.
 - `RESULTS_PGTABLE`: PostgreSQL table name for results storage (default `tri_ca_results`).
 - `CODES_PGTABLE`: PostgreSQL table name for participant codes (default `tri_ca_codes`).
 - `SESSION_SECRET`: Secret used to sign session cookies. If omitted, the server generates a secure random secret at startup.
 
 
-#### 8. **Deployment Options and Launch**
-Deploy TRI-CA anywhere that can run a Node.js web server and expose environment variables, including a local lab server, Heroku or another PaaS, or cloud platforms such as AWS, Azure, or GCP.
+#### 6. **Choose a Hosting Target**
+Deploy TRI-CA anywhere that can run a Node.js web server and expose environment variables, including:
+
+- a local lab server
+- Heroku or another PaaS
+- AWS, Azure, or GCP
+- a container-based host if you package the app for Docker or similar tooling
 
 For live studies, prefer a single running server unless you intentionally redesign session handling and session storage.
 
-Start the server locally (requires Node.js installation):
+#### 7. **Launch the Server**
+Example live/public launch command:
 ```bash
-# Example with all environment variables
 OPENAI_API_KEY=your_openai_api_key_here \
 PORT=8080 \
 DATABASE_URL=postgres://user:password@host:5432/database \
-BASE64_ENCODE=1 \
-RESULTS_FILE=/tmp/results.txt \
-OPENAI_TOKEN_LIMIT=2000 \
-REUSABLE_CODE=tri-ca \
-EXPERIMENT_ID=test \
-COMPLETE_CODE=testcompletecode1 \
+EXPERIMENT_ID=your_experiment_id \
+SESSION_SECRET=replace_with_a_long_random_secret \
+COMPLETE_CODE=your_completion_code \
 node app.js
 
-# Minimal launch. Uses defaults, data collection is added to /tmp/results.txt as clear text (no Base64 encoding). Also, for testing, the code "tri-ca" skips database validation.
-REUSABLE_CODE=tri-ca FAKE_LLM_RESPONSE="This is a fake TRI-CA response for local testing." RESULTS_FILE=/tmp/results.txt node app.js
-
-# Access at: http://localhost:8080 (or your specified PORT)
+# Access at: http://localhost:8080 (or your chosen PORT)
 ```
 
 ## Technical Architecture
 
 ### **Data Flow**
-1. **Participant Authentication** → Code validation against database
+1. **Participant Authentication** → Code validation via PostgreSQL, a local JSON code file, or a reusable local test code
 2. **Session Initialization** → Treatment group assignment and preferences
 3. **Consent Collection** → Digital consent with decline handling
 4. **Baseline Measurement** → Pre-study questionnaire administration
@@ -214,7 +280,7 @@ REUSABLE_CODE=tri-ca FAKE_LLM_RESPONSE="This is a fake TRI-CA response for local
 - **Express.js Server**: HTTP request handling and middleware
 - **Session Management**: Custom class-based session state management
 - **CSV Processing**: Dynamic configuration loading
-- **Database Layer**: PostgreSQL integration with connection pooling
+- **Database Layer**: PostgreSQL integration with connection pooling plus optional local file-backed code and result handling
 - **API Integration**: OpenAI chat completions
 
 
@@ -444,7 +510,7 @@ static/
     fonts/                        # Web fonts
 
 pre_requisites/
-    generate_codes.py             # Script to bulk-generate participant codes for DB insertion
+    generate_codes.py             # Script to bulk-generate participant codes for DB insertion or local JSON
     postgres_table.txt            # PostgreSQL schema for codes and results tables
 ```
 
@@ -492,7 +558,7 @@ If `sessionManager.getFinished()` is `true` (set either on consent decline or po
 - Applies any header/body overrides stored in the session (e.g., "You opted out" for declines).
 - Injects `completion_code` and `redirect_url` if configured.
 - Renders `./session_ended`.
-- If consent was given: calls `handleUserCompleted()` — serializes session to JSON (optionally Base64-encoded), writes to `RESULTS_FILE` and/or inserts into the PostgreSQL results table, marks the participant code as completed in the DB, then destroys the session.
+- If consent was given: calls `handleUserCompleted()` — serializes session to JSON (optionally Base64-encoded), writes to `RESULTS_FILE` and/or inserts into the PostgreSQL results table, marks the participant code as completed in the configured local JSON file or PostgreSQL table when applicable, then destroys the session.
 - If consent was declined: destroys the session without saving.
 
 ---
@@ -552,7 +618,7 @@ All form submissions POST to a single endpoint. The `form_type` hidden field (in
 
 | `form_type` | Handler | What it does |
 |---|---|---|
-| `welcome_code` | `handleWelcomeCodeSubmission` | Validates the submitted code against DB (`SELECT completed WHERE code=? AND expid=?`) or the configured reusable test code (for example, `tri-ca`). On success, stores code in session. Reconciles `prolific_pid` if it differs between URL param and form field. |
+| `welcome_code` | `handleWelcomeCodeSubmission` | Validates the submitted code against the configured local JSON code file or DB (`SELECT completed WHERE code=? AND expid=?`), or accepts the configured reusable test code (for example, `tri-ca`). On success, stores code in session. Reconciles `prolific_pid` if it differs between URL param and form field. |
 | `consent` | `handleConsentSubmission` | Checks all `consent.*` fields for `"YES"`. Any non-YES → sets `finished=true` with opt-out messaging. Otherwise sets `consent=true`. |
 | `pre_questionnaire` | `handlePreQuestionnaireSubmission` | Stores the entire `req.body` (all question responses) into `sessionManager.setPreQuestionsAnswers()`. |
 | `chat_ended` | `handleChatEndedSubmission` | Sets `sessionManager.setChatEnded(true)`. Triggered when the participant clicks "End Chat" in the UI. |
@@ -648,7 +714,7 @@ If/when a formal paper (or preprint/DOI) is available, replace the BibTeX entry 
 ### **Participant-code behavior**
 
 - Participant codes are simple short strings, not cryptographic tokens. In typical research deployments this is acceptable because codes are distributed out-of-band and marked as completed after use.
-- If a participant starts but does not finish, then later re-enters the same code after their cookie is cleared, the platform can accept the code again and produce a second completed record. Researchers should check for duplicate completions during data cleaning.
+- Participant codes are marked as completed only at the final submission step. If a participant starts, closes the study before finishing, and later begins a new session, the same code can still be accepted and produce a second completed record. Researchers should check for duplicate completions during data cleaning.
 
 ### **Data persistence**
 

@@ -1,10 +1,16 @@
 page,title,header,body1
 chat,TRI-CA,Chat with an AI agent,
-consent,TRI-CA,Online Consent for the Study,"<p>Participation in this study is voluntary.<br>
-You may stop or withdraw your participation at any time.<br>
-We do not collect any personal or identifiable information.<br>
-Your responses are anonymous and will not be linked to you in any way. <br>The anonymized data we collect will be used for research purposes only.<br> 
-By continuing to the next page you confirm that you understand the above information and agree to participate.
+consent,TRI-CA,Example Consent Information,"<p>
+  This page shows where your study's consent language appears in the baseline TRI-CA
+  template. For a real deployment, replace this example text in
+  <code>experiment_desc.csv</code> with your approved consent summary and any
+  study-specific details.
+</p>
+<p>
+  The consent questions and submit button below come from the page template. If you
+  want to change their wording or layout, edit the consent page in the application
+  code.
+</p>
 "
 pre_questionnaire,TRI-CA,Please read the following instructions ,
 post_questionnaire,TRI-CA,Thank you for participating,

@@ -1,3 +1,3 @@
 treatment_group,user_name,user_avatar,agent_name,agent_avatar,hidden_prompt,user_task_description,user_pre_questions,user_post_questions
-1,User,user1.png,Adam,avatar1.png,Prompt1,Task1,Block1,Block1;Block2;Block3;Block4;Block5
-2,User,user1.png,Eve,avatar2.png,prompt2,Task2,Block1,Block1;Block2;Block3;Block4;Block6
+1,User,user_avatar_01.png,Alex,agent_avatar_1.png,general_purpose_prompt.txt,example_task_description.html,Demo_block_1;Demo_block_4;,Demo_block_2;Demo_block_3;
+2,User,user_avatar_01.png,Alex,agent_avatar_1.png,general_purpose_prompt.txt,example_task_description.html,Demo_block_1;Demo_block_4;,Demo_block_2;Demo_block_3;

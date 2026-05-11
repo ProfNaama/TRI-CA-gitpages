@@ -68,6 +68,13 @@
                         deploy a standard study without changing the JavaScript code, while still
                         having the option to customize the interface and backend when needed.
                     </p>
+                    <p>
+                        The current repository is best treated as a baseline template rather than a
+                        finished, domain-specific study. The included questions, page text, prompts,
+                        and task descriptions are intentionally simple examples that show the structure
+                        of the system. In most real projects, researchers will fork the repo and
+                        replace those materials with more realistic study content.
+                    </p>
                 </div>
             </div>
             <div>
@@ -90,6 +97,9 @@
                             <strong>Questionnaire Configuration:</strong> Researchers can define pre- and
                             post-interaction questionnaires using configurable blocks, question types, and
                             permutation settings to measure baseline characteristics and outcome variables.
+                            In the default interface, the main supported types are text input, single-item
+                            Likert, grouped Likert, single-select multiple choice, and label or instruction
+                            rows.
                         </li>
                         <li>
                             <strong>Complex Experimental Designs:</strong> Treatment-group configuration
@@ -276,19 +286,59 @@ node app.js</code></pre>
                         <li><code>user_tasks_bank/</code> stores task-description HTML files shown on the chat page.</li>
                     </ul>
 
+                    <p>
+                        The default repository content is deliberately minimal. Think of it as a scaffold:
+                        the current questions, prompts, and task descriptions are there to demonstrate
+                        how the pieces fit together, not to serve as a polished final study. In a typical
+                        fork, researchers replace the baseline content with more realistic materials while
+                        keeping the overall workflow and configuration structure.
+                    </p>
+                    <p>
+                        <strong>Important CSV editing note:</strong> TRI-CA uses a standard CSV parser,
+                        and the current loader supports quoted fields with commas, embedded line breaks,
+                        and doubled double quotes. If a value contains commas or spans multiple lines,
+                        wrap the entire field in double quotes. If you want a literal quote to appear for
+                        participants, write it as two double quotes inside the field. This matters
+                        especially in <code>experiment_desc.csv</code>, where HTML often spans multiple
+                        lines.
+                    </p>
+                    <pre><code>consent,TRI-CA,Example Consent Information,"&lt;p&gt;Line 1, with a comma.&lt;/p&gt;
+&lt;p&gt;She said ""hello"" here.&lt;/p&gt;"</code></pre>
+
                     <p>Below is a practical description of each configuration area.</p>
 
                     <h4>2.1 Question Bank CSV</h4>
                     <p>
-                        This file contains all questionnaire items. Each row defines a question or label,
-                        its question type, and the block to which it belongs. Treatment groups reference
-                        questionnaire blocks through the <code>user_pre_questions</code> and
-                        <code>user_post_questions</code> columns.
+                        This file contains all questionnaire items used by the baseline template. Each row
+                        defines a question or label, its question type, and the block to which it belongs.
+                        Treatment groups reference questionnaire blocks through the
+                        <code>user_pre_questions</code> and <code>user_post_questions</code> columns.
                     </p>
                     <img class="CSV_screenshot" src="../static/screenshots/questions_bank.png" alt="">
                     <p>
-                        Supported question types in the default UI are text input, single-item Likert,
-                        grouped Likert, single-select multiple choice, and label/instruction rows.
+                        In practice, this is where researchers usually replace the simple example
+                        questions with their own study measures. The default interface supports:
+                    </p>
+                    <ul>
+                        <li><strong>Text input:</strong> open-ended responses such as comments, explanations, or qualitative reflections.</li>
+                        <li><strong>Single-item Likert:</strong> one attitude or rating item on a fixed scale.</li>
+                        <li><strong>Grouped Likert:</strong> several related statements shown together as a matrix-style block.</li>
+                        <li><strong>Single-select multiple choice:</strong> one answer chosen from a fixed set of options.</li>
+                        <li><strong>Label / instruction rows:</strong> non-response text used to introduce or separate groups of questions.</li>
+                    </ul>
+                    <p>
+                        In the current baseline template, the pre-questionnaire uses the single-item
+                        Likert and multiple-choice examples, while the post-questionnaire uses the
+                        grouped Likert and open-ended examples. The included wording is intentionally
+                        simple and researcher-facing so new users can see the supported patterns before
+                        replacing the content with real study materials.
+                    </p>
+                    <p>
+                        A common workflow is to keep the same question-bank structure but replace the
+                        current baseline wording with validated items, domain-specific measures, and more
+                        realistic study instructions. Question labels can also include simple HTML
+                        formatting such as <code>&lt;strong&gt;</code> or <code>&lt;em&gt;</code>
+                        when researchers want light emphasis in the default interface.
                     </p>
 
                     <h4>2.2 Experiment Description CSV</h4>
@@ -299,6 +349,16 @@ node app.js</code></pre>
                         some button labels, radio options, and the initial chat greeting remain hardcoded
                         in the Pug templates or client-side scripts.
                     </p>
+                    <p>
+                        In the baseline template, this file contains simple, generic copy. In a real
+                        study fork, researchers typically use it to replace the visible instructions,
+                        framing text, and stage descriptions with study-specific content.
+                    </p>
+                    <p>
+                        Because <code>experiment_desc.csv</code> often contains multiline HTML, correct
+                        CSV quoting is essential: values with commas or line breaks must be enclosed in
+                        double quotes, and any literal double quotes inside the value must be doubled.
+                    </p>
                     <img class="CSV_screenshot" src="../static/screenshots/experiment_desc.png" alt="">
 
                     <h4>2.3 Treatment Group Configuration CSV</h4>
@@ -306,6 +366,11 @@ node app.js</code></pre>
                         This file defines the treatment groups, the displayed user and agent names,
                         avatar files, hidden prompt files, task-description files, and the questionnaire
                         blocks that should be shown before and after the chat task.
+                    </p>
+                    <p>
+                        This is the main file that turns the baseline template into a real experiment:
+                        it connects each treatment group to the relevant question blocks, hidden prompt,
+                        task description, and display settings for that condition.
                     </p>
                     <img class="CSV_screenshot" src="../static/screenshots/treatment_group_config.png" alt="">
                     <p>
@@ -321,12 +386,21 @@ node app.js</code></pre>
                         treatment group is injected as the system message for the LLM conversation and is
                         never shown to the participant.
                     </p>
+                    <p>
+                        Researchers typically replace the simple example prompts in this bank with the
+                        actual manipulations they want to compare across treatment groups.
+                    </p>
 
                     <h4>2.5 User Task Bank</h4>
                     <p>
                         Task descriptions are HTML fragments displayed above the chat interface. This is
                         the main place to provide participant instructions, examples, task constraints, or
                         links relevant to the study.
+                    </p>
+                    <p>
+                        In the baseline template, these tasks are intentionally lightweight. In a real
+                        fork, this is where researchers usually add the more realistic scenario,
+                        participant role, and domain-specific instructions for the study.
                     </p>
 
                     <h4>2.6 Prerequisites and Access Codes</h4>

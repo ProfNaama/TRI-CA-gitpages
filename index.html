@@ -33,9 +33,9 @@
                 experimental studies involving LLM-based conversational agents (CAs). It enables
                 researchers to efficiently collect user data before, during, and after interactions
                 with AI across diverse experimental designs in naturalistic settings. The platform is
-                free, easy to configure, and requires no coding knowledge, while also offering the
-                flexibility for experienced developers to customize and extend it to meet specific
-                research needs.
+                best understood as a baseline template: it ships with intentionally simple example
+                prompts, tasks, and questions that researchers can fork, replace, and extend for their
+                own study.
             </p>
             
             <p>
@@ -45,6 +45,15 @@
                 randomized treatment assignment, and capturing participant interactions and responses
                 in a structured database. A dedicated Developer's Guide is also included for those who
                 wish to modify and enhance the system's functionality.
+            </p>
+
+            <p>
+                In practice, most researchers adapt the baseline template by editing the
+                <code>questions_bank.csv</code>, <code>experiment_desc.csv</code>, and
+                <code>treatment_groups_config.csv</code> files, along with the
+                <code>hidden_prompts_bank/</code> and <code>user_tasks_bank/</code> folders. Those
+                files control the questionnaire content, visible page text, treatment-specific prompts,
+                and participant task instructions without requiring a full rewrite of the application.
             </p>
             
             <p>
@@ -60,7 +69,7 @@
             <div>
                 <h3>Check <span class="TRI-CA">TRI-CA</span> out</h3> 
                 <a href="https://tri-ca-1fce8843b502.herokuapp.com/">TRI-CA</a>
-                <p>Use access code: tri-ca</p>
+                <p>The public demo uses a simple baseline setup. Use access code: tri-ca</p>
             </div>
         </main>
         <section class="section">

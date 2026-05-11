@@ -325,7 +325,7 @@ node app.js
 	- **page**: Page key / route name (e.g., `chat`, `consent`, `pre_questionnaire`) used to map CSV rows to site pages.
 	- **title**: Page title (used in the HTML `<title>` and page header).
 	- **header**: Short header text displayed on the page.
-	- **body1**: Main body HTML/text for the page (may include markup).
+	- **body1**: Main body HTML/text for the page (may include markup). Because this field often contains commas or spans multiple lines, wrap the whole value in double quotes and double any literal `"` characters inside it.
 
 - **`experiment_configuration/questions_bank.csv`**
 	- **block_name**: Logical group name for a set of questions (referenced from `treatment_groups_config.csv`).
@@ -345,7 +345,14 @@ Notes:
 - `user_pre_questions` and `user_post_questions` in the treatment CSV should match `block_name` values in `questions_bank.csv` (semicolon-separated).
 - `hidden_prompt` should reference a plain text file in `experiment_configuration/hidden_prompts_bank/` and will be used as the LLM system message.
 - `user_task_description` should point to an HTML file under `experiment_configuration/user_tasks_bank/` to render task instructions.
-- **CSV quoting**: these are standard comma-separated files parsed by the [`csv-parser`](https://www.npmjs.com/package/csv-parser) npm package (RFC 4180). If a field value contains a comma or newline, wrap it in double quotes (e.g., `"Hello, world"`). To include a literal double quote inside a quoted field, double it (e.g., `"She said ""hello"""`).
+- **CSV quoting**: these are standard comma-separated files parsed by the [`csv-parser`](https://www.npmjs.com/package/csv-parser) npm package. In the current TRI-CA loader, quoted fields correctly support commas, embedded newlines, and doubled double quotes (`""`). This matters especially in `experiment_desc.csv`, where HTML snippets often span multiple lines. If a field value contains a comma or newline, wrap it in double quotes. To include a literal double quote inside a quoted field, double it.
+
+Example `experiment_desc.csv` value:
+
+```csv
+consent,TRI-CA,Example Consent Information,"<p>Line 1, with a comma.</p>
+<p>She said ""hello"" here.</p>"
+```
 
 ### **Question Types**
 
